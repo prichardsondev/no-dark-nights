@@ -46,7 +46,7 @@ const settingFields: Array<{
     label: "Night-light width",
     unit: "mm",
     min: 50,
-    max: 150,
+    max: 160,
     step: 0.1,
     help: "Tip-to-tip width of the curved picture.",
   },
@@ -232,43 +232,63 @@ function createPhotoTexture({
   const imageHeight = Math.max(0.1, settings.height - settings.frameWidth * 2);
   const targetAspect = imageArcLength / imageHeight;
   const sourceAspect = image.source.width / image.source.height;
-  let baseWidth: number;
-  let baseHeight: number;
-  if (!crop.enabled) {
-    baseWidth = image.source.width;
-    baseHeight = image.source.height;
-  } else if (sourceAspect > targetAspect) {
-    baseHeight = image.source.height;
-    baseWidth = baseHeight * targetAspect;
-  } else {
-    baseWidth = image.source.width;
-    baseHeight = baseWidth / targetAspect;
-  }
-
-  const cropWidth = crop.enabled ? baseWidth / crop.zoom : baseWidth;
-  const cropHeight = crop.enabled ? baseHeight / crop.zoom : baseHeight;
-  const sourceX = crop.enabled
-    ? (image.source.width - cropWidth) * crop.positionX
-    : 0;
-  const sourceY = crop.enabled
-    ? (image.source.height - cropHeight) * crop.positionY
-    : 0;
   const canvas = document.createElement("canvas");
-  canvas.width = 1024;
-  canvas.height = Math.max(256, Math.round(canvas.width / targetAspect));
+  if (targetAspect >= 1) {
+    canvas.width = 1024;
+    canvas.height = Math.max(1, Math.round(1024 / targetAspect));
+  } else {
+    canvas.height = 1024;
+    canvas.width = Math.max(1, Math.round(1024 * targetAspect));
+  }
   const context = canvas.getContext("2d");
   if (!context) return null;
-  context.drawImage(
-    sourceCanvas,
-    sourceX,
-    sourceY,
-    cropWidth,
-    cropHeight,
-    0,
-    0,
-    canvas.width,
-    canvas.height,
-  );
+  context.fillStyle = "#fff";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  if (crop.enabled) {
+    let baseWidth: number;
+    let baseHeight: number;
+    if (sourceAspect > targetAspect) {
+      baseHeight = image.source.height;
+      baseWidth = baseHeight * targetAspect;
+    } else {
+      baseWidth = image.source.width;
+      baseHeight = baseWidth / targetAspect;
+    }
+    const cropWidth = baseWidth / crop.zoom;
+    const cropHeight = baseHeight / crop.zoom;
+    const sourceX = (image.source.width - cropWidth) * crop.positionX;
+    const sourceY = (image.source.height - cropHeight) * crop.positionY;
+    context.drawImage(
+      sourceCanvas,
+      sourceX,
+      sourceY,
+      cropWidth,
+      cropHeight,
+      0,
+      0,
+      canvas.width,
+      canvas.height,
+    );
+  } else if (sourceAspect > targetAspect) {
+    const destinationHeight = canvas.width / sourceAspect;
+    context.drawImage(
+      sourceCanvas,
+      0,
+      (canvas.height - destinationHeight) / 2,
+      canvas.width,
+      destinationHeight,
+    );
+  } else {
+    const destinationWidth = canvas.height * sourceAspect;
+    context.drawImage(
+      sourceCanvas,
+      (canvas.width - destinationWidth) / 2,
+      0,
+      destinationWidth,
+      canvas.height,
+    );
+  }
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
@@ -568,8 +588,24 @@ export function LithophaneStudio() {
 
   const loadFile = async (file?: File) => {
     if (!file) return;
-    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-      setNotice("Please choose a JPG, PNG, or WebP photo.");
+    const supportedTypes = new Set([
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/avif",
+      "image/gif",
+      "image/heic",
+      "image/heif",
+    ]);
+    const supportedExtension =
+      /\.(?:avif|gif|heic|heif|jpe?g|png|webp)$/i.test(file.name);
+    if (
+      (!file.type && !supportedExtension) ||
+      (file.type && !supportedTypes.has(file.type))
+    ) {
+      setNotice(
+        "Please choose a JPG, PNG, WebP, AVIF, GIF, HEIC, or HEIF photo.",
+      );
       return;
     }
     if (file.size > 24 * 1024 * 1024) {
@@ -577,37 +613,73 @@ export function LithophaneStudio() {
       return;
     }
 
-    const previewUrl = URL.createObjectURL(file);
-    const bitmap = await createImageBitmap(file);
-    const maxDimension = 2400;
-    const scale = Math.min(1, maxDimension / Math.max(bitmap.width, bitmap.height));
-    const width = Math.max(1, Math.round(bitmap.width * scale));
-    const height = Math.max(1, Math.round(bitmap.height * scale));
-    const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-    const context = canvas.getContext("2d", { willReadFrequently: true });
-    if (!context) {
-      setNotice("This browser could not read that photo.");
-      return;
+    const originalPreviewUrl = URL.createObjectURL(file);
+    let previewUrl = originalPreviewUrl;
+    let bitmap: ImageBitmap | null = null;
+    try {
+      const mightBeHeic =
+        /heic|heif/i.test(file.type) || /\.(?:heic|heif)$/i.test(file.name);
+      if (mightBeHeic) {
+        const { heicTo, isHeic } = await import("heic-to/csp");
+        if (!(await isHeic(file))) throw new Error("Invalid HEIC image.");
+        bitmap = await heicTo({
+          blob: file,
+          type: "bitmap",
+          options: { imageOrientation: "from-image" },
+        });
+      } else {
+        bitmap = await createImageBitmap(file, {
+          imageOrientation: "from-image",
+        });
+      }
+      const maxDimension = 2400;
+      const scale = Math.min(
+        1,
+        maxDimension / Math.max(bitmap.width, bitmap.height),
+      );
+      const width = Math.max(1, Math.round(bitmap.width * scale));
+      const height = Math.max(1, Math.round(bitmap.height * scale));
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const context = canvas.getContext("2d", { willReadFrequently: true });
+      if (!context) throw new Error("Canvas is unavailable.");
+      context.fillStyle = "#fff";
+      context.fillRect(0, 0, width, height);
+      context.drawImage(bitmap, 0, 0, width, height);
+      const imageData = context.getImageData(0, 0, width, height);
+      const previewBlob = await new Promise<Blob | null>((resolve) => {
+        canvas.toBlob(resolve, "image/jpeg", 0.9);
+      });
+      if (previewBlob) {
+        previewUrl = URL.createObjectURL(previewBlob);
+        URL.revokeObjectURL(originalPreviewUrl);
+      }
+      setImage((current) => {
+        if (current) URL.revokeObjectURL(current.previewUrl);
+        return {
+          name: file.name,
+          previewUrl,
+          source: {
+            data: imageData.data,
+            width,
+            height,
+          },
+        };
+      });
+      setCrop(DEFAULT_CROP);
+      setNotice(null);
+    } catch {
+      URL.revokeObjectURL(previewUrl);
+      if (previewUrl !== originalPreviewUrl) {
+        URL.revokeObjectURL(originalPreviewUrl);
+      }
+      setNotice(
+        "That image could not be read. Try exporting it as a JPG or PNG.",
+      );
+    } finally {
+      bitmap?.close();
     }
-    context.drawImage(bitmap, 0, 0, width, height);
-    bitmap.close();
-    const imageData = context.getImageData(0, 0, width, height);
-    setImage((current) => {
-      if (current) URL.revokeObjectURL(current.previewUrl);
-      return {
-        name: file.name,
-        previewUrl,
-        source: {
-          data: imageData.data,
-          width,
-          height,
-        },
-      };
-    });
-    setCrop(DEFAULT_CROP);
-    setNotice(null);
   };
 
   const handleFile = (event: ChangeEvent<HTMLInputElement>) => {
@@ -749,7 +821,7 @@ export function LithophaneStudio() {
                 ref={fileInputRef}
                 className="sr-only"
                 type="file"
-                accept="image/jpeg,image/png,image/webp"
+                accept="image/jpeg,image/png,image/webp,image/avif,image/gif,image/heic,image/heif,.heic,.heif"
                 onChange={handleFile}
               />
             </div>

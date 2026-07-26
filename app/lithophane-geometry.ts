@@ -65,7 +65,15 @@ export function calculateUncroppedWidth(
   const imageHeight = Math.max(0.1, settings.height - settings.frameWidth * 2);
   const imageArcLength = imageHeight * sourceAspectRatio;
   const totalArcLength = imageArcLength + settings.frameWidth * 2;
-  const angle = Math.min(Math.PI * 1.98, totalArcLength / settings.radius);
+  const minimumWidth = Math.min(40, settings.radius * 0.75);
+  const minimumAngle = 2 * Math.asin(minimumWidth / (2 * settings.radius));
+  // Leave a little clearance below the generator's 1.96 × radius limit so
+  // very wide photos never land on an invalid floating-point boundary.
+  const maximumAngle = 2 * Math.asin(0.97);
+  const angle = Math.min(
+    maximumAngle,
+    Math.max(minimumAngle, totalArcLength / settings.radius),
+  );
   return 2 * settings.radius * Math.sin(angle / 2);
 }
 
@@ -77,13 +85,27 @@ function sampleSource(
   crop: CropSettings,
 ) {
   if (!crop.enabled) {
+    const sourceAspect = source.width / source.height;
+    let sourceU = u;
+    let sourceV = v;
+    if (sourceAspect > aspectRatio) {
+      const contentHeight = aspectRatio / sourceAspect;
+      const offset = (1 - contentHeight) / 2;
+      if (v < offset || v > offset + contentHeight) return 1;
+      sourceV = (v - offset) / contentHeight;
+    } else if (sourceAspect < aspectRatio) {
+      const contentWidth = sourceAspect / aspectRatio;
+      const offset = (1 - contentWidth) / 2;
+      if (u < offset || u > offset + contentWidth) return 1;
+      sourceU = (u - offset) / contentWidth;
+    }
     const x = Math.min(
       source.width - 1,
-      Math.max(0, Math.round(u * (source.width - 1))),
+      Math.max(0, Math.round(sourceU * (source.width - 1))),
     );
     const y = Math.min(
       source.height - 1,
-      Math.max(0, Math.round(v * (source.height - 1))),
+      Math.max(0, Math.round(sourceV * (source.height - 1))),
     );
     const index = (y * source.width + x) * 4;
     return (
