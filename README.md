@@ -11,9 +11,9 @@ by No Dark Nights.
 - generates a closed binary STL without uploading the customer photo
 - includes standard and compact No Dark Nights size presets
 
-The default adapter measurements mirror the values used in the existing
-Lithophane Maker night-light workflow. Confirm the fit in a slicer and with a
-small test print before production use.
+The bottom adapter is modeled from a known-good Lithophane Maker reference STL:
+a 1.8 mm shield-shaped plate with tapered wings and a rounded, snug-fit slot.
+Confirm the fit in a slicer and with a small test print before production use.
 
 ## Local development
 

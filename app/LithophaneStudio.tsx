@@ -108,7 +108,7 @@ const settingFields: Array<{
     min: 8,
     max: 28,
     step: 0.1,
-    help: "How far the night-light body enters the adapter.",
+    help: "Straight slot depth before the rounded cap.",
   },
   {
     key: "adapterThickness",
@@ -117,7 +117,7 @@ const settingFields: Array<{
     min: 1.2,
     max: 3,
     step: 0.05,
-    help: "Wall thickness around the adapter slot.",
+    help: "Thickness of the shield-shaped bottom adapter plate.",
   },
   {
     key: "lightDistance",
@@ -126,7 +126,7 @@ const settingFields: Array<{
     min: 20,
     max: 55,
     step: 1,
-    help: "Distance from the bulb center to the image panel.",
+    help: "Distance from the bulb center to the smooth image surface.",
   },
 ];
 
@@ -663,7 +663,7 @@ export function LithophaneStudio() {
               <span>03</span>
               <div>
                 <h2>Fit the night light</h2>
-                <p>Defaults match the lights used by No Dark Nights.</p>
+                <p>Reference-matched shield base for the lights used by No Dark Nights.</p>
               </div>
             </div>
             <div className="preset-row">
@@ -808,4 +808,3 @@ export function LithophaneStudio() {
     </main>
   );
 }
-

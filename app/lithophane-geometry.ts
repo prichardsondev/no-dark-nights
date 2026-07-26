@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 export type LithophaneSettings = {
   width: number;
@@ -101,53 +102,68 @@ function adjustedLuminance(
   return invert ? 1 - contrasted : contrasted;
 }
 
-function addBox(
+type Point2 = {
+  x: number;
+  y: number;
+};
+
+function addPolygonFace(
   positions: number[],
   indices: number[],
-  minX: number,
-  maxX: number,
-  minY: number,
-  maxY: number,
-  minZ: number,
-  maxZ: number,
+  polygon: Point2[],
+  z: number,
+  reverse: boolean,
 ) {
   const start = positions.length / 3;
-  positions.push(
-    minX,
-    minY,
-    minZ,
-    maxX,
-    minY,
-    minZ,
-    maxX,
-    maxY,
-    minZ,
-    minX,
-    maxY,
-    minZ,
-    minX,
-    minY,
-    maxZ,
-    maxX,
-    minY,
-    maxZ,
-    maxX,
-    maxY,
-    maxZ,
-    minX,
-    maxY,
-    maxZ,
+  for (const point of polygon) {
+    positions.push(point.x, point.y, z);
+  }
+  const faces = THREE.ShapeUtils.triangulateShape(
+    polygon.map((point) => new THREE.Vector2(point.x, point.y)),
+    [],
   );
+  for (const [a, b, c] of faces) {
+    indices.push(
+      start + (reverse ? c : a),
+      start + b,
+      start + (reverse ? a : c),
+    );
+  }
+}
 
-  const faces = [
-    0, 2, 1, 0, 3, 2,
-    4, 5, 6, 4, 6, 7,
-    0, 1, 5, 0, 5, 4,
-    1, 2, 6, 1, 6, 5,
-    2, 3, 7, 2, 7, 6,
-    3, 0, 4, 3, 4, 7,
-  ];
-  indices.push(...faces.map((index) => index + start));
+function addPolygonWalls(
+  positions: number[],
+  indices: number[],
+  polygon: Point2[],
+  bottom: number,
+  top: number,
+) {
+  for (let index = 0; index < polygon.length; index += 1) {
+    const next = (index + 1) % polygon.length;
+    const start = positions.length / 3;
+    positions.push(
+      polygon[index].x,
+      polygon[index].y,
+      bottom,
+      polygon[next].x,
+      polygon[next].y,
+      bottom,
+      polygon[next].x,
+      polygon[next].y,
+      top,
+      polygon[index].x,
+      polygon[index].y,
+      top,
+    );
+    indices.push(
+      start,
+      start + 1,
+      start + 2,
+      start,
+      start + 2,
+      start + 3,
+    );
+  }
 }
 
 export function createLithophaneGeometry(
@@ -163,9 +179,10 @@ export function createLithophaneGeometry(
     24,
     Math.min(preview ? 90 : 520, Math.round(settings.width / effectiveResolution)),
   );
+  const panelHeight = settings.height - settings.adapterThickness;
   const rows = Math.max(
     24,
-    Math.min(preview ? 90 : 520, Math.round(settings.height / effectiveResolution)),
+    Math.min(preview ? 90 : 520, Math.round(panelHeight / effectiveResolution)),
   );
   const angle = 2 * Math.asin(Math.min(0.98, settings.width / (2 * settings.radius)));
   const positions: number[] = [];
@@ -173,11 +190,14 @@ export function createLithophaneGeometry(
   const stride = columns + 1;
   const layerSize = stride * (rows + 1);
   const aspectRatio = settings.width / settings.height;
+  const circleCenterY =
+    settings.slotDepth + settings.lightDistance - settings.radius;
 
   for (let layer = 0; layer < 2; layer += 1) {
     for (let row = 0; row <= rows; row += 1) {
-      const v = 1 - row / rows;
-      const z = (row / rows) * settings.height;
+      const z =
+        settings.adapterThickness + (row / rows) * panelHeight;
+      const v = 1 - z / settings.height;
       for (let column = 0; column <= columns; column += 1) {
         const u = column / columns;
         const theta = (u - 0.5) * angle;
@@ -199,11 +219,11 @@ export function createLithophaneGeometry(
               (1 - lightness) *
                 (settings.maxThickness - settings.minThickness);
         const radialDistance =
-          settings.radius + (layer === 0 ? relief : 0);
+          settings.radius - (layer === 1 ? relief : 0);
 
         positions.push(
           Math.sin(theta) * radialDistance,
-          Math.cos(theta) * radialDistance,
+          circleCenterY + Math.cos(theta) * radialDistance,
           z,
         );
       }
@@ -227,19 +247,6 @@ export function createLithophaneGeometry(
   }
 
   for (let column = 0; column < columns; column += 1) {
-    const bottomA = column;
-    const bottomB = column + 1;
-    const bottomBackA = bottomA + layerSize;
-    const bottomBackB = bottomB + layerSize;
-    indices.push(
-      bottomA,
-      bottomBackB,
-      bottomB,
-      bottomA,
-      bottomBackA,
-      bottomBackB,
-    );
-
     const topA = rows * stride + column;
     const topB = topA + 1;
     const topBackA = topA + layerSize;
@@ -268,56 +275,67 @@ export function createLithophaneGeometry(
     );
   }
 
-  const wall = settings.adapterThickness;
-  const halfSlot = settings.slotWidth / 2;
-  const adapterHeight = Math.min(18, settings.height * 0.18);
-  const slotStartY = Math.max(4, settings.radius - settings.lightDistance);
-  const slotEndY = Math.min(
-    settings.radius - wall,
-    slotStartY + settings.slotDepth,
-  );
-  const adapterBottom = -adapterHeight;
-  const adapterTop = Math.max(0.8, settings.minThickness);
+  const snugFitAllowance = 0.5;
+  const halfSlot = Math.max(2, (settings.slotWidth - snugFitAllowance) / 2);
+  const lipWidth = 5;
+  const slotSegments = preview ? 14 : 30;
+  const slotBoundary: Point2[] = [{ x: -halfSlot, y: 0 }];
+  for (let segment = 0; segment <= slotSegments; segment += 1) {
+    const slotAngle = Math.PI - (segment / slotSegments) * Math.PI;
+    slotBoundary.push({
+      x: Math.cos(slotAngle) * halfSlot,
+      y: settings.slotDepth + Math.sin(slotAngle) * halfSlot,
+    });
+  }
+  slotBoundary.push({ x: halfSlot, y: 0 });
 
-  addBox(
+  const arcPoint = (column: number, radius: number): Point2 => {
+    const u = column / columns;
+    const theta = (u - 0.5) * angle;
+    return {
+      x: Math.sin(theta) * radius,
+      y: circleCenterY + Math.cos(theta) * radius,
+    };
+  };
+
+  const outerRight = arcPoint(columns, settings.radius);
+  const innerRadius = settings.radius - settings.maxThickness;
+  const innerRight = arcPoint(columns, innerRadius);
+  const innerLeft = arcPoint(0, innerRadius);
+  const rightLip = { x: halfSlot + lipWidth, y: 0 };
+  const leftLip = { x: -halfSlot - lipWidth, y: 0 };
+
+  const fullBase: Point2[] = [
+    ...slotBoundary,
+    rightLip,
+    innerRight,
+    outerRight,
+  ];
+  for (let column = columns - 1; column >= 0; column -= 1) {
+    fullBase.push(arcPoint(column, settings.radius));
+  }
+  fullBase.push(innerLeft, leftLip);
+
+  const topBase: Point2[] = [...slotBoundary, rightLip, innerRight];
+  for (let column = columns - 1; column >= 0; column -= 1) {
+    topBase.push(arcPoint(column, innerRadius));
+  }
+  topBase.push(leftLip);
+
+  addPolygonFace(positions, indices, fullBase, 0, true);
+  addPolygonFace(
     positions,
     indices,
-    -halfSlot - wall,
-    -halfSlot,
-    slotStartY,
-    slotEndY,
-    adapterBottom,
-    adapterTop,
+    topBase,
+    settings.adapterThickness,
+    false,
   );
-  addBox(
+  addPolygonWalls(
     positions,
     indices,
-    halfSlot,
-    halfSlot + wall,
-    slotStartY,
-    slotEndY,
-    adapterBottom,
-    adapterTop,
-  );
-  addBox(
-    positions,
-    indices,
-    -halfSlot - wall,
-    halfSlot + wall,
-    slotEndY - wall,
-    slotEndY,
-    adapterBottom,
-    adapterTop,
-  );
-  addBox(
-    positions,
-    indices,
-    -halfSlot - wall,
-    halfSlot + wall,
-    slotEndY - wall,
-    settings.radius + settings.minThickness,
-    -wall,
-    adapterTop,
+    fullBase,
+    0,
+    settings.adapterThickness,
   );
 
   const geometry = new THREE.BufferGeometry();
@@ -326,10 +344,12 @@ export function createLithophaneGeometry(
     new THREE.Float32BufferAttribute(positions, 3),
   );
   geometry.setIndex(indices);
-  geometry.computeVertexNormals();
-  geometry.computeBoundingBox();
-  geometry.center();
-  return geometry;
+  const welded = mergeVertices(geometry, 1e-4);
+  geometry.dispose();
+  welded.computeVertexNormals();
+  welded.computeBoundingBox();
+  welded.center();
+  return welded;
 }
 
 export function estimateTriangleCount(settings: LithophaneSettings) {
@@ -339,8 +359,12 @@ export function estimateTriangleCount(settings: LithophaneSettings) {
   );
   const rows = Math.max(
     24,
-    Math.min(520, Math.round(settings.height / settings.resolution)),
+    Math.min(
+      520,
+      Math.round(
+        (settings.height - settings.adapterThickness) / settings.resolution,
+      ),
+    ),
   );
-  return columns * rows * 4 + columns * 4 + rows * 4 + 48;
+  return columns * rows * 4 + columns * 8 + rows * 4 + 220;
 }
-
