@@ -208,7 +208,7 @@ export function createLithophaneGeometry(
   preview = false,
 ) {
   const effectiveResolution = preview
-    ? Math.max(2, settings.resolution)
+    ? Math.max(0.65, settings.resolution)
     : settings.resolution;
   const angle = 2 * Math.asin(
     Math.min(0.999999, settings.width / (2 * settings.radius)),
@@ -217,14 +217,14 @@ export function createLithophaneGeometry(
   const columns = Math.max(
     24,
     Math.min(
-      preview ? 90 : 640,
+      preview ? 200 : 640,
       Math.round(totalArcLength / effectiveResolution),
     ),
   );
   const panelHeight = settings.height - settings.adapterThickness;
   const rows = Math.max(
     24,
-    Math.min(preview ? 90 : 640, Math.round(panelHeight / effectiveResolution)),
+    Math.min(preview ? 200 : 640, Math.round(panelHeight / effectiveResolution)),
   );
   const positions: number[] = [];
   const indices: number[] = [];
@@ -257,7 +257,7 @@ export function createLithophaneGeometry(
       const lightness = adjustedLuminance(
         sampleSource(
           source,
-          Math.min(1, Math.max(0, imageU)),
+          1 - Math.min(1, Math.max(0, imageU)),
           Math.min(1, Math.max(0, imageV)),
           aspectRatio,
           crop,
@@ -326,11 +326,11 @@ export function createLithophaneGeometry(
     const innerTopB = innerTopA + 1;
     indices.push(
       smoothC,
-      smoothD,
+      innerTopA,
       innerTopB,
       smoothC,
       innerTopB,
-      innerTopA,
+      smoothD,
     );
   }
 
@@ -397,6 +397,7 @@ export function createLithophaneGeometry(
   }
   topBase.push(leftLip);
 
+  const baseIndexStart = indices.length;
   addPolygonFace(positions, indices, fullBase, 0, true);
   addPolygonFace(
     positions,
@@ -412,6 +413,18 @@ export function createLithophaneGeometry(
     0,
     settings.adapterThickness,
   );
+  for (let offset = baseIndexStart; offset < indices.length; offset += 3) {
+    const second = indices[offset + 1];
+    indices[offset + 1] = indices[offset + 2];
+    indices[offset + 2] = second;
+  }
+  // Export outward-facing normals, matching the reference STL and avoiding
+  // slicer-side face repair.
+  for (let offset = 0; offset < indices.length; offset += 3) {
+    const second = indices[offset + 1];
+    indices[offset + 1] = indices[offset + 2];
+    indices[offset + 2] = second;
+  }
 
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute(

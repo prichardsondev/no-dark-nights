@@ -198,7 +198,7 @@ function NumberSetting({
   );
 }
 
-function CropPreview({
+function createPhotoTexture({
   image,
   crop,
   settings,
@@ -207,110 +207,106 @@ function CropPreview({
   crop: CropSettings;
   settings: LithophaneSettings;
 }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const sourceCanvas = document.createElement("canvas");
+  sourceCanvas.width = image.source.width;
+  sourceCanvas.height = image.source.height;
+  const sourceContext = sourceCanvas.getContext("2d");
+  if (!sourceContext) return null;
+  sourceContext.putImageData(
+    new ImageData(
+      new Uint8ClampedArray(image.source.data),
+      image.source.width,
+      image.source.height,
+    ),
+    0,
+    0,
+  );
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const context = canvas.getContext("2d");
-    if (!context) return;
-    const width = 900;
-    const height = Math.max(500, Math.round(width * (settings.height / settings.width)));
-    canvas.width = width;
-    canvas.height = height;
+  const angle = 2 * Math.asin(
+    Math.min(0.999999, settings.width / (2 * settings.radius)),
+  );
+  const imageArcLength = Math.max(
+    0.1,
+    angle * settings.radius - settings.frameWidth * 2,
+  );
+  const imageHeight = Math.max(0.1, settings.height - settings.frameWidth * 2);
+  const targetAspect = imageArcLength / imageHeight;
+  const sourceAspect = image.source.width / image.source.height;
+  let baseWidth: number;
+  let baseHeight: number;
+  if (!crop.enabled) {
+    baseWidth = image.source.width;
+    baseHeight = image.source.height;
+  } else if (sourceAspect > targetAspect) {
+    baseHeight = image.source.height;
+    baseWidth = baseHeight * targetAspect;
+  } else {
+    baseWidth = image.source.width;
+    baseHeight = baseWidth / targetAspect;
+  }
 
-    const offscreen = document.createElement("canvas");
-    offscreen.width = image.source.width;
-    offscreen.height = image.source.height;
-    const offscreenContext = offscreen.getContext("2d");
-    if (!offscreenContext) return;
-    offscreenContext.putImageData(
-      new ImageData(
-        new Uint8ClampedArray(image.source.data),
-        image.source.width,
-        image.source.height,
-      ),
-      0,
-      0,
-    );
+  const cropWidth = crop.enabled ? baseWidth / crop.zoom : baseWidth;
+  const cropHeight = crop.enabled ? baseHeight / crop.zoom : baseHeight;
+  const sourceX = crop.enabled
+    ? (image.source.width - cropWidth) * crop.positionX
+    : 0;
+  const sourceY = crop.enabled
+    ? (image.source.height - cropHeight) * crop.positionY
+    : 0;
+  const canvas = document.createElement("canvas");
+  canvas.width = 1024;
+  canvas.height = Math.max(256, Math.round(canvas.width / targetAspect));
+  const context = canvas.getContext("2d");
+  if (!context) return null;
+  context.drawImage(
+    sourceCanvas,
+    sourceX,
+    sourceY,
+    cropWidth,
+    cropHeight,
+    0,
+    0,
+    canvas.width,
+    canvas.height,
+  );
 
-    const angle = 2 * Math.asin(
-      Math.min(0.999999, settings.width / (2 * settings.radius)),
-    );
-    const imageArcLength = Math.max(
-      0.1,
-      angle * settings.radius - settings.frameWidth * 2,
-    );
-    const imageHeight = Math.max(0.1, settings.height - settings.frameWidth * 2);
-    const targetAspect = imageArcLength / imageHeight;
-    const sourceAspect = image.source.width / image.source.height;
-    let baseWidth: number;
-    let baseHeight: number;
-    if (!crop.enabled) {
-      baseWidth = image.source.width;
-      baseHeight = image.source.height;
-    } else if (sourceAspect > targetAspect) {
-      baseHeight = image.source.height;
-      baseWidth = baseHeight * targetAspect;
-    } else {
-      baseWidth = image.source.width;
-      baseHeight = baseWidth / targetAspect;
-    }
-    const cropWidth = crop.enabled ? baseWidth / crop.zoom : baseWidth;
-    const cropHeight = crop.enabled ? baseHeight / crop.zoom : baseHeight;
-    const sourceX = crop.enabled
-      ? (image.source.width - cropWidth) * crop.positionX
-      : 0;
-    const sourceY = crop.enabled
-      ? (image.source.height - cropHeight) * crop.positionY
-      : 0;
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.minFilter = THREE.LinearMipmapLinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  return texture;
+}
 
-    context.fillStyle = "#080f19";
-    context.fillRect(0, 0, width, height);
-    context.filter = `grayscale(1) contrast(${settings.contrast})`;
-    context.drawImage(
-      offscreen,
-      sourceX,
-      sourceY,
-      cropWidth,
-      cropHeight,
-      0,
-      0,
-      width,
-      height,
-    );
-    context.filter = "none";
-    context.globalCompositeOperation = "screen";
-    const glow = context.createRadialGradient(
-      width / 2,
-      height * 0.55,
-      20,
-      width / 2,
-      height * 0.55,
-      width * 0.7,
-    );
-    glow.addColorStop(0, "rgba(255, 229, 159, .58)");
-    glow.addColorStop(0.5, "rgba(255, 180, 83, .18)");
-    glow.addColorStop(1, "rgba(2, 7, 14, .38)");
-    context.fillStyle = glow;
-    context.fillRect(0, 0, width, height);
-    context.globalCompositeOperation = "source-over";
-    context.strokeStyle = "rgba(255, 232, 178, .72)";
-    context.lineWidth = Math.max(10, width * (settings.frameWidth / settings.width));
-    context.strokeRect(0, 0, width, height);
-  }, [crop, image, settings]);
-
-  return <canvas ref={canvasRef} className="glow-canvas" />;
+function createGlowTexture() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 256;
+  canvas.height = 256;
+  const context = canvas.getContext("2d");
+  if (!context) return null;
+  const gradient = context.createRadialGradient(128, 128, 4, 128, 128, 124);
+  gradient.addColorStop(0, "rgba(255, 248, 214, 1)");
+  gradient.addColorStop(0.15, "rgba(255, 204, 103, .78)");
+  gradient.addColorStop(0.48, "rgba(255, 146, 41, .28)");
+  gradient.addColorStop(1, "rgba(255, 120, 24, 0)");
+  context.fillStyle = gradient;
+  context.fillRect(0, 0, 256, 256);
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
 }
 
 function ModelPreview({
   image,
   crop,
   settings,
+  lit,
+  cameraView,
 }: {
   image: UploadedImage;
   crop: CropSettings;
   settings: LithophaneSettings;
+  lit: boolean;
+  cameraView: "front" | "angle" | "side";
 }) {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -320,45 +316,172 @@ function ModelPreview({
     const width = mount.clientWidth;
     const height = mount.clientHeight;
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(34, width / height, 0.1, 1000);
-    camera.position.set(155, -175, 110);
+    const camera = new THREE.PerspectiveCamera(32, width / height, 0.1, 1000);
+    camera.up.set(0, 0, 1);
+    const cameraPositions = {
+      front: new THREE.Vector3(0, 330, 10),
+      angle: new THREE.Vector3(160, 255, 132),
+      side: new THREE.Vector3(330, 12, 32),
+    };
+    camera.position.copy(cameraPositions[cameraView]);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(width, height);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
+    renderer.toneMappingExposure = lit ? 1.38 : 1.05;
     mount.appendChild(renderer.domElement);
 
     const geometry = createLithophaneGeometry(image.source, crop, settings, true);
-    geometry.center();
-    const material = new THREE.MeshPhysicalMaterial({
-      color: 0xffedc2,
-      roughness: 0.56,
-      metalness: 0,
-      transmission: 0.08,
-      thickness: 0.8,
-      side: THREE.DoubleSide,
-    });
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.rotation.x = -Math.PI / 2;
-    mesh.rotation.z = Math.PI;
-    scene.add(mesh);
+    geometry.computeBoundingBox();
+    const center = geometry.boundingBox?.getCenter(new THREE.Vector3()) ??
+      new THREE.Vector3();
+    const photoTexture = createPhotoTexture({ image, crop, settings });
+    if (photoTexture) {
+      photoTexture.anisotropy = Math.min(
+        8,
+        renderer.capabilities.getMaxAnisotropy(),
+      );
+    }
+    const angle = 2 * Math.asin(
+      Math.min(0.999999, settings.width / (2 * settings.radius)),
+    );
+    const totalArcLength = angle * settings.radius;
+    const imageArcLength = Math.max(
+      0.1,
+      totalArcLength - settings.frameWidth * 2,
+    );
+    const imageHeight = Math.max(
+      0.1,
+      settings.height - settings.frameWidth * 2,
+    );
+    const circleCenterY =
+      settings.slotDepth + settings.lightDistance - settings.radius;
+    const material: THREE.Material = lit && photoTexture
+      ? new THREE.ShaderMaterial({
+          uniforms: {
+            photoMap: { value: photoTexture },
+            curveAngle: { value: angle },
+            totalArcLength: { value: totalArcLength },
+            imageArcLength: { value: imageArcLength },
+            imageHeight: { value: imageHeight },
+            frameWidth: { value: settings.frameWidth },
+            circleCenterY: { value: circleCenterY },
+            contrast: { value: settings.contrast },
+            invertImage: { value: settings.invert ? 1 : 0 },
+          },
+          vertexShader: `
+            varying vec3 vLocalPosition;
+            varying vec3 vViewNormal;
+            void main() {
+              vLocalPosition = position;
+              vViewNormal = normalize(normalMatrix * normal);
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+          `,
+          fragmentShader: `
+            uniform sampler2D photoMap;
+            uniform float curveAngle;
+            uniform float totalArcLength;
+            uniform float imageArcLength;
+            uniform float imageHeight;
+            uniform float frameWidth;
+            uniform float circleCenterY;
+            uniform float contrast;
+            uniform int invertImage;
+            varying vec3 vLocalPosition;
+            varying vec3 vViewNormal;
 
-    const amber = new THREE.PointLight(0xffb95f, 90, 450);
-    amber.position.set(0, 10, 40);
-    scene.add(amber);
-    const softbox = new THREE.DirectionalLight(0xfff6dc, 3.2);
-    softbox.position.set(-80, -120, 160);
-    scene.add(softbox);
-    scene.add(new THREE.AmbientLight(0x4d6a87, 1.4));
+            void main() {
+              float theta = atan(
+                vLocalPosition.x,
+                vLocalPosition.y - circleCenterY
+              );
+              float panelU = theta / curveAngle + 0.5;
+              float arcPosition = panelU * totalArcLength;
+              float imageU = (arcPosition - frameWidth) / imageArcLength;
+              float imageV = (vLocalPosition.z - frameWidth) / imageHeight;
+              float insideImage =
+                step(0.0, imageU) * step(imageU, 1.0) *
+                step(0.0, imageV) * step(imageV, 1.0);
+              vec3 photo = texture2D(
+                photoMap,
+                vec2(clamp(1.0 - imageU, 0.0, 1.0), clamp(imageV, 0.0, 1.0))
+              ).rgb;
+              float luminance = dot(photo, vec3(0.2126, 0.7152, 0.0722));
+              luminance = clamp((luminance - 0.5) * contrast + 0.5, 0.0, 1.0);
+              if (invertImage == 1) {
+                luminance = 1.0 - luminance;
+              }
+              float transmitted = mix(0.12, 1.0, pow(luminance, 0.88));
+              vec3 shadowColor = vec3(0.20, 0.075, 0.018);
+              vec3 lightColor = vec3(1.0, 0.86, 0.56);
+              vec3 frameColor = vec3(1.0, 0.72, 0.30);
+              vec3 color = mix(shadowColor, lightColor, transmitted);
+              color = mix(frameColor, color, insideImage);
+              float shapeLight =
+                0.78 + 0.22 * abs(dot(normalize(vViewNormal), vec3(0.2, 0.45, 0.87)));
+              gl_FragColor = vec4(color * shapeLight, 1.0);
+            }
+          `,
+          side: THREE.DoubleSide,
+        })
+      : new THREE.MeshPhysicalMaterial({
+          color: 0xf4e2b9,
+          roughness: 0.68,
+          metalness: 0,
+          clearcoat: 0.08,
+          clearcoatRoughness: 0.72,
+          side: THREE.DoubleSide,
+        });
+    const mesh = new THREE.Mesh(geometry, material);
+    const modelGroup = new THREE.Group();
+    modelGroup.position.copy(center).multiplyScalar(-1);
+    modelGroup.add(mesh);
+    scene.add(modelGroup);
+
+    const glowTexture = lit ? createGlowTexture() : null;
+    const glowMaterial = glowTexture
+      ? new THREE.SpriteMaterial({
+          map: glowTexture,
+          color: 0xffae42,
+          transparent: true,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending,
+        })
+      : null;
+    const glowSprite = glowMaterial ? new THREE.Sprite(glowMaterial) : null;
+    if (glowSprite) {
+      glowSprite.position.set(
+        0,
+        settings.slotDepth,
+        Math.max(30, settings.height * 0.42),
+      );
+      glowSprite.scale.set(145, 145, 1);
+      modelGroup.add(glowSprite);
+    }
+
+    if (lit) {
+      const bulb = new THREE.PointLight(0xffb34f, 75, 240, 1.45);
+      bulb.position.set(0, settings.slotDepth, settings.height * 0.38);
+      modelGroup.add(bulb);
+      scene.add(new THREE.AmbientLight(0x5e2b12, 0.72));
+    } else {
+      const key = new THREE.DirectionalLight(0xfff4d8, 4.1);
+      key.position.set(-90, 160, 150);
+      scene.add(key);
+      const rim = new THREE.DirectionalLight(0x88b7e3, 2.2);
+      rim.position.set(100, -70, 100);
+      scene.add(rim);
+      scene.add(new THREE.HemisphereLight(0xc8ddf2, 0x33200f, 1.8));
+    }
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.enablePan = false;
-    controls.minDistance = 130;
-    controls.maxDistance = 390;
-    controls.target.set(0, 5, 0);
+    controls.minDistance = 145;
+    controls.maxDistance = 620;
+    controls.target.set(0, 0, 0);
 
     let frame = 0;
     const render = () => {
@@ -383,12 +506,21 @@ function ModelPreview({
       controls.dispose();
       geometry.dispose();
       material.dispose();
+      photoTexture?.dispose();
+      glowMaterial?.dispose();
+      glowTexture?.dispose();
       renderer.dispose();
       renderer.domElement.remove();
     };
-  }, [crop, image, settings]);
+  }, [cameraView, crop, image, lit, settings]);
 
-  return <div ref={mountRef} className="model-mount" />;
+  return (
+    <div
+      ref={mountRef}
+      className="model-mount"
+      data-testid="model-preview"
+    />
+  );
 }
 
 export function LithophaneStudio() {
@@ -397,7 +529,9 @@ export function LithophaneStudio() {
     useState<LithophaneSettings>(DEFAULT_SETTINGS);
   const [crop, setCrop] = useState<CropSettings>(DEFAULT_CROP);
   const [preset, setPreset] = useState<PresetName>("reference");
-  const [view, setView] = useState<"model" | "glow">("model");
+  const [view, setView] = useState<"model" | "lit">("lit");
+  const [cameraView, setCameraView] =
+    useState<"front" | "angle" | "side">("angle");
   const [isDragging, setIsDragging] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
@@ -829,10 +963,10 @@ export function LithophaneStudio() {
               </button>
               <button
                 type="button"
-                className={view === "glow" ? "active" : ""}
-                onClick={() => setView("glow")}
+                className={view === "lit" ? "active" : ""}
+                onClick={() => setView("lit")}
               >
-                Glow
+                Night light
               </button>
             </div>
           </div>
@@ -840,21 +974,39 @@ export function LithophaneStudio() {
           <div className={`preview-stage ${image ? "ready" : ""}`}>
             <div className="stars" aria-hidden="true" />
             {image ? (
-              view === "model" ? (
+              <>
                 <ModelPreview
                   image={image}
                   crop={crop}
                   settings={modelSettings}
+                  lit={view === "lit"}
+                  cameraView={cameraView}
                 />
-              ) : (
-                <div className="glow-wrap">
-                  <CropPreview
-                    image={image}
-                    crop={crop}
-                    settings={modelSettings}
-                  />
+                <div
+                  className="camera-toggle"
+                  role="group"
+                  aria-label="Camera angle"
+                >
+                  {([
+                    ["front", "Front"],
+                    ["angle", "3/4"],
+                    ["side", "Side"],
+                  ] as const).map(([value, label]) => (
+                    <button
+                      key={value}
+                      type="button"
+                      className={cameraView === value ? "active" : ""}
+                      aria-pressed={cameraView === value}
+                      onClick={() => setCameraView(value)}
+                    >
+                      {label}
+                    </button>
+                  ))}
                 </div>
-              )
+                <div className="preview-hint">
+                  Drag to rotate · Scroll to zoom
+                </div>
+              </>
             ) : (
               <div className="empty-preview">
                 <div className="empty-lithophane" aria-hidden="true">

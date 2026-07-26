@@ -175,6 +175,7 @@ summary:focus-visible {
 .studio-layout {
   display: grid;
   grid-template-columns: minmax(360px, 41%) minmax(0, 59%);
+  align-items: start;
   min-height: calc(100vh - 78px);
 }
 
@@ -499,9 +500,11 @@ input[type="range"]:disabled {
 }
 
 .preview-panel {
-  position: relative;
+  position: sticky;
+  top: 78px;
   display: grid;
-  grid-template-rows: auto minmax(480px, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: calc(100vh - 78px);
   min-width: 0;
   background: var(--night);
   color: white;
@@ -559,7 +562,7 @@ input[type="range"]:disabled {
 .preview-stage {
   position: relative;
   display: grid;
-  min-height: 560px;
+  min-height: 0;
   place-items: center;
   overflow: hidden;
   background:
@@ -606,24 +609,49 @@ input[type="range"]:disabled {
   cursor: grabbing;
 }
 
-.glow-wrap {
-  position: relative;
-  z-index: 2;
-  width: min(68%, 560px);
-  padding: 12px;
-  border: 1px solid rgba(255, 218, 156, 0.34);
-  background: rgba(255, 233, 192, 0.08);
-  box-shadow:
-    0 32px 100px rgba(0, 0, 0, 0.58),
-    0 0 80px rgba(255, 172, 59, 0.17);
-  transform: perspective(900px) rotateY(-6deg);
+.camera-toggle {
+  position: absolute;
+  z-index: 4;
+  bottom: 24px;
+  left: 24px;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  background: rgba(4, 12, 21, 0.74);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(14px);
 }
 
-.glow-canvas {
-  display: block;
-  width: 100%;
-  max-height: 66vh;
-  object-fit: cover;
+.camera-toggle button {
+  min-width: 54px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #91a1af;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.camera-toggle button.active {
+  background: rgba(255, 191, 90, 0.18);
+  color: #ffd48d;
+}
+
+.preview-hint {
+  position: absolute;
+  z-index: 4;
+  right: 24px;
+  bottom: 32px;
+  color: rgba(212, 223, 233, 0.62);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  pointer-events: none;
 }
 
 .empty-preview {
@@ -870,7 +898,10 @@ input[type="range"]:disabled {
   }
 
   .preview-panel {
+    position: relative;
+    top: auto;
     order: 1;
+    height: auto;
     min-height: 720px;
   }
 
