@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { PageIntro, SiteShell } from "../SiteChrome";
 
@@ -70,3 +71,8 @@ export default function ResourcesPage() {
     </SiteShell>
   );
 }
+export const metadata: Metadata = {
+  title: "Printing Resources | No Dark Nights",
+  description:
+    "Practical starting points for printers, white PLA, night-light housings, slicers, measurements, and fit tests.",
+};

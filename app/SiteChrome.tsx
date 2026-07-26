@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { navigation } from "./site-data";
+import { navigation, REPOSITORY_URL } from "./site-data";
 
 export function SiteHeader() {
   return (
@@ -33,13 +33,15 @@ export function SiteFooter() {
     <footer className="ndn-footer">
       <div>
         <strong>No Dark Nights</strong>
-        <p>Learn with AI. Build something real. Share the light.</p>
+        <p>Make one. Give one. Teach one.</p>
       </div>
       <div className="footer-links">
         <Link href="/about">Our story</Link>
         <Link href="/learn">Start learning</Link>
         <Link href="/resources">Print safely</Link>
-        <Link href="/code">Open source</Link>
+        <a href={REPOSITORY_URL} rel="noreferrer" target="_blank">
+          GitHub source
+        </a>
       </div>
       <p className="footer-note">
         Photos are shown only with permission. The studio keeps source images
@@ -76,4 +78,3 @@ export function PageIntro({
     </header>
   );
 }
-

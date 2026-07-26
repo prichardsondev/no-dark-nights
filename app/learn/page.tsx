@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { PageIntro, SiteShell } from "../SiteChrome";
 import { learningSteps } from "../site-data";
+
+export const metadata: Metadata = {
+  title: "Learn | No Dark Nights",
+  description:
+    "Follow seven beginner-friendly steps from downloading the code to printing and sharing a lithophane night light.",
+};
 
 export default function LearnPage() {
   return (

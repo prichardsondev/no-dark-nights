@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { PageIntro, SiteShell } from "../SiteChrome";
+import { REPOSITORY_URL } from "../site-data";
+
+export const metadata: Metadata = {
+  title: "Code | No Dark Nights",
+  description:
+    "Download the complete No Dark Nights lithophane maker, lessons, prompts, and tests from GitHub.",
+};
 
 export default function CodePage() {
   return (
@@ -7,9 +15,15 @@ export default function CodePage() {
       <main className="content-page site-width">
         <PageIntro
           eyebrow="Open project"
-          title="The complete project will live here."
-          description="The website, lithophane engine, prompts, and tests are being prepared as one classroom-friendly repository."
+          title="Download, inspect, and change the complete project."
+          description="The website, lithophane engine, prompts, lessons, and tests are public and free to learn from."
         />
+        <div className="repo-action">
+          <a href={REPOSITORY_URL} rel="noreferrer" target="_blank">
+            Open the project on GitHub
+          </a>
+          <code>github.com/prichardsondev/no-dark-nights</code>
+        </div>
         <div className="code-layout">
           <section className="repo-map">
             <h2>Project map</h2>
@@ -25,15 +39,14 @@ export default function CodePage() {
           </section>
           <aside className="repo-status">
             <span className="status-dot" />
-            <strong>Public repository preparation</strong>
+            <strong>Public and ready to clone</strong>
             <p>
-              The working code is complete. The classroom-friendly starter,
-              license, example files, and contribution guide are the next
-              release step.
+              The source includes beginner setup instructions, an MIT license,
+              contribution and privacy guidance, and automated checks.
             </p>
             <p>
-              Until the public repository is connected, use the lessons and
-              prompt cards to explore how the finished project is organized.
+              Gallery photographs have separate rights and are not included in
+              the software license.
             </p>
           </aside>
         </div>
@@ -57,10 +70,10 @@ export default function CodePage() {
         <section className="next-step">
           <div>
             <span className="site-eyebrow">First prompt ready</span>
-            <h2>When the GitHub link is connected, Codex can handle the setup.</h2>
+            <h2>Codex can download and start the project for you.</h2>
             <p>
-              The first prompt explains how to download the project, open the
-              right folder, install it, and start the local website.
+              The repository link is already included. Copy the setup prompt,
+              paste it into Codex, and follow along.
             </p>
           </div>
           <Link href="/prompts">Copy the setup prompt</Link>

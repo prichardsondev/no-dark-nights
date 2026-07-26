@@ -40,7 +40,7 @@ export const REFERENCE_SETTINGS: LithophaneSettings = {
   resolution: 0.25,
   slotWidth: 16.5,
   slotDepth: 17,
-  adapterThickness: 3.24,
+  adapterThickness: 3.25,
   lightDistance: 30,
   contrast: 1,
   invert: false,

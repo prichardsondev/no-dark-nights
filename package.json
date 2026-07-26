@@ -1,7 +1,17 @@
 {
-  "name": "site-creator-vinext-starter",
-  "version": "0.1.0",
+  "name": "no-dark-nights",
+  "version": "1.0.0",
   "private": true,
+  "description": "A beginner-friendly Codex, web development, lithophane, and 3D-printing learning project.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prichardsondev/no-dark-nights.git"
+  },
+  "overrides": {
+    "postcss": "8.5.18",
+    "sharp": "0.35.0"
+  },
   "engines": {
     "node": ">=22.13.0"
   },
@@ -17,7 +27,7 @@
     "@types/three": "^0.185.1",
     "drizzle-orm": "0.45.2",
     "heic-to": "^1.4.2",
-    "next": "16.2.6",
+    "next": "16.2.12",
     "react": "19.2.6",
     "react-dom": "19.2.6",
     "three": "^0.185.1"

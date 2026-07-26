@@ -51,6 +51,7 @@ test("server-renders the No Dark Nights home and studio", async () => {
   );
   assert.match(homeHtml, /Build a night light from a photo/i);
   assert.match(homeHtml, /Build the whole project/i);
+  assert.match(homeHtml, /Make one\. Give one\. Teach one\./i);
   assert.match(homeHtml, /no-dark-nights-social-v2\.png/i);
 
   assert.match(studioHtml, /Turn a favorite photo into a little light/i);
@@ -59,6 +60,39 @@ test("server-renders the No Dark Nights home and studio", async () => {
   assert.doesNotMatch(
     `${homeHtml}${studioHtml}`,
     /codex-preview|react-loading-skeleton/i,
+  );
+});
+
+test("major pages have route-specific metadata and repository links", async () => {
+  const expected = [
+    ["/studio", "Night-light Studio"],
+    ["/learn", "Learn"],
+    ["/prompts", "Prompts"],
+    ["/gallery", "Gallery"],
+    ["/resources", "Printing Resources"],
+    ["/code", "Code"],
+    ["/about", "About"],
+  ];
+
+  for (const [pathname, title] of expected) {
+    const response = await render(pathname);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.match(html, new RegExp(`<title>${title} \\| No Dark Nights<\\/title>`, "i"));
+    assert.match(html, /<meta name="description" content="[^"]+"/i);
+  }
+
+  const [codeResponse, promptsResponse] = await Promise.all([
+    render("/code"),
+    render("/prompts"),
+  ]);
+  assert.match(
+    await codeResponse.text(),
+    /https:\/\/github\.com\/prichardsondev\/no-dark-nights/i,
+  );
+  assert.match(
+    await promptsResponse.text(),
+    /Project link: https:\/\/github\.com\/prichardsondev\/no-dark-nights/i,
   );
 });
 

@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { PageIntro, SiteShell } from "../SiteChrome";
+
+export const metadata: Metadata = {
+  title: "About | No Dark Nights",
+  description:
+    "Why No Dark Nights gives away the lithophane maker and teaches people to build with Codex and 3D printing.",
+};
 
 export default function AboutPage() {
   return (
@@ -37,7 +44,7 @@ export default function AboutPage() {
           </section>
         </div>
         <blockquote className="mission-quote">
-          <p>Learn with AI. Build something real. Share the light.</p>
+          <p>Make one. Give one. Teach one.</p>
         </blockquote>
         <section className="next-step">
           <div>

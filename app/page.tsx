@@ -37,7 +37,7 @@ export default function Home() {
         <section className="compact-story site-width">
           <div>
             <span className="site-eyebrow">The point</span>
-            <h2>Make one. Give one. Show someone else how.</h2>
+            <h2>Make one. Give one. Teach one.</h2>
           </div>
           <div>
             <p>

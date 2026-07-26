@@ -50,14 +50,24 @@ export function CopyPrompt({
           <h2>{title}</h2>
           <p>{purpose}</p>
         </div>
-        <button type="button" onClick={() => void copy()}>
+        <button
+          type="button"
+          aria-live="polite"
+          onClick={() => void copy()}
+        >
           {copyState === "copied"
-            ? "Copied"
+            ? "Copied!"
             : copyState === "failed"
               ? "Select prompt below"
               : "Copy prompt"}
         </button>
       </div>
+      {copyState === "failed" && (
+        <p className="copy-fallback" role="status">
+          Copying is blocked here. Select the prompt text below and copy it
+          manually.
+        </p>
+      )}
       <pre>{prompt}</pre>
     </article>
   );

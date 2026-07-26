@@ -50,6 +50,16 @@ test("reference image aspect ratio reproduces the website width", () => {
   assert.ok(Math.abs(width - 103.73) < 0.01);
 });
 
+test("adapter thickness matches its slider step and displayed precision", () => {
+  const minimum = 1.2;
+  const step = 0.05;
+  const stepsFromMinimum =
+    (REFERENCE_SETTINGS.adapterThickness - minimum) / step;
+
+  assert.ok(Math.abs(stepsFromMinimum - Math.round(stepsFromMinimum)) < 1e-9);
+  assert.equal(REFERENCE_SETTINGS.adapterThickness.toFixed(2), "3.25");
+});
+
 test("generated night light is build-plate oriented and manifold", () => {
   const source = {
     data: new Uint8ClampedArray([

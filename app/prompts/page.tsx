@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { CopyPrompt } from "../CopyPrompt";
 import { PageIntro, SiteShell } from "../SiteChrome";
 import { promptCards } from "../site-data";
@@ -26,3 +27,8 @@ export default function PromptsPage() {
     </SiteShell>
   );
 }
+export const metadata: Metadata = {
+  title: "Prompts | No Dark Nights",
+  description:
+    "Copy beginner-friendly Codex prompts for downloading, understanding, personalizing, testing, and publishing No Dark Nights.",
+};

@@ -1,6 +1,16 @@
 "use client";
 
-import { ChangeEvent, DragEvent, useEffect, useMemo, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  Component,
+  DragEvent,
+  ReactNode,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import Link from "next/link";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { STLExporter } from "three/examples/jsm/exporters/STLExporter.js";
@@ -15,6 +25,7 @@ import {
   createLithophaneGeometry,
   estimateTriangleCount,
 } from "./lithophane-geometry";
+import { detectWebGLSupport } from "./webgl-support";
 
 type UploadedImage = {
   name: string;
@@ -315,6 +326,47 @@ function createGlowTexture() {
   return texture;
 }
 
+function PreviewUnavailable({ imageUrl }: { imageUrl?: string }) {
+  return (
+    <div className="preview-unavailable" role="status">
+      {imageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={imageUrl} alt="Selected image preview" />
+      )}
+      <div>
+        <span className="eyebrow">Preview unavailable</span>
+        <h2>The interactive 3D preview cannot start in this browser.</h2>
+        <p>
+          Your photo controls still work, and you can still download the
+          printable STL. Open the STL in your slicer to inspect the model.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+class PreviewErrorBoundary extends Component<
+  { children: ReactNode; imageUrl?: string },
+  { failed: boolean }
+> {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch() {
+    // The fallback keeps the Studio usable without exposing browser internals.
+  }
+
+  render() {
+    if (this.state.failed) {
+      return <PreviewUnavailable imageUrl={this.props.imageUrl} />;
+    }
+    return this.props.children;
+  }
+}
+
 function ModelPreview({
   image,
   crop,
@@ -329,10 +381,23 @@ function ModelPreview({
   cameraView: "front" | "angle" | "side";
 }) {
   const mountRef = useRef<HTMLDivElement>(null);
+  const [previewUnavailable, setPreviewUnavailable] = useState(false);
 
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
+    let cancelled = false;
+    const showUnavailable = () => {
+      queueMicrotask(() => {
+        if (!cancelled) setPreviewUnavailable(true);
+      });
+    };
+    if (!detectWebGLSupport()) {
+      showUnavailable();
+      return () => {
+        cancelled = true;
+      };
+    }
     const width = mount.clientWidth;
     const height = mount.clientHeight;
     const scene = new THREE.Scene();
@@ -344,7 +409,15 @@ function ModelPreview({
       side: new THREE.Vector3(330, 12, 32),
     };
     camera.position.copy(cameraPositions[cameraView]);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    } catch {
+      showUnavailable();
+      return () => {
+        cancelled = true;
+      };
+    }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(width, height);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -504,9 +577,17 @@ function ModelPreview({
     controls.target.set(0, 0, 0);
 
     let frame = 0;
+    let renderingFailed = false;
     const render = () => {
+      if (renderingFailed) return;
       controls.update();
-      renderer.render(scene, camera);
+      try {
+        renderer.render(scene, camera);
+      } catch {
+        renderingFailed = true;
+        showUnavailable();
+        return;
+      }
       frame = window.requestAnimationFrame(render);
     };
     render();
@@ -521,6 +602,7 @@ function ModelPreview({
     resizeObserver.observe(mount);
 
     return () => {
+      cancelled = true;
       window.cancelAnimationFrame(frame);
       resizeObserver.disconnect();
       controls.dispose();
@@ -533,6 +615,10 @@ function ModelPreview({
       renderer.domElement.remove();
     };
   }, [cameraView, crop, image, lit, settings]);
+
+  if (previewUnavailable) {
+    return <PreviewUnavailable imageUrl={image.previewUrl} />;
+  }
 
   return (
     <div
@@ -745,7 +831,7 @@ export function LithophaneStudio() {
   return (
     <main className="studio-shell">
       <header className="topbar">
-        <a className="brand" href="/" aria-label="No Dark Nights home">
+        <Link className="brand" href="/" aria-label="No Dark Nights home">
           <span className="brand-mark" aria-hidden="true">
             <span className="brand-moon" />
             <span className="brand-lamp" />
@@ -754,7 +840,7 @@ export function LithophaneStudio() {
             <strong>No Dark Nights</strong>
             <small>Night-light studio</small>
           </span>
-        </a>
+        </Link>
         <div className="steps" aria-label="Workflow">
           <span className={image ? "complete" : "active"}>1&nbsp; Photo</span>
           <i />
@@ -1047,13 +1133,18 @@ export function LithophaneStudio() {
             <div className="stars" aria-hidden="true" />
             {image ? (
               <>
-                <ModelPreview
-                  image={image}
-                  crop={crop}
-                  settings={modelSettings}
-                  lit={view === "lit"}
-                  cameraView={cameraView}
-                />
+                <PreviewErrorBoundary
+                  key={image.previewUrl}
+                  imageUrl={image.previewUrl}
+                >
+                  <ModelPreview
+                    image={image}
+                    crop={crop}
+                    settings={modelSettings}
+                    lit={view === "lit"}
+                    cameraView={cameraView}
+                  />
+                </PreviewErrorBoundary>
                 <div
                   className="camera-toggle"
                   role="group"

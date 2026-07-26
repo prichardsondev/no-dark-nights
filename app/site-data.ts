@@ -1,3 +1,6 @@
+export const REPOSITORY_URL =
+  "https://github.com/prichardsondev/no-dark-nights";
+
 export const navigation = [
   { href: "/studio", label: "Make" },
   { href: "/learn", label: "Learn" },
@@ -109,7 +112,7 @@ export const promptCards = [
     purpose: "Gets the code onto your computer and starts the website.",
     prompt: `I want to build the No Dark Nights project.
 
-Project link: [PASTE THE GITHUB PROJECT LINK HERE]
+Project link: https://github.com/prichardsondev/no-dark-nights
 
 I am a beginner, so please explain each step in simple words.
 

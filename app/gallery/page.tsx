@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import { PageIntro, SiteShell } from "../SiteChrome";
 import { galleryItems } from "../site-data";
+
+export const metadata: Metadata = {
+  title: "Gallery | No Dark Nights",
+  description:
+    "See finished No Dark Nights lithophane night lights made from photographs and illustrations shared with permission.",
+};
 
 export default function GalleryPage() {
   return (
