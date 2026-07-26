@@ -8,8 +8,8 @@ export default function LearnPage() {
       <main className="content-page site-width">
         <PageIntro
           eyebrow="The learning path"
-          title="From your first prompt to a light you can hold."
-          description="Seven practical stages. Each one ends with something real to review, explain, or print."
+          title="Build the whole project, one step at a time."
+          description="Seven stages, in order. You do not need to know coding or 3D-printing words before you begin."
         />
         <div className="lesson-layout">
           <aside className="lesson-aside">
@@ -20,7 +20,13 @@ export default function LearnPage() {
               <li>Access to a 3D printer for the final stages</li>
               <li>A photo you have permission to use</li>
             </ul>
-            <Link href="/prompts">Open the prompt cards →</Link>
+            <dl className="tiny-glossary">
+              <div><dt>Repository</dt><dd>The project folder and its history.</dd></div>
+              <div><dt>Clone</dt><dd>Download your own working copy.</dd></div>
+              <div><dt>Local</dt><dd>Running only on your computer.</dd></div>
+              <div><dt>STL</dt><dd>A file that describes a printable 3D shape.</dd></div>
+            </dl>
+            <Link href="/prompts">Copy prompt number one →</Link>
           </aside>
           <ol className="lesson-list">
             {learningSteps.map((step) => (
@@ -52,4 +58,3 @@ export default function LearnPage() {
     </SiteShell>
   );
 }
-

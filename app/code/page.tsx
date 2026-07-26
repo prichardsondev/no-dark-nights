@@ -7,7 +7,7 @@ export default function CodePage() {
       <main className="content-page site-width">
         <PageIntro
           eyebrow="Open project"
-          title="The code is part of the lesson."
+          title="The complete project will live here."
           description="The website, lithophane engine, prompts, and tests are being prepared as one classroom-friendly repository."
         />
         <div className="code-layout">
@@ -56,13 +56,16 @@ export default function CodePage() {
         </section>
         <section className="next-step">
           <div>
-            <span className="site-eyebrow">Start learning now</span>
-            <h2>Practice the workflow before cloning the starter.</h2>
+            <span className="site-eyebrow">First prompt ready</span>
+            <h2>When the GitHub link is connected, Codex can handle the setup.</h2>
+            <p>
+              The first prompt explains how to download the project, open the
+              right folder, install it, and start the local website.
+            </p>
           </div>
-          <Link href="/prompts">Open prompt cards →</Link>
+          <Link href="/prompts">Copy the setup prompt</Link>
         </section>
       </main>
     </SiteShell>
   );
 }
-

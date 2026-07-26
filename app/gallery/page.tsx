@@ -7,15 +7,12 @@ export default function GalleryPage() {
       <main className="content-page site-width">
         <PageIntro
           eyebrow="Gallery"
-          title="Every light begins with someone or something worth remembering."
-          description="A few finished pieces from No Dark Nights. Personal photographs are shown only when sharing has been requested or approved."
+          title="Finished night lights."
+          description="Eight lights made from photographs and illustrations. Personal photographs appear here only when sharing has been requested or approved."
         />
         <div className="gallery-grid">
           {galleryItems.map((item, index) => (
-            <figure
-              key={item.src}
-              className={index === 0 || index === 5 ? "wide" : ""}
-            >
+            <figure key={item.src}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={item.src} alt={item.alt} />
               <figcaption>
@@ -29,4 +26,3 @@ export default function GalleryPage() {
     </SiteShell>
   );
 }
-

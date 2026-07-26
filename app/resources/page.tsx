@@ -30,7 +30,7 @@ export default function ResourcesPage() {
       <main className="content-page site-width">
         <PageIntro
           eyebrow="Tools and materials"
-          title="Start with what you have. Measure what matters."
+          title="Printer, plastic, light, slicer."
           description="The project is intentionally printer- and brand-agnostic. These are practical starting points, not purchasing requirements."
         />
         <div className="resource-grid">
@@ -70,4 +70,3 @@ export default function ResourcesPage() {
     </SiteShell>
   );
 }
-

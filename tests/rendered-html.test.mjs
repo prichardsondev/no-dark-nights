@@ -49,9 +49,9 @@ test("server-renders the No Dark Nights home and studio", async () => {
     homeHtml,
     /<title>No Dark Nights \| Make, learn, and share the light<\/title>/i,
   );
-  assert.match(homeHtml, /Make something that brings a little light/i);
-  assert.match(homeHtml, /Learn the project/i);
-  assert.match(homeHtml, /no-dark-nights-social\.png/i);
+  assert.match(homeHtml, /Build a night light from a photo/i);
+  assert.match(homeHtml, /Build the whole project/i);
+  assert.match(homeHtml, /no-dark-nights-social-v2\.png/i);
 
   assert.match(studioHtml, /Turn a favorite photo into a little light/i);
   assert.match(studioHtml, /Your photo stays on this device/i);
@@ -82,6 +82,8 @@ test("keeps STL generation local and removes starter UI", async () => {
   assert.match(packageJson, /"three"/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   assert.deepEqual(await readdir(previewRoot), []);
-  await access(new URL("../public/no-dark-nights-social.png", import.meta.url));
+  await access(
+    new URL("../public/no-dark-nights-social-v2.png", import.meta.url),
+  );
   await access(new URL(".openai/hosting.json", templateRoot));
 });

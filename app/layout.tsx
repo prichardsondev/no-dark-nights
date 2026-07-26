@@ -38,7 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       images: [
         {
-          url: `${origin}/no-dark-nights-social.png`,
+          url: `${origin}/no-dark-nights-social-v2.png`,
           width: 1200,
           height: 630,
           alt: "No Dark Nights: make a light, learn the project, and share it.",
@@ -49,7 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       title,
       description,
-      images: [`${origin}/no-dark-nights-social.png`],
+      images: [`${origin}/no-dark-nights-social-v2.png`],
     },
   };
 }

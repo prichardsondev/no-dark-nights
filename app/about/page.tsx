@@ -7,7 +7,7 @@ export default function AboutPage() {
       <main className="content-page site-width">
         <PageIntro
           eyebrow="Our story"
-          title="Made for smiles, then opened for everyone."
+          title="Why we give the project away."
           description="No Dark Nights makes custom lithophane night lights and gives many of them away. The next step is giving away the process too."
         />
         <div className="about-grid">
@@ -50,4 +50,3 @@ export default function AboutPage() {
     </SiteShell>
   );
 }
-

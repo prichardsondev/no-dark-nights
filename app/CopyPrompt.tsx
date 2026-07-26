@@ -5,18 +5,41 @@ import { useState } from "react";
 export function CopyPrompt({
   title,
   stage,
+  purpose,
   prompt,
 }: {
   title: string;
   stage: string;
+  purpose: string;
   prompt: string;
 }) {
-  const [copied, setCopied] = useState(false);
+  const [copyState, setCopyState] = useState<"ready" | "copied" | "failed">(
+    "ready",
+  );
 
   const copy = async () => {
-    await navigator.clipboard.writeText(prompt);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1800);
+    setCopyState("copied");
+
+    try {
+      await navigator.clipboard.writeText(prompt);
+    } catch {
+      const textArea = document.createElement("textarea");
+      textArea.value = prompt;
+      textArea.style.position = "fixed";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.select();
+      const copied = document.execCommand("copy");
+      textArea.remove();
+
+      if (!copied) {
+        setCopyState("failed");
+        window.setTimeout(() => setCopyState("ready"), 2400);
+        return;
+      }
+    }
+
+    window.setTimeout(() => setCopyState("ready"), 1800);
   };
 
   return (
@@ -25,13 +48,17 @@ export function CopyPrompt({
         <div>
           <span>{stage}</span>
           <h2>{title}</h2>
+          <p>{purpose}</p>
         </div>
         <button type="button" onClick={() => void copy()}>
-          {copied ? "Copied" : "Copy prompt"}
+          {copyState === "copied"
+            ? "Copied"
+            : copyState === "failed"
+              ? "Select prompt below"
+              : "Copy prompt"}
         </button>
       </div>
       <pre>{prompt}</pre>
     </article>
   );
 }
-

@@ -53,121 +53,155 @@ export const galleryItems = [
 export const learningSteps = [
   {
     number: "01",
-    title: "Meet your coding partner",
+    title: "Get the project",
     summary:
-      "Clone the project, open it in Codex, and ask the agent to explain how the website and lithophane engine fit together.",
-    deliverable: "A running local copy and your first project note.",
+      "Copy the first starter prompt into Codex. It will help you download the project, open the right folder, and start the website.",
+    deliverable: "The No Dark Nights website running on your computer.",
   },
   {
     number: "02",
-    title: "Make the site yours",
+    title: "Ask how it works",
     summary:
-      "Change the name, colors, words, navigation, and story while keeping the working geometry engine protected.",
-    deliverable: "A personalized homepage you can explain.",
+      "Use the project tour prompt. Codex will show you the important files and explain the unfamiliar words before you edit anything.",
+    deliverable: "A short project map you understand.",
   },
   {
     number: "03",
-    title: "Create the product",
+    title: "Make the site yours",
     summary:
-      "Choose an image, inspect the real 3D preview, tune the fit, and generate a print-ready STL on your own device.",
-    deliverable: "Your first custom lithophane STL.",
+      "Change the name, colors, words, and story. Keep the working lithophane math protected while you learn.",
+    deliverable: "A personalized homepage you can explain.",
   },
   {
     number: "04",
-    title: "Test like a developer",
+    title: "Make a lithophane",
     summary:
-      "Ask Codex to run the checks, inspect the changes, and test portrait, landscape, transparent, and unusual images.",
-    deliverable: "A passing build and a short test report.",
+      "Choose a photo, inspect the 3D preview, measure your light, and download an STL. Ask an adult before sharing a personal photo.",
+    deliverable: "Your first custom lithophane STL.",
   },
   {
     number: "05",
-    title: "Publish with Sites",
+    title: "Test your work",
     summary:
-      "Build a private version, review it in the browser, and publish only when the page and controls behave as expected.",
-    deliverable: "A private link you can share with an adult or teacher.",
+      "Ask Codex to run the project checks and open the pages in a browser. Fix one clear problem at a time.",
+    deliverable: "A passing test report and pages you have checked yourself.",
   },
   {
     number: "06",
-    title: "Print and troubleshoot",
+    title: "Share a private preview",
     summary:
-      "Slice the model upright, confirm the slot measurement, print a fit test, and improve one setting at a time.",
-    deliverable: "A working night light made from your image.",
+      "Use Sites to publish an owner-only version. Let an adult or teacher review it before connecting a public domain.",
+    deliverable: "A private review link.",
   },
   {
     number: "07",
-    title: "Share the light",
+    title: "Print and share the light",
     summary:
-      "Photograph the finished light, tell its story, and decide whether to keep it, gift it, or teach someone else.",
-    deliverable: "A finished gallery entry and project reflection.",
+      "Confirm the measurements in your slicer, print a small fit test, then make the full light with adult help.",
+    deliverable: "A working night light and a story you can share.",
   },
 ];
 
 export const promptCards = [
   {
+    title: "Download and open the project",
+    stage: "Step 1",
+    purpose: "Gets the code onto your computer and starts the website.",
+    prompt: `I want to build the No Dark Nights project.
+
+Project link: [PASTE THE GITHUB PROJECT LINK HERE]
+
+I am a beginner, so please explain each step in simple words.
+
+Please:
+1. Check that the project link works.
+2. Download or clone the project into a new folder.
+3. Open that folder as my Codex workspace.
+4. Read the README and AGENTS.md files.
+5. Install what the project needs.
+6. Start the website on my computer.
+7. Open the local website so I can see it.
+
+Do not change the project yet. If you need me to sign in, choose a folder, or approve something, stop and tell me exactly what to do.
+
+We are finished when I can see the No Dark Nights homepage and you tell me where the project folder is.`,
+  },
+  {
     title: "Understand the project",
-    stage: "Start here",
-    prompt: `Goal: Help me understand this No Dark Nights project before I change it.
+    stage: "Step 2",
+    purpose: "Takes you on a plain-language tour before you edit anything.",
+    prompt: `Help me understand this No Dark Nights project before I change it.
 
-Context: I am learning. Please inspect the repository, especially the website routes, the lithophane geometry engine, and the tests.
+I am a beginner. First inspect the project, including the website pages, the code that creates the 3D model, and the tests.
 
-Constraints: Do not edit files yet. Explain unfamiliar terms in plain language. Show me which files are safe to personalize and which geometry files need extra care.
+Do not edit files yet. Explain unfamiliar words in plain language. Show me:
+- which file controls each page;
+- which files are safe to personalize;
+- which 3D-model files need extra care;
+- how the tests protect the project.
 
-Done when: Give me a short project map, the commands to run it locally, and three small changes I could make first.`,
+Finish with a short project map and three safe changes I could make first. Ask me to explain one part back to you so we know I understood it.`,
   },
   {
     title: "Personalize the site",
-    stage: "Design",
-    prompt: `Goal: Personalize this website so it feels like my project.
+    stage: "Step 3",
+    purpose: "Changes the identity while protecting the working maker.",
+    prompt: `Help me personalize this website so it feels like my project.
 
-Context: Keep the lithophane maker working. I want to change the name, colors, homepage words, and gallery captions. Ask me a few useful questions first.
+Keep the lithophane maker working. I want to change the name, colors, homepage words, and gallery captions.
 
-Constraints: Keep the layout clean and compact. Do not create a giant hero or jumbotron. Preserve accessibility and mobile behavior.
+Ask me no more than five short questions first. Then make one focused version using my answers.
 
-Done when: The site reflects my answers, the build passes, and you show me the most important changes.`,
+Keep the layout simple and compact. Do not create a giant headline or marketing-style landing page. Keep it usable with a keyboard and on a phone.
+
+Finish when the build passes. Show me the page, list the files you changed, and explain one design choice in plain words.`,
   },
   {
     title: "Add a project story",
-    stage: "Content",
-    prompt: `Goal: Add a new gallery story for a night light I made.
+    stage: "Make it yours",
+    purpose: "Adds a finished light without exposing private information.",
+    prompt: `Add a new gallery story for a night light I made.
 
-Context: I will provide a photograph of the finished light and tell you who or what inspired it.
+I will provide a photograph of the finished light and tell you what inspired it.
 
-Constraints: Do not publish private information. Use the image only after I confirm I have permission to share it. Match the existing gallery style.
+Do not publish names, addresses, school details, or other private information. Use the image only after I confirm I have permission to share it. Match the existing gallery style and image size.
 
-Done when: The new entry has useful alt text, a short human caption, and looks good on mobile.`,
+Finish when the entry has useful image description text, a short natural caption, and looks good beside the other gallery images and on a phone.`,
   },
   {
     title: "Test an image",
-    stage: "Quality",
-    prompt: `Goal: Check whether this image will create a good lithophane.
+    stage: "Check the model",
+    purpose: "Asks Codex to inspect the hard 3D-printing details for you.",
+    prompt: `Check whether this image and STL will create a good lithophane.
 
-Context: I attached the source image and the STL generated by the studio.
+I attached the source image and the STL made by the studio.
 
-Constraints: Inspect orientation, dimensions, slot width, manifold edges, face winding, and relief fidelity. Do not change the engine unless you find a real problem.
+Please inspect the direction of the image, model dimensions, slot width, closed edges, triangle direction, and how well the thickness follows the picture. Explain each term when you use it. Do not change the model code unless you find a real problem.
 
-Done when: Give me a clear pass/fail result, evidence for each check, and any print setting I should verify.`,
+Finish with a clear pass or needs-work result, evidence for each check, and the print settings I should verify in my slicer.`,
   },
   {
     title: "Publish a private review",
-    stage: "Launch",
-    prompt: `Goal: Prepare and publish a private review version of my site with the Sites plugin.
+    stage: "Share safely",
+    purpose: "Creates a review link without changing a real domain.",
+    prompt: `Prepare and publish a private review version of my site with Sites.
 
-Context: I want an adult or teacher to review it before it becomes public.
+I want an adult or teacher to review it before it becomes public.
 
-Constraints: Run the build and tests first. Check navigation and the main mobile layout. Do not connect or change a real domain.
+Run the build and tests first. Check every navigation link and the main phone layout. Do not connect or change a real domain.
 
-Done when: The deployment succeeds and you give me the private review link plus a short checklist of what to inspect.`,
+Finish when the private deployment succeeds. Give me its link and a short checklist an adult can use to review it.`,
   },
   {
     title: "Improve one thing",
-    stage: "Iterate",
-    prompt: `Goal: Help me improve one part of my project without making it more complicated.
+    stage: "Try again",
+    purpose: "Keeps follow-up changes small enough to understand.",
+    prompt: `Help me improve one part of my project without making it more complicated.
 
-Context: First inspect the current page and ask what feels confusing, slow, or unfinished to me.
+First inspect the current page. Ask me what feels confusing, slow, or unfinished.
 
-Constraints: Choose the smallest useful change. Preserve the lithophane export behavior. Add or update a test when the change could break later.
+Choose the smallest useful change. Keep the lithophane download working. Add or update a test if this change could break later.
 
-Done when: The improvement works, the checks pass, and I can explain what changed in my own words.`,
+Finish when the improvement works, the checks pass, and I can explain what changed in my own words.`,
   },
 ];
-

@@ -7,10 +7,16 @@ export default function PromptsPage() {
     <SiteShell>
       <main className="content-page site-width">
         <PageIntro
-          eyebrow="Prompt cards"
-          title="Good instructions leave room to think."
-          description="Copy a card, replace the details with your own, and keep the parts that describe the goal, context, boundaries, and finish line."
+          eyebrow="Copy, paste, build"
+          title="Start with the first prompt. Codex will help with the rest."
+          description="These are written for a first-time builder. Copy one prompt into Codex, watch what it does, and ask whenever a word or step does not make sense."
         />
+        <ol className="prompt-howto" aria-label="How to use the prompts">
+          <li><span>1</span><p>Start with <strong>Download and open the project.</strong></p></li>
+          <li><span>2</span><p>Replace anything inside <strong>[square brackets]</strong>.</p></li>
+          <li><span>3</span><p>Paste the whole prompt into Codex and let it work.</p></li>
+          <li><span>4</span><p>If you get stuck, say: <strong>“Stop and explain that in simpler words.”</strong></p></li>
+        </ol>
         <div className="prompt-list">
           {promptCards.map((card) => (
             <CopyPrompt key={card.title} {...card} />
@@ -20,4 +26,3 @@ export default function PromptsPage() {
     </SiteShell>
   );
 }
-

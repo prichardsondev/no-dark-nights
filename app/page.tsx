@@ -8,48 +8,45 @@ export default function Home() {
       <main>
         <section className="home-opening site-width">
           <div className="opening-copy">
-            <span className="site-eyebrow">Prompt to product</span>
-            <h1>Make something that brings a little light.</h1>
+            <span className="site-eyebrow">Photo → code → print → light</span>
+            <h1>Build a night light from a photo.</h1>
             <p>
-              Turn a favorite image into a real night light, learn how the
-              website works, and build your own version with Codex.
+              Use the maker now, or follow the project from its first Codex
+              prompt to a light you can plug in.
             </p>
           </div>
           <div className="opening-actions" aria-label="Start here">
             <Link className="start-card primary" href="/studio">
-              <span>01</span>
               <strong>Make a light</strong>
               <p>Upload a photo, preview the real model, and download an STL.</p>
-              <i>Open the studio →</i>
+              <i>Open studio</i>
+            </Link>
+            <Link className="start-card" href="/prompts">
+              <strong>Build the whole project</strong>
+              <p>Start with the prompt that downloads and opens the code.</p>
+              <i>Copy prompt 1</i>
             </Link>
             <Link className="start-card" href="/learn">
-              <span>02</span>
-              <strong>Learn the project</strong>
-              <p>Follow the path from your first prompt to a finished print.</p>
-              <i>See the lessons →</i>
-            </Link>
-            <Link className="start-card" href="/code">
-              <span>03</span>
-              <strong>Build your own</strong>
-              <p>Explore the code, prompts, tests, and project structure.</p>
-              <i>Explore the code →</i>
+              <strong>See every step</strong>
+              <p>Learn the site, model, tests, publishing, and printing.</p>
+              <i>Open guide</i>
             </Link>
           </div>
         </section>
 
         <section className="compact-story site-width">
           <div>
-            <span className="site-eyebrow">Why it exists</span>
-            <h2>A small object can carry a big memory.</h2>
+            <span className="site-eyebrow">The point</span>
+            <h2>Make one. Give one. Show someone else how.</h2>
           </div>
           <div>
             <p>
-              No Dark Nights started with custom 3D-printed lights made for
-              smiles, not margins. Now the whole process is open: the maker,
-              the code, the prompts, and the lessons.
+              We make custom lights and give many of them away. This project
+              gives away the process too: the maker, code, prompts, tests, and
+              lessons.
             </p>
             <Link className="text-link" href="/about">
-              Read our story →
+              Why we built it
             </Link>
           </div>
         </section>
@@ -57,10 +54,10 @@ export default function Home() {
         <section className="gallery-preview">
           <div className="section-bar site-width">
             <div>
-              <span className="site-eyebrow">Made to be given</span>
-              <h2>Real lights, real stories.</h2>
+              <span className="site-eyebrow">Finished lights</span>
+              <h2>Made by people, for people.</h2>
             </div>
-            <Link href="/gallery">View the gallery →</Link>
+            <Link href="/gallery">See all eight</Link>
           </div>
           <div className="home-gallery site-width">
             {galleryItems.slice(0, 4).map((item) => (
@@ -76,28 +73,28 @@ export default function Home() {
         <section className="how-it-works site-width">
           <div className="section-bar">
             <div>
-              <span className="site-eyebrow">One complete project</span>
-              <h2>Idea → code → model → light</h2>
+              <span className="site-eyebrow">How the project moves</span>
+              <h2>Ask. Check. Print. Share.</h2>
             </div>
           </div>
           <ol className="process-grid">
             <li>
-              <span>01</span>
+              <span>ASK</span>
               <strong>Describe</strong>
               <p>Tell Codex what you want to make and what must stay true.</p>
             </li>
             <li>
-              <span>02</span>
+              <span>CHECK</span>
               <strong>Inspect</strong>
               <p>Review the page, the model, the changes, and the test results.</p>
             </li>
             <li>
-              <span>03</span>
+              <span>PRINT</span>
               <strong>Print</strong>
               <p>Measure the light, slice the STL, and start with a fit test.</p>
             </li>
             <li>
-              <span>04</span>
+              <span>SHARE</span>
               <strong>Share</strong>
               <p>Gift the light, tell its story, or help someone build another.</p>
             </li>
@@ -106,8 +103,8 @@ export default function Home() {
 
         <section className="home-invitation">
           <div className="site-width">
-            <p>Ready to make the first one?</p>
-            <Link href="/studio">Open the night-light studio →</Link>
+            <p>Have a photo ready?</p>
+            <Link href="/studio">Make the light</Link>
           </div>
         </section>
       </main>
