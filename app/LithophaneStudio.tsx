@@ -832,12 +832,10 @@ export function LithophaneStudio() {
     <main className="studio-shell">
       <header className="topbar">
         <Link className="brand" href="/" aria-label="No Dark Nights home">
-          <span className="brand-mark" aria-hidden="true">
-            <span className="brand-moon" />
-            <span className="brand-lamp" />
-          </span>
           <span>
-            <strong>No Dark Nights</strong>
+            <strong>
+              No Dark Nights<span className="brand-dot">.</span>
+            </strong>
             <small>Night-light studio</small>
           </span>
         </Link>

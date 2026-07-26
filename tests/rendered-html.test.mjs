@@ -121,3 +121,25 @@ test("keeps STL generation local and removes starter UI", async () => {
   );
   await access(new URL(".openai/hosting.json", templateRoot));
 });
+
+test("keeps every gallery image inside an equal frame", async () => {
+  const [homePage, galleryPage, siteChrome, studio, styles] =
+    await Promise.all([
+      readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+      readFile(new URL("../app/gallery/page.tsx", import.meta.url), "utf8"),
+      readFile(new URL("../app/SiteChrome.tsx", import.meta.url), "utf8"),
+      readFile(new URL("../app/LithophaneStudio.tsx", import.meta.url), "utf8"),
+      readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+    ]);
+
+  assert.match(homePage, /className="gallery-image-frame"/);
+  assert.match(galleryPage, /className="gallery-image-frame"/);
+  assert.match(styles, /\.gallery-image-frame\s*\{[^}]*aspect-ratio:\s*4\s*\/\s*5/s);
+  assert.match(
+    styles,
+    /\.gallery-image-frame img\s*\{[^}]*object-fit:\s*contain/s,
+  );
+  assert.doesNotMatch(`${siteChrome}${studio}`, /brand-mark|brand-moon|brand-lamp/);
+  assert.match(siteChrome, /className="brand-dot"/);
+  assert.match(studio, /className="brand-dot"/);
+});

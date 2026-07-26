@@ -62,8 +62,10 @@ export default function Home() {
           <div className="home-gallery site-width">
             {galleryItems.slice(0, 4).map((item) => (
               <figure key={item.src}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={item.src} alt={item.alt} />
+                <div className="gallery-image-frame">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={item.src} alt={item.alt} />
+                </div>
                 <figcaption>{item.title}</figcaption>
               </figure>
             ))}

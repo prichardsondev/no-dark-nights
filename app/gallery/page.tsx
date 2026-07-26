@@ -20,8 +20,10 @@ export default function GalleryPage() {
         <div className="gallery-grid">
           {galleryItems.map((item, index) => (
             <figure key={item.src}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={item.src} alt={item.alt} />
+              <div className="gallery-image-frame">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={item.src} alt={item.alt} />
+              </div>
               <figcaption>
                 <span>{String(index + 1).padStart(2, "0")}</span>
                 <strong>{item.title}</strong>

@@ -5,12 +5,10 @@ export function SiteHeader() {
   return (
     <header className="ndn-header">
       <Link className="ndn-brand" href="/" aria-label="No Dark Nights home">
-        <span className="brand-mark" aria-hidden="true">
-          <span className="brand-moon" />
-          <span className="brand-lamp" />
-        </span>
         <span>
-          <strong>No Dark Nights</strong>
+          <strong>
+            No Dark Nights<span className="brand-dot">.</span>
+          </strong>
           <small>Make · learn · share</small>
         </span>
       </Link>
