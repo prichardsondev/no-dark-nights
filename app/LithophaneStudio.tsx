@@ -745,7 +745,7 @@ export function LithophaneStudio() {
   return (
     <main className="studio-shell">
       <header className="topbar">
-        <a className="brand" href="https://nodarknights.com/" aria-label="No Dark Nights home">
+        <a className="brand" href="/" aria-label="No Dark Nights home">
           <span className="brand-mark" aria-hidden="true">
             <span className="brand-moon" />
             <span className="brand-lamp" />
@@ -762,8 +762,8 @@ export function LithophaneStudio() {
           <i />
           <span>3&nbsp; Print</span>
         </div>
-        <a className="shop-link" href="https://nodarknights.com/">
-          Visit No Dark Nights
+        <a className="shop-link" href="/learn">
+          Learn the project
         </a>
       </header>
 

@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const title = "Night-light Studio | No Dark Nights";
+const title = "No Dark Nights | Make, learn, and share the light";
 const description =
-  "Turn a favorite photo into a curved, 3D-printable night-light lithophane. Photos stay on your device.";
+  "Build with Codex, turn a favorite photo into a printable lithophane, and make a real night light.";
 
 export async function generateMetadata(): Promise<Metadata> {
   const incomingHeaders = await headers();
@@ -38,10 +38,10 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       images: [
         {
-          url: `${origin}/og.png`,
+          url: `${origin}/no-dark-nights-social.png`,
           width: 1200,
           height: 630,
-          alt: "A glowing No Dark Nights curved lithophane night light.",
+          alt: "No Dark Nights: make a light, learn the project, and share it.",
         },
       ],
     },
@@ -49,7 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       title,
       description,
-      images: [`${origin}/og.png`],
+      images: [`${origin}/no-dark-nights-social.png`],
     },
   };
 }
