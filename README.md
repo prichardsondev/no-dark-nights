@@ -5,15 +5,16 @@ by No Dark Nights.
 
 ## What it does
 
-- reads JPG, PNG, and WebP photos locally in the browser
+- reads JPG, PNG, WebP, AVIF, GIF, HEIC, and HEIF photos locally in the browser
 - provides crop, contrast, curve, thickness, frame, and adapter controls
 - previews the model in 3D and as a simulated backlit lithophane
 - generates a closed binary STL without uploading the customer photo
 - includes standard and compact No Dark Nights size presets
 
-The bottom adapter is modeled from a known-good Lithophane Maker reference STL:
-a 1.8 mm shield-shaped plate with tapered wings and a rounded, snug-fit slot.
-Confirm the fit in a slicer and with a small test print before production use.
+The bottom adapter uses a shield-shaped plate with tapered wings and a rounded,
+snug-fit slot. The default slot width is 16.5 mm and can be adjusted under the
+advanced adapter settings. Confirm the fit in a slicer and with a small test
+print before production use.
 
 ## Local development
 

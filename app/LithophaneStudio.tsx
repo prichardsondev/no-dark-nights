@@ -111,7 +111,7 @@ const settingFields: Array<{
     min: 10,
     max: 30,
     step: 0.1,
-    help: "Inside width of the clip that slides onto the light.",
+    help: "Match the measured thickness of the light housing. Our lights use 16.5 mm.",
   },
   {
     key: "slotDepth",
@@ -840,7 +840,7 @@ export function LithophaneStudio() {
                 <strong>Crop to a chosen width</strong>
                 <small>
                   Leave off to preserve the whole photo and calculate its width
-                  like the reference maker.
+                  automatically.
                 </small>
               </span>
               <input
@@ -950,7 +950,7 @@ export function LithophaneStudio() {
               <span>03</span>
               <div>
                 <h2>Fit the night light</h2>
-                <p>Reference-matched shield base for the lights used by No Dark Nights.</p>
+                <p>Start with our usual fit, or adjust it for another light housing.</p>
               </div>
             </div>
             <div className="preset-row">
@@ -963,8 +963,8 @@ export function LithophaneStudio() {
                   setPreset("reference");
                 }}
               >
-                Website match
-                <small>Auto width · 0.25 mm</small>
+                Default fit
+                <small>16.5 mm slot · auto width</small>
               </button>
               <button
                 type="button"
