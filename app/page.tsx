@@ -23,7 +23,7 @@ export default function Home() {
             </Link>
             <Link className="start-card" href="/learn#step-1">
               <strong>Build the whole project</strong>
-              <p>Follow each lesson yourself or open its optional Codex prompt.</p>
+              <p>Read each lesson, give its prompt to Codex, and check the result.</p>
               <i>Start step 1</i>
             </Link>
             <Link className="start-card" href="/gallery">

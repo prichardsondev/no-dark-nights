@@ -6,7 +6,7 @@ import { learningSteps, promptCards } from "../site-data";
 export const metadata: Metadata = {
   title: "Learn | No Dark Nights",
   description:
-    "Follow seven beginner-friendly lessons with simple instructions, optional Codex prompts, and clear completion checkpoints.",
+    "Follow seven beginner-friendly lessons by reading each step, giving its prompt to Codex, and checking the result.",
 };
 
 export default function LearnPage() {
@@ -16,28 +16,28 @@ export default function LearnPage() {
         <PageIntro
           eyebrow="The learning path"
           title="Build the whole project, one step at a time."
-          description="Follow the simple instructions yourself, ask Codex for help, or do a little of both. Each step tells you exactly when you are ready to continue."
+          description="Read what each step will do, copy its prompt into Codex, and check the result before moving on."
         />
         <ol className="learn-guide" aria-label="How each lesson works">
           <li>
             <span>1</span>
             <div>
-              <strong>Try it yourself</strong>
-              <p>Follow a few small, plain-language instructions.</p>
+              <strong>Read the step</strong>
+              <p>Know what you are making and why it matters.</p>
             </div>
           </li>
           <li>
             <span>2</span>
             <div>
-              <strong>Ask Codex</strong>
-              <p>Open the optional prompt whenever you want help.</p>
+              <strong>Copy the prompt</strong>
+              <p>Give Codex the complete prompt and let it work with you.</p>
             </div>
           </li>
           <li>
             <span>3</span>
             <div>
-              <strong>Check the finish line</strong>
-              <p>Do not rush ahead until you can see the result.</p>
+              <strong>Check the result</strong>
+              <p>Continue only when the finish line for that step is true.</p>
             </div>
           </li>
         </ol>
@@ -75,27 +75,14 @@ export default function LearnPage() {
                     <p>{step.summary}</p>
                   </div>
                 </header>
-                <div className="lesson-work">
-                  <section>
-                    <h3>Try it yourself</h3>
-                    <ol>
-                      {step.actions.map((action) => (
-                        <li key={action}>{action}</li>
-                      ))}
-                    </ol>
-                  </section>
-                  <aside className="lesson-finish">
-                    <span>You’re finished when</span>
-                    <strong>{step.deliverable}</strong>
-                  </aside>
-                </div>
-                <details className="lesson-codex">
-                  <summary>
-                    <span>Optional</span>
-                    Ask Codex to help with this step
-                  </summary>
+                <div className="lesson-prompt">
+                  <span>Give this prompt to Codex</span>
                   <CopyPrompt {...prompt} />
-                </details>
+                </div>
+                <aside className="lesson-finish">
+                  <span>You’re finished when</span>
+                  <strong>{step.deliverable}</strong>
+                </aside>
               </li>
             );
           })}

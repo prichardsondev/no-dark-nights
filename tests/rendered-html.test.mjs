@@ -91,9 +91,10 @@ test("major pages have route-specific metadata and repository links", async () =
     /https:\/\/github\.com\/prichardsondev\/no-dark-nights/i,
   );
   const learnHtml = await learnResponse.text();
-  assert.match(learnHtml, /Try it yourself/i);
-  assert.match(learnHtml, /Ask Codex to help with this step/i);
+  assert.match(learnHtml, /Read the step/i);
+  assert.match(learnHtml, /Give this prompt to Codex/i);
   assert.match(learnHtml, /You’re finished when/i);
+  assert.doesNotMatch(learnHtml, /\boptional\b|Try it yourself/i);
   assert.match(
     learnHtml,
     /Project link: https:\/\/github\.com\/prichardsondev\/no-dark-nights/i,
