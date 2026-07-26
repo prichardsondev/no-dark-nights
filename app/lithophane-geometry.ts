@@ -18,6 +18,7 @@ export type LithophaneSettings = {
 };
 
 export type CropSettings = {
+  enabled: boolean;
   zoom: number;
   positionX: number;
   positionY: number;
@@ -29,27 +30,44 @@ export type SourceImage = {
   height: number;
 };
 
-export const DEFAULT_SETTINGS: LithophaneSettings = {
-  width: 120,
+export const REFERENCE_SETTINGS: LithophaneSettings = {
+  width: 103.73,
   height: 105,
   radius: 80,
   minThickness: 0.6,
   maxThickness: 2.8,
   frameWidth: 7.5,
-  resolution: 0.5,
-  slotWidth: 17,
+  resolution: 0.25,
+  slotWidth: 16.5,
   slotDepth: 17,
-  adapterThickness: 1.8,
+  adapterThickness: 3.24,
   lightDistance: 30,
-  contrast: 1.08,
+  contrast: 1,
   invert: false,
 };
 
+export const DEFAULT_SETTINGS = REFERENCE_SETTINGS;
+
 export const DEFAULT_CROP: CropSettings = {
+  enabled: false,
   zoom: 1,
   positionX: 0.5,
   positionY: 0.5,
 };
+
+export function calculateUncroppedWidth(
+  sourceAspectRatio: number,
+  settings: Pick<
+    LithophaneSettings,
+    "height" | "frameWidth" | "radius"
+  >,
+) {
+  const imageHeight = Math.max(0.1, settings.height - settings.frameWidth * 2);
+  const imageArcLength = imageHeight * sourceAspectRatio;
+  const totalArcLength = imageArcLength + settings.frameWidth * 2;
+  const angle = Math.min(Math.PI * 1.98, totalArcLength / settings.radius);
+  return 2 * settings.radius * Math.sin(angle / 2);
+}
 
 function sampleSource(
   source: SourceImage,
@@ -58,6 +76,23 @@ function sampleSource(
   aspectRatio: number,
   crop: CropSettings,
 ) {
+  if (!crop.enabled) {
+    const x = Math.min(
+      source.width - 1,
+      Math.max(0, Math.round(u * (source.width - 1))),
+    );
+    const y = Math.min(
+      source.height - 1,
+      Math.max(0, Math.round(v * (source.height - 1))),
+    );
+    const index = (y * source.width + x) * 4;
+    return (
+      source.data[index] * 0.2126 +
+      source.data[index + 1] * 0.7152 +
+      source.data[index + 2] * 0.0722
+    ) / 255;
+  }
+
   const sourceAspect = source.width / source.height;
   let baseWidth: number;
   let baseHeight: number;
@@ -175,58 +210,73 @@ export function createLithophaneGeometry(
   const effectiveResolution = preview
     ? Math.max(2, settings.resolution)
     : settings.resolution;
+  const angle = 2 * Math.asin(
+    Math.min(0.999999, settings.width / (2 * settings.radius)),
+  );
+  const totalArcLength = angle * settings.radius;
   const columns = Math.max(
     24,
-    Math.min(preview ? 90 : 520, Math.round(settings.width / effectiveResolution)),
+    Math.min(
+      preview ? 90 : 640,
+      Math.round(totalArcLength / effectiveResolution),
+    ),
   );
   const panelHeight = settings.height - settings.adapterThickness;
   const rows = Math.max(
     24,
-    Math.min(preview ? 90 : 520, Math.round(panelHeight / effectiveResolution)),
+    Math.min(preview ? 90 : 640, Math.round(panelHeight / effectiveResolution)),
   );
-  const angle = 2 * Math.asin(Math.min(0.98, settings.width / (2 * settings.radius)));
   const positions: number[] = [];
   const indices: number[] = [];
   const stride = columns + 1;
-  const layerSize = stride * (rows + 1);
-  const aspectRatio = settings.width / settings.height;
+  const imageArcLength = Math.max(0.1, totalArcLength - settings.frameWidth * 2);
+  const imageHeight = Math.max(0.1, settings.height - settings.frameWidth * 2);
+  const aspectRatio = imageArcLength / imageHeight;
   const circleCenterY =
     settings.slotDepth + settings.lightDistance - settings.radius;
+  const innerRadius = settings.radius - settings.maxThickness;
 
-  for (let layer = 0; layer < 2; layer += 1) {
-    for (let row = 0; row <= rows; row += 1) {
-      const z =
-        settings.adapterThickness + (row / rows) * panelHeight;
-      const v = 1 - z / settings.height;
-      for (let column = 0; column <= columns; column += 1) {
-        const u = column / columns;
-        const theta = (u - 0.5) * angle;
-        const edgeDistance = Math.min(
-          u * settings.width,
-          (1 - u) * settings.width,
-          v * settings.height,
-          (1 - v) * settings.height,
-        );
-        const lightness = adjustedLuminance(
-          sampleSource(source, u, v, aspectRatio, crop),
-          settings.contrast,
-          settings.invert,
-        );
-        const relief =
-          edgeDistance <= settings.frameWidth
-            ? settings.maxThickness
-            : settings.minThickness +
-              (1 - lightness) *
-                (settings.maxThickness - settings.minThickness);
-        const radialDistance =
-          settings.radius - (layer === 1 ? relief : 0);
+  // Lithofun's proven topology uses a sampled relief surface, a smooth
+  // reference surface, and sealed perimeter walls. The smooth inner face can
+  // be represented as a curved strip, avoiding hundreds of thousands of
+  // redundant coplanar triangles in high-detail exports.
+  for (let row = 0; row <= rows; row += 1) {
+    const z = settings.adapterThickness + (row / rows) * panelHeight;
+    const imageV = 1 - (z - settings.frameWidth) / imageHeight;
+    for (let column = 0; column <= columns; column += 1) {
+      const u = column / columns;
+      const arcPosition = u * totalArcLength;
+      const imageU =
+        (arcPosition - settings.frameWidth) / imageArcLength;
+      const theta = (u - 0.5) * angle;
+      const inFrame =
+        arcPosition <= settings.frameWidth ||
+        arcPosition >= totalArcLength - settings.frameWidth ||
+        z <= settings.frameWidth ||
+        z >= settings.height - settings.frameWidth;
+      const lightness = adjustedLuminance(
+        sampleSource(
+          source,
+          Math.min(1, Math.max(0, imageU)),
+          Math.min(1, Math.max(0, imageV)),
+          aspectRatio,
+          crop,
+        ),
+        settings.contrast,
+        settings.invert,
+      );
+      const relief = inFrame
+        ? settings.maxThickness
+        : settings.minThickness +
+          (1 - lightness) *
+            (settings.maxThickness - settings.minThickness);
+      const radialDistance = innerRadius + relief;
 
-        positions.push(
-          Math.sin(theta) * radialDistance,
-          circleCenterY + Math.cos(theta) * radialDistance,
-          z,
-        );
-      }
+      positions.push(
+        Math.sin(theta) * radialDistance,
+        circleCenterY + Math.cos(theta) * radialDistance,
+        z,
+      );
     }
   }
 
@@ -237,46 +287,72 @@ export function createLithophaneGeometry(
       const c = a + stride;
       const d = c + 1;
       indices.push(a, b, d, a, d, c);
-
-      const backA = a + layerSize;
-      const backB = b + layerSize;
-      const backC = c + layerSize;
-      const backD = d + layerSize;
-      indices.push(backA, backD, backB, backA, backC, backD);
     }
   }
 
+  const smoothBottom: number[] = [];
+  const smoothTop: number[] = [];
+  for (let column = 0; column <= columns; column += 1) {
+    const theta = (column / columns - 0.5) * angle;
+    smoothBottom.push(positions.length / 3);
+    positions.push(
+      Math.sin(theta) * innerRadius,
+      circleCenterY + Math.cos(theta) * innerRadius,
+      settings.adapterThickness,
+    );
+    smoothTop.push(positions.length / 3);
+    positions.push(
+      Math.sin(theta) * innerRadius,
+      circleCenterY + Math.cos(theta) * innerRadius,
+      settings.height,
+    );
+  }
+
   for (let column = 0; column < columns; column += 1) {
-    const topA = rows * stride + column;
-    const topB = topA + 1;
-    const topBackA = topA + layerSize;
-    const topBackB = topB + layerSize;
-    indices.push(topA, topB, topBackB, topA, topBackB, topBackA);
+    const smoothA = smoothBottom[column];
+    const smoothB = smoothBottom[column + 1];
+    const smoothC = smoothTop[column];
+    const smoothD = smoothTop[column + 1];
+    indices.push(
+      smoothA,
+      smoothD,
+      smoothB,
+      smoothA,
+      smoothC,
+      smoothD,
+    );
+
+    const innerTopA = rows * stride + column;
+    const innerTopB = innerTopA + 1;
+    indices.push(
+      smoothC,
+      smoothD,
+      innerTopB,
+      smoothC,
+      innerTopB,
+      innerTopA,
+    );
   }
 
   for (let row = 0; row < rows; row += 1) {
     const leftA = row * stride;
     const leftB = leftA + stride;
-    const leftBackA = leftA + layerSize;
-    const leftBackB = leftB + layerSize;
-    indices.push(leftA, leftB, leftBackB, leftA, leftBackB, leftBackA);
+    indices.push(smoothBottom[0], leftA, leftB);
 
     const rightA = row * stride + columns;
     const rightB = rightA + stride;
-    const rightBackA = rightA + layerSize;
-    const rightBackB = rightB + layerSize;
-    indices.push(
-      rightA,
-      rightBackB,
-      rightB,
-      rightA,
-      rightBackA,
-      rightBackB,
-    );
+    indices.push(smoothBottom[columns], rightB, rightA);
   }
+  indices.push(
+    smoothBottom[0],
+    rows * stride,
+    smoothTop[0],
+    smoothBottom[columns],
+    smoothTop[columns],
+    rows * stride + columns,
+  );
 
-  const snugFitAllowance = 0.5;
-  const halfSlot = Math.max(2, (settings.slotWidth - snugFitAllowance) / 2);
+  const halfSlot = Math.max(2, settings.slotWidth / 2);
   const lipWidth = 5;
   const slotSegments = preview ? 14 : 30;
   const slotBoundary: Point2[] = [{ x: -halfSlot, y: 0 }];
@@ -299,7 +375,6 @@ export function createLithophaneGeometry(
   };
 
   const outerRight = arcPoint(columns, settings.radius);
-  const innerRadius = settings.radius - settings.maxThickness;
   const innerRight = arcPoint(columns, innerRadius);
   const innerLeft = arcPoint(0, innerRadius);
   const rightLip = { x: halfSlot + lipWidth, y: 0 };
@@ -348,23 +423,26 @@ export function createLithophaneGeometry(
   geometry.dispose();
   welded.computeVertexNormals();
   welded.computeBoundingBox();
-  welded.center();
   return welded;
 }
 
 export function estimateTriangleCount(settings: LithophaneSettings) {
+  const angle = 2 * Math.asin(
+    Math.min(0.999999, settings.width / (2 * settings.radius)),
+  );
+  const totalArcLength = angle * settings.radius;
   const columns = Math.max(
     24,
-    Math.min(520, Math.round(settings.width / settings.resolution)),
+    Math.min(640, Math.round(totalArcLength / settings.resolution)),
   );
   const rows = Math.max(
     24,
     Math.min(
-      520,
+      640,
       Math.round(
         (settings.height - settings.adapterThickness) / settings.resolution,
       ),
     ),
   );
-  return columns * rows * 4 + columns * 8 + rows * 4 + 220;
+  return columns * rows * 2 + columns * 6 + rows * 4 + 220;
 }

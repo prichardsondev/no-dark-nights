@@ -9,7 +9,9 @@ import {
   DEFAULT_CROP,
   DEFAULT_SETTINGS,
   LithophaneSettings,
+  REFERENCE_SETTINGS,
   SourceImage,
+  calculateUncroppedWidth,
   createLithophaneGeometry,
   estimateTriangleCount,
 } from "./lithophane-geometry";
@@ -19,6 +21,16 @@ type UploadedImage = {
   previewUrl: string;
   source: SourceImage;
 };
+
+const STANDARD_SETTINGS: LithophaneSettings = {
+  ...REFERENCE_SETTINGS,
+  width: 120,
+  resolution: 0.5,
+  slotWidth: 17,
+  adapterThickness: 1.8,
+};
+
+type PresetName = "reference" | "standard" | "compact" | "custom";
 
 const settingFields: Array<{
   key: keyof LithophaneSettings;
@@ -35,7 +47,7 @@ const settingFields: Array<{
     unit: "mm",
     min: 50,
     max: 150,
-    step: 1,
+    step: 0.1,
     help: "Tip-to-tip width of the curved picture.",
   },
   {
@@ -115,7 +127,7 @@ const settingFields: Array<{
     label: "Adapter thickness",
     unit: "mm",
     min: 1.2,
-    max: 3,
+    max: 5,
     step: 0.05,
     help: "Thickness of the shield-shaped bottom adapter plate.",
   },
@@ -150,18 +162,23 @@ function NumberSetting({
   field,
   settings,
   onChange,
+  disabled = false,
 }: {
   field: (typeof settingFields)[number];
   settings: LithophaneSettings;
   onChange: (key: keyof LithophaneSettings, value: number) => void;
+  disabled?: boolean;
 }) {
   const value = settings[field.key] as number;
+  const formattedValue = Number.isInteger(value)
+    ? value.toString()
+    : value.toFixed(field.step < 0.1 ? 2 : 1).replace(/\.0$/, "");
   return (
     <label className="setting-field">
       <span className="setting-label">
         <span>{field.label}</span>
         <span className="setting-value">
-          {value} {field.unit}
+          {formattedValue} {field.unit}
         </span>
       </span>
       <input
@@ -172,8 +189,11 @@ function NumberSetting({
         step={field.step}
         value={value}
         onChange={(event) => onChange(field.key, Number(event.target.value))}
+        disabled={disabled}
       />
-      <span className="setting-help">{field.help}</span>
+      <span className="setting-help">
+        {disabled ? "Calculated automatically from the uncropped photo." : field.help}
+      </span>
     </label>
   );
 }
@@ -214,21 +234,36 @@ function CropPreview({
       0,
     );
 
-    const targetAspect = settings.width / settings.height;
+    const angle = 2 * Math.asin(
+      Math.min(0.999999, settings.width / (2 * settings.radius)),
+    );
+    const imageArcLength = Math.max(
+      0.1,
+      angle * settings.radius - settings.frameWidth * 2,
+    );
+    const imageHeight = Math.max(0.1, settings.height - settings.frameWidth * 2);
+    const targetAspect = imageArcLength / imageHeight;
     const sourceAspect = image.source.width / image.source.height;
     let baseWidth: number;
     let baseHeight: number;
-    if (sourceAspect > targetAspect) {
+    if (!crop.enabled) {
+      baseWidth = image.source.width;
+      baseHeight = image.source.height;
+    } else if (sourceAspect > targetAspect) {
       baseHeight = image.source.height;
       baseWidth = baseHeight * targetAspect;
     } else {
       baseWidth = image.source.width;
       baseHeight = baseWidth / targetAspect;
     }
-    const cropWidth = baseWidth / crop.zoom;
-    const cropHeight = baseHeight / crop.zoom;
-    const sourceX = (image.source.width - cropWidth) * crop.positionX;
-    const sourceY = (image.source.height - cropHeight) * crop.positionY;
+    const cropWidth = crop.enabled ? baseWidth / crop.zoom : baseWidth;
+    const cropHeight = crop.enabled ? baseHeight / crop.zoom : baseHeight;
+    const sourceX = crop.enabled
+      ? (image.source.width - cropWidth) * crop.positionX
+      : 0;
+    const sourceY = crop.enabled
+      ? (image.source.height - cropHeight) * crop.positionY
+      : 0;
 
     context.fillStyle = "#080f19";
     context.fillRect(0, 0, width, height);
@@ -296,6 +331,7 @@ function ModelPreview({
     mount.appendChild(renderer.domElement);
 
     const geometry = createLithophaneGeometry(image.source, crop, settings, true);
+    geometry.center();
     const material = new THREE.MeshPhysicalMaterial({
       color: 0xffedc2,
       roughness: 0.56,
@@ -360,6 +396,7 @@ export function LithophaneStudio() {
   const [settings, setSettings] =
     useState<LithophaneSettings>(DEFAULT_SETTINGS);
   const [crop, setCrop] = useState<CropSettings>(DEFAULT_CROP);
+  const [preset, setPreset] = useState<PresetName>("reference");
   const [view, setView] = useState<"model" | "glow">("model");
   const [isDragging, setIsDragging] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -373,11 +410,26 @@ export function LithophaneStudio() {
     [image],
   );
 
-  const triangles = useMemo(() => estimateTriangleCount(settings), [settings]);
+  const modelSettings = useMemo(() => {
+    if (!image || crop.enabled) return settings;
+    return {
+      ...settings,
+      width: calculateUncroppedWidth(
+        image.source.width / image.source.height,
+        settings,
+      ),
+    };
+  }, [crop.enabled, image, settings]);
+
+  const triangles = useMemo(
+    () => estimateTriangleCount(modelSettings),
+    [modelSettings],
+  );
   const estimatedSize = (84 + triangles * 50) / 1024 / 1024;
 
   const updateSetting = (key: keyof LithophaneSettings, value: number) => {
     setSettings((current) => ({ ...current, [key]: value }));
+    setPreset("custom");
   };
 
   const loadFile = async (file?: File) => {
@@ -439,11 +491,11 @@ export function LithophaneStudio() {
       fileInputRef.current?.click();
       return;
     }
-    if (settings.maxThickness <= settings.minThickness) {
+    if (modelSettings.maxThickness <= modelSettings.minThickness) {
       setNotice("Maximum thickness needs to be greater than minimum thickness.");
       return;
     }
-    if (settings.width >= settings.radius * 1.96) {
+    if (modelSettings.width >= modelSettings.radius * 1.96) {
       setNotice("Increase the curve radius or reduce the night-light width.");
       return;
     }
@@ -452,7 +504,11 @@ export function LithophaneStudio() {
     setNotice("Building the printable model on this device…");
     await new Promise((resolve) => window.setTimeout(resolve, 40));
     try {
-      const geometry = createLithophaneGeometry(image.source, crop, settings);
+      const geometry = createLithophaneGeometry(
+        image.source,
+        crop,
+        modelSettings,
+      );
       const mesh = new THREE.Mesh(geometry);
       const exporter = new STLExporter();
       const result = exporter.parse(mesh, { binary: true });
@@ -476,6 +532,7 @@ export function LithophaneStudio() {
   const reset = () => {
     setSettings(DEFAULT_SETTINGS);
     setCrop(DEFAULT_CROP);
+    setPreset("reference");
     setNotice(null);
   };
 
@@ -572,6 +629,26 @@ export function LithophaneStudio() {
                 <p>Position the important part inside the light.</p>
               </div>
             </div>
+            <label className="toggle-row">
+              <span>
+                <strong>Crop to a chosen width</strong>
+                <small>
+                  Leave off to preserve the whole photo and calculate its width
+                  like the reference maker.
+                </small>
+              </span>
+              <input
+                type="checkbox"
+                checked={crop.enabled}
+                onChange={(event) => {
+                  setCrop((current) => ({
+                    ...current,
+                    enabled: event.target.checked,
+                  }));
+                  setPreset("custom");
+                }}
+              />
+            </label>
             <label className="setting-field">
               <span className="setting-label">
                 <span>Zoom</span>
@@ -586,7 +663,7 @@ export function LithophaneStudio() {
                 onChange={(event) =>
                   setCrop((current) => ({ ...current, zoom: Number(event.target.value) }))
                 }
-                disabled={!image}
+                disabled={!image || !crop.enabled}
               />
             </label>
             <div className="split-controls">
@@ -606,7 +683,7 @@ export function LithophaneStudio() {
                       positionX: Number(event.target.value),
                     }))
                   }
-                  disabled={!image}
+                  disabled={!image || !crop.enabled}
                 />
               </label>
               <label className="setting-field">
@@ -625,7 +702,7 @@ export function LithophaneStudio() {
                       positionY: Number(event.target.value),
                     }))
                   }
-                  disabled={!image}
+                  disabled={!image || !crop.enabled}
                 />
               </label>
             </div>
@@ -651,9 +728,13 @@ export function LithophaneStudio() {
               <input
                 type="checkbox"
                 checked={settings.invert}
-                onChange={(event) =>
-                  setSettings((current) => ({ ...current, invert: event.target.checked }))
-                }
+                onChange={(event) => {
+                  setSettings((current) => ({
+                    ...current,
+                    invert: event.target.checked,
+                  }));
+                  setPreset("custom");
+                }}
               />
             </label>
           </section>
@@ -669,23 +750,39 @@ export function LithophaneStudio() {
             <div className="preset-row">
               <button
                 type="button"
-                className="preset active"
-                onClick={() => setSettings(DEFAULT_SETTINGS)}
+                className={`preset ${preset === "reference" ? "active" : ""}`}
+                onClick={() => {
+                  setSettings(REFERENCE_SETTINGS);
+                  setCrop(DEFAULT_CROP);
+                  setPreset("reference");
+                }}
+              >
+                Website match
+                <small>Auto width · 0.25 mm</small>
+              </button>
+              <button
+                type="button"
+                className={`preset ${preset === "standard" ? "active" : ""}`}
+                onClick={() => {
+                  setSettings(STANDARD_SETTINGS);
+                  setCrop((current) => ({ ...current, enabled: true }));
+                  setPreset("standard");
+                }}
               >
                 Standard
                 <small>120 × 105 mm</small>
               </button>
               <button
                 type="button"
-                className="preset"
-                onClick={() =>
-                  setSettings((current) => ({
-                    ...current,
+                className={`preset ${preset === "compact" ? "active" : ""}`}
+                onClick={() => {
+                  setSettings({
+                    ...STANDARD_SETTINGS,
                     width: 80,
-                    height: 105,
-                    radius: 80,
-                  }))
-                }
+                  });
+                  setCrop((current) => ({ ...current, enabled: true }));
+                  setPreset("compact");
+                }}
               >
                 Compact
                 <small>80 × 105 mm</small>
@@ -695,8 +792,9 @@ export function LithophaneStudio() {
               <NumberSetting
                 key={field.key}
                 field={field}
-                settings={settings}
+                settings={modelSettings}
                 onChange={updateSetting}
+                disabled={field.key === "width" && !crop.enabled}
               />
             ))}
             <details className="advanced">
@@ -706,7 +804,7 @@ export function LithophaneStudio() {
                   <NumberSetting
                     key={field.key}
                     field={field}
-                    settings={settings}
+                    settings={modelSettings}
                     onChange={updateSetting}
                   />
                 ))}
@@ -743,10 +841,18 @@ export function LithophaneStudio() {
             <div className="stars" aria-hidden="true" />
             {image ? (
               view === "model" ? (
-                <ModelPreview image={image} crop={crop} settings={settings} />
+                <ModelPreview
+                  image={image}
+                  crop={crop}
+                  settings={modelSettings}
+                />
               ) : (
                 <div className="glow-wrap">
-                  <CropPreview image={image} crop={crop} settings={settings} />
+                  <CropPreview
+                    image={image}
+                    crop={crop}
+                    settings={modelSettings}
+                  />
                 </div>
               )
             ) : (
@@ -771,7 +877,7 @@ export function LithophaneStudio() {
               <div>
                 <span>Size</span>
                 <strong>
-                  {settings.width} × {settings.height} mm
+                  {modelSettings.width.toFixed(2)} × {modelSettings.height} mm
                 </strong>
               </div>
               <div>
