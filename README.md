@@ -92,8 +92,8 @@ npm test         # build and run all automated checks
 
 - `/` — project home
 - `/studio` — local image-to-STL studio
-- `/learn` — seven-stage learning path
-- `/prompts` — copyable Codex prompts
+- `/learn` — seven-stage learning path with optional Codex prompts
+- `/prompts` — redirects old links to the first Learn step
 - `/gallery` — finished lights
 - `/resources` — printer, material, light, and slicer guidance
 - `/code` — source-code map and repository link

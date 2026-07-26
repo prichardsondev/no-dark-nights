@@ -67,7 +67,6 @@ test("major pages have route-specific metadata and repository links", async () =
   const expected = [
     ["/studio", "Night-light Studio"],
     ["/learn", "Learn"],
-    ["/prompts", "Prompts"],
     ["/gallery", "Gallery"],
     ["/resources", "Printing Resources"],
     ["/code", "Code"],
@@ -82,18 +81,29 @@ test("major pages have route-specific metadata and repository links", async () =
     assert.match(html, /<meta name="description" content="[^"]+"/i);
   }
 
-  const [codeResponse, promptsResponse] = await Promise.all([
+  const [codeResponse, learnResponse, promptsResponse] = await Promise.all([
     render("/code"),
+    render("/learn"),
     render("/prompts"),
   ]);
   assert.match(
     await codeResponse.text(),
     /https:\/\/github\.com\/prichardsondev\/no-dark-nights/i,
   );
+  const learnHtml = await learnResponse.text();
+  assert.match(learnHtml, /Try it yourself/i);
+  assert.match(learnHtml, /Ask Codex to help with this step/i);
+  assert.match(learnHtml, /You’re finished when/i);
   assert.match(
-    await promptsResponse.text(),
+    learnHtml,
     /Project link: https:\/\/github\.com\/prichardsondev\/no-dark-nights/i,
   );
+  assert.ok([307, 308].includes(promptsResponse.status));
+  const redirectLocation = new URL(
+    promptsResponse.headers.get("location") ?? "",
+    "http://localhost",
+  );
+  assert.equal(`${redirectLocation.pathname}${redirectLocation.hash}`, "/learn#step-1");
 });
 
 test("keeps STL generation local and removes starter UI", async () => {

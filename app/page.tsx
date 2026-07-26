@@ -21,15 +21,15 @@ export default function Home() {
               <p>Upload a photo, preview the real model, and download an STL.</p>
               <i>Open studio</i>
             </Link>
-            <Link className="start-card" href="/prompts">
+            <Link className="start-card" href="/learn#step-1">
               <strong>Build the whole project</strong>
-              <p>Start with the prompt that downloads and opens the code.</p>
-              <i>Copy prompt 1</i>
+              <p>Follow each lesson yourself or open its optional Codex prompt.</p>
+              <i>Start step 1</i>
             </Link>
-            <Link className="start-card" href="/learn">
-              <strong>See every step</strong>
-              <p>Learn the site, model, tests, publishing, and printing.</p>
-              <i>Open guide</i>
+            <Link className="start-card" href="/gallery">
+              <strong>See finished lights</strong>
+              <p>Browse night lights made from photographs and illustrations.</p>
+              <i>Open gallery</i>
             </Link>
           </div>
         </section>

@@ -47,7 +47,7 @@ export function CopyPrompt({
       <div className="prompt-card-heading">
         <div>
           <span>{stage}</span>
-          <h2>{title}</h2>
+          <h3>{title}</h3>
           <p>{purpose}</p>
         </div>
         <button

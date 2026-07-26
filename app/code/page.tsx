@@ -76,7 +76,7 @@ export default function CodePage() {
               paste it into Codex, and follow along.
             </p>
           </div>
-          <Link href="/prompts">Copy the setup prompt</Link>
+          <Link href="/learn#step-1">Start the first lesson</Link>
         </section>
       </main>
     </SiteShell>

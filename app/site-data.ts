@@ -4,7 +4,6 @@ export const REPOSITORY_URL =
 export const navigation = [
   { href: "/studio", label: "Make" },
   { href: "/learn", label: "Learn" },
-  { href: "/prompts", label: "Prompts" },
   { href: "/gallery", label: "Gallery" },
   { href: "/resources", label: "Resources" },
   { href: "/code", label: "Code" },
@@ -59,6 +58,11 @@ export const learningSteps = [
     title: "Get the project",
     summary:
       "Copy the first starter prompt into Codex. It will help you download the project, open the right folder, and start the website.",
+    actions: [
+      "Open Codex and use the optional prompt below, or clone the repository yourself.",
+      "Choose a project folder you can find again.",
+      "Wait for the No Dark Nights homepage to open on your computer.",
+    ],
     deliverable: "The No Dark Nights website running on your computer.",
   },
   {
@@ -66,6 +70,11 @@ export const learningSteps = [
     title: "Ask how it works",
     summary:
       "Use the project tour prompt. Codex will show you the important files and explain the unfamiliar words before you edit anything.",
+    actions: [
+      "Read README.md and AGENTS.md before changing a file.",
+      "Find the files for the homepage, Learn page, Studio, and geometry tests.",
+      "Ask about every word you do not understand.",
+    ],
     deliverable: "A short project map you understand.",
   },
   {
@@ -73,6 +82,11 @@ export const learningSteps = [
     title: "Make the site yours",
     summary:
       "Change the name, colors, words, and story. Keep the working lithophane math protected while you learn.",
+    actions: [
+      "Choose one small change, such as the project name, colors, or homepage words.",
+      "Preview the page on a computer and phone-sized screen.",
+      "Explain what changed before moving to another part.",
+    ],
     deliverable: "A personalized homepage you can explain.",
   },
   {
@@ -80,6 +94,11 @@ export const learningSteps = [
     title: "Make a lithophane",
     summary:
       "Choose a photo, inspect the 3D preview, measure your light, and download an STL. Ask an adult before sharing a personal photo.",
+    actions: [
+      "Choose a photo you have permission to use.",
+      "Measure the slot on the night-light housing instead of guessing.",
+      "Open the Studio, frame the photo, preview the model, and download the STL.",
+    ],
     deliverable: "Your first custom lithophane STL.",
   },
   {
@@ -87,6 +106,11 @@ export const learningSteps = [
     title: "Test your work",
     summary:
       "Ask Codex to run the project checks and open the pages in a browser. Fix one clear problem at a time.",
+    actions: [
+      "Run the project build, lint check, and automated tests.",
+      "Open every main page and check the phone layout.",
+      "Inspect the STL in a slicer for orientation, dimensions, and unsupported areas.",
+    ],
     deliverable: "A passing test report and pages you have checked yourself.",
   },
   {
@@ -94,6 +118,11 @@ export const learningSteps = [
     title: "Share a private preview",
     summary:
       "Use Sites to publish an owner-only version. Let an adult or teacher review it before connecting a public domain.",
+    actions: [
+      "Ask an adult or teacher to review the words, links, and shared images.",
+      "Publish a review version without changing a real domain.",
+      "Open the published link and repeat the page checks.",
+    ],
     deliverable: "A private review link.",
   },
   {
@@ -101,6 +130,11 @@ export const learningSteps = [
     title: "Print and share the light",
     summary:
       "Confirm the measurements in your slicer, print a small fit test, then make the full light with adult help.",
+    actions: [
+      "Print a small adapter fit test before the full lithophane.",
+      "Record the printer, material, layer height, and settings that worked.",
+      "Make the full light with adult help, then give it or teach someone else.",
+    ],
     deliverable: "A working night light and a story you can share.",
   },
 ];
