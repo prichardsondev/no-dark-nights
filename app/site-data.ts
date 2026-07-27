@@ -159,20 +159,34 @@ Keep the layout simple and compact. Do not create a giant headline or marketing-
 Finish when the build passes. Show me the page, list the files you changed, and explain one design choice in plain words.`,
   },
   {
-    title: "Add a project story",
-    stage: "Make it yours",
-    purpose: "Adds a finished light without exposing private information.",
-    prompt: `Add a new gallery story for a night light I made.
+    title: "Create your lithophane STL",
+    stage: "Step 4",
+    purpose: "Turns a permitted photo into a measured, printable model.",
+    prompt: `Help me create my first custom lithophane STL with the local No Dark Nights website.
 
-I will provide a photograph of the finished light and tell you what inspired it.
+I am a beginner, so guide me one small step at a time and explain unfamiliar words.
 
-Do not publish names, addresses, school details, or other private information. Use the image only after I confirm I have permission to share it. Match the existing gallery style and image size.
+Before we begin:
+1. Ask me to confirm that I took the photograph or have permission to use it.
+2. Explain briefly that clear, well-lit images with good contrast and an obvious subject usually work best.
+3. Keep the photograph on my computer. Do not upload, publish, or add it to the repository.
 
-Finish when the entry has useful image description text, a short natural caption, and looks good beside the other gallery images and on a phone.`,
+Then help me:
+1. Start the local No Dark Nights website if it is not already running.
+2. Open the Studio page.
+3. Measure or verify the height, width, and slot width of my night-light housing. If I do not know a measurement, stop and help me find it instead of guessing.
+4. Choose the closest size preset, then adjust the measurements only if my housing requires it.
+5. Select the photograph and frame the important part. Help me check zoom, position, contrast, and invert only when useful.
+6. Inspect the interactive 3D preview. If WebGL is unavailable, use the photo framing view and continue because STL generation should still work.
+7. Ask whether I want optional text raised on the bottom adapter, such as a first name or short message. Do not add private information unless I choose it.
+8. Download the printable STL.
+9. Record the source image filename, model height, model width, slot width, curve radius, adapter thickness, chosen preset, photo adjustments, and optional adapter text in a short settings note. Do not copy the photograph itself into the project.
+
+We are finished when the STL is downloaded, the important measurements have been checked, and I have a settings note I can use again.`,
   },
   {
     title: "Test an image",
-    stage: "Check the model",
+    stage: "Step 5",
     purpose: "Asks Codex to inspect the hard 3D-printing details for you.",
     prompt: `Check whether this image and STL will create a good lithophane.
 
@@ -184,7 +198,7 @@ Finish with a clear pass or needs-work result, evidence for each check, and the 
   },
   {
     title: "Publish a private review",
-    stage: "Share safely",
+    stage: "Step 6",
     purpose: "Creates a review link without changing a real domain.",
     prompt: `Prepare and publish a private review version of my site with Sites.
 
@@ -195,8 +209,47 @@ Run the build and tests first. Check every navigation link and the main phone la
 Finish when the private deployment succeeds. Give me its link and a short checklist an adult can use to review it.`,
   },
   {
+    title: "Slice, fit-test, print, and share",
+    stage: "Step 7",
+    purpose: "Checks the fit and guides the model safely from slicer to light.",
+    prompt: `Help me turn my finished lithophane STL into a working night light.
+
+I am a beginner. Guide me carefully, explain slicer terms in plain language, and involve a trusted adult where appropriate. Do not assume one printer profile or one set of slicer settings works for every machine.
+
+Please help me:
+1. Open the STL in the slicer for my actual 3D printer.
+2. Verify the model height, width, slot width, and orientation against the settings note and my measured night-light housing.
+3. Confirm that the adapter base sits flat on the build plate and the lithophane stands in the intended upright printing orientation.
+4. Preview the first layers, the rounded slot, the adapter area, and the transition into the picture panel. Point out gaps, unsupported areas, or surprising toolpaths.
+5. Compare my choices with the No Dark Nights Resources page, while treating its values as starting guidance rather than universal settings.
+6. If this is a new housing, uncertain measurement, or changed adapter, help me create or slice a small adapter-only fit test before the full print.
+7. Check the cooled fit test on the unplugged light housing. If it is too tight or loose, return to the Studio measurements and make a corrected STL before continuing.
+8. Prepare and print the complete lithophane with adult guidance where appropriate, following the printer and material manufacturers’ instructions.
+9. Inspect the cooled finished print for cracks, sharp edges, poor layer bonding, blocked openings, or a bad fit before using it with the light.
+10. Follow the light manufacturer’s instructions and the project’s safety guidance. Keep the print away from excess heat and do not modify the electrical parts.
+11. Help me photograph or describe the finished result without showing names, addresses, school details, location clues, or other private information.
+12. Ask me to write two or three sentences about what worked, what I changed, and what I learned.
+
+We are finished when the fit has been verified, the complete print has been safely inspected, and I have a privacy-safe result and short learning note to share.`,
+  },
+];
+
+export const optionalPromptCards = [
+  {
+    title: "Add a project story",
+    stage: "Optional",
+    purpose: "Adds a finished light without exposing private information.",
+    prompt: `Add a new gallery story for a night light I made.
+
+I will provide a photograph of the finished light and tell you what inspired it.
+
+Do not publish names, addresses, school details, or other private information. Use the image only after I confirm I have permission to share it. Match the existing gallery style and image size.
+
+Finish when the entry has useful image description text, a short natural caption, and looks good beside the other gallery images and on a phone.`,
+  },
+  {
     title: "Improve one thing",
-    stage: "Try again",
+    stage: "Optional",
     purpose: "Keeps follow-up changes small enough to understand.",
     prompt: `Help me improve one part of my project without making it more complicated.
 

@@ -1734,6 +1734,43 @@ input[type="range"]:disabled {
   font-size: 12px;
 }
 
+.selectable-prompt {
+  user-select: text;
+}
+
+.selectable-prompt:focus {
+  outline: 3px solid rgba(196, 120, 34, 0.36);
+  outline-offset: -3px;
+}
+
+.optional-lessons {
+  margin-top: 72px;
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+}
+
+.optional-lessons-heading {
+  max-width: 700px;
+  margin-bottom: 24px;
+}
+
+.optional-lessons-heading h2 {
+  margin: 8px 0 10px;
+  font-size: 26px;
+}
+
+.optional-lessons-heading p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.optional-prompt-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -2116,6 +2153,10 @@ input[type="range"]:disabled {
   .prompt-card-heading {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .optional-prompt-grid {
+    grid-template-columns: 1fr;
   }
 
   .gallery-grid {

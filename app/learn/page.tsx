@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { CopyPrompt } from "../CopyPrompt";
 import { PageIntro, SiteShell } from "../SiteChrome";
-import { learningSteps, promptCards } from "../site-data";
+import {
+  learningSteps,
+  optionalPromptCards,
+  promptCards,
+} from "../site-data";
 
 export const metadata: Metadata = {
   title: "Learn | No Dark Nights",
@@ -87,6 +91,22 @@ export default function LearnPage() {
             );
           })}
         </ol>
+        <section className="optional-lessons" aria-labelledby="keep-improving">
+          <div className="optional-lessons-heading">
+            <span className="site-eyebrow">Optional — after step seven</span>
+            <h2 id="keep-improving">Keep improving</h2>
+            <p>
+              The numbered path is complete. Use these prompts only when you
+              want to share a privacy-safe project story or practice one small
+              improvement.
+            </p>
+          </div>
+          <div className="optional-prompt-grid">
+            {optionalPromptCards.map((prompt) => (
+              <CopyPrompt key={prompt.title} {...prompt} />
+            ))}
+          </div>
+        </section>
         <section className="next-step">
           <div>
             <span className="site-eyebrow">One step at a time</span>

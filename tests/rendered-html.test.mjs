@@ -96,10 +96,23 @@ test("major pages have route-specific metadata and repository links", async () =
   assert.match(learnHtml, /Read the step/i);
   assert.match(learnHtml, /Give this prompt to Codex/i);
   assert.match(learnHtml, /You’re finished when/i);
-  assert.doesNotMatch(learnHtml, /\boptional\b|Try it yourself/i);
+  assert.match(learnHtml, /Optional — after step seven/i);
+  assert.match(learnHtml, /Keep improving/i);
+  assert.match(learnHtml, /The numbered path is complete/i);
   assert.match(
     learnHtml,
     /Project link: https:\/\/github\.com\/prichardsondev\/no-dark-nights/i,
+  );
+  assert.match(learnHtml, /Create your lithophane STL/i);
+  assert.match(learnHtml, /Keep the photograph on my computer/i);
+  assert.match(learnHtml, /Download the printable STL/i);
+  assert.match(learnHtml, /Slice, fit-test, print, and share/i);
+  assert.match(learnHtml, /adapter-only fit test/i);
+  assert.match(learnHtml, /one set of slicer settings works for every machine/i);
+  assert.match(learnHtml, /Your first custom lithophane STL\./i);
+  assert.match(
+    learnHtml,
+    /A working night light and a story you can share\./i,
   );
   assert.ok([307, 308].includes(promptsResponse.status));
   const redirectLocation = new URL(
