@@ -22,6 +22,25 @@ classrooms, and curious adults. It includes:
 
 You do not need to understand the code before you begin.
 
+### Set up Codex
+
+For the agent-guided learning path, install the official
+[ChatGPT desktop app](https://chatgpt.com/download/) for macOS or Windows, sign
+in, and choose **Codex** from the top-left menu. Codex availability and usage
+can depend on the account, plan, workspace settings, and administrator; the
+project does not promise free access. The Codex CLI and IDE extension are
+optional advanced alternatives.
+
+ChatGPT is not intended for children under 13. Ages 13–17 require parent or
+guardian consent. In an educational activity for a child under 13, an adult
+must conduct the direct ChatGPT interaction. Follow family and school policies
+and read [OpenAI's current age guidance](https://help.openai.com/en/articles/8313401-is-chatgpt-safe-for-all-ages).
+
+Anyone can use the deployed Studio without Codex. Building a physical light
+also requires slicer software and access to a compatible 3D printer. See
+[Resources](https://no-dark-nights-studio.prichardsondev.chatgpt.site/resources)
+for the parts and tools used by this project.
+
 ### Option A: Ask Codex to set it up
 
 Open Codex and paste this:
@@ -97,7 +116,7 @@ npm test         # build and run all automated checks
 - `/` — project home
 - `/lights` — lights and adult-controlled contact for this site’s maker
 - `/studio` — local image-to-STL studio
-- `/learn` — seven-stage learning path with a Codex prompt for every step
+- `/learn` — setup guidance and an eight-stage learning path with a Codex prompt for every step
 - `/prompts` — redirects old links to the first Learn step
 - `/gallery` — finished lights
 - `/resources` — printer, material, light, and slicer guidance
@@ -119,6 +138,9 @@ Lights page is not a marketplace or maker directory.
 
 Never add a child’s personal email address, phone number, school, or home
 address. Use a contact page or account controlled by a trusted adult.
+
+Before publishing, replace or remove every sample listing and have a trusted
+adult review all maker information, contact links, photographs, and captions.
 
 ## Privacy and safety
 

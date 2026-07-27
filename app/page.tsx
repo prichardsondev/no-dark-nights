@@ -69,7 +69,7 @@ export default function Home() {
             <article>
               <span>For learners</span>
               <h3>Build your own</h3>
-              <p>Follow seven agent-guided steps from source code to print.</p>
+              <p>Follow eight agent-guided steps from source code to print.</p>
               <Link href="/learn">See the learning path →</Link>
             </article>
           </div>

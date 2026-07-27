@@ -13,8 +13,9 @@ printable STL, and finished lithophane night light.
 - Prefer a small change the student can inspect and explain.
 - When setup needs a sign-in, folder choice, permission, or adult decision,
   stop and ask instead of guessing.
-- Keep the path in order: get the project, understand it, personalize it, make
-  a model, test it, publish privately, then print.
+- Keep the path in order: set up the tools, get the project, understand it,
+  personalize it, save a reviewed Git/GitHub checkpoint, make a model, test the
+  site and STL, publish privately when available, then fit-test and print.
 
 ## Product rules
 

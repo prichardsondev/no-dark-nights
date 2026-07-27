@@ -25,6 +25,29 @@ const resources = [
   },
 ];
 
+const whatWeUse = [
+  {
+    title: "Warm-white C7 / E12 LED bulbs",
+    href: "https://www.amazon.com/dp/B06VTGDD33",
+    text: "Use LED bulbs only, follow the light manufacturer’s instructions, and never substitute a hot incandescent bulb.",
+  },
+  {
+    title: "Plug-in night-light modules",
+    href: "https://www.amazon.com/dp/B078YCCTTJ",
+    text: "These are the 16.5 mm style used for the default slot. Measure your actual housing before making the STL.",
+  },
+  {
+    title: "Bambu Lab A1 mini",
+    href: "https://us.store.bambulab.com/products/a1-mini",
+    text: "An optional beginner-friendly printer example. A compatible printer you already have can work just as well.",
+  },
+  {
+    title: "Bambu PLA Basic",
+    href: "https://us.store.bambulab.com/products/pla-basic-filament",
+    text: "White PLA on a spool is a practical starting material. Other white PLA can work; light transmission varies by brand.",
+  },
+];
+
 export default function ResourcesPage() {
   return (
     <SiteShell>
@@ -43,6 +66,38 @@ export default function ResourcesPage() {
             </article>
           ))}
         </div>
+        <section className="what-we-use" aria-labelledby="what-we-use-title">
+          <div className="what-we-use-heading">
+            <span className="site-eyebrow">What we use</span>
+            <h2 id="what-we-use-title">Real examples, not requirements.</h2>
+            <p>
+              These links show the parts used for our own lights and one printer
+              and material combination we know. Equivalent compatible products
+              can work.
+            </p>
+          </div>
+          <div className="what-we-use-grid">
+            {whatWeUse.map((item) => (
+              <article key={item.title}>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`View ${item.title} in a new tab`}
+                >
+                  View example ↗
+                </a>
+              </article>
+            ))}
+          </div>
+          <p className="disclosure-note">
+            No Dark Nights does not use affiliate links and receives no
+            commission. Prices and availability change. Measure for
+            compatibility and follow each manufacturer&apos;s instructions.
+          </p>
+        </section>
         <section className="checklist-section">
           <div>
             <span className="site-eyebrow">Before a full print</span>

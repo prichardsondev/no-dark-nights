@@ -890,6 +890,12 @@ export function LithophaneStudio() {
               Shape a curved, print-ready night-light lithophane. Your photo
               stays on this device.
             </p>
+            <p className="studio-requirements">
+              The Studio creates an STL file. You will still need slicer
+              software and access to a compatible 3D printer to make the
+              physical light.{" "}
+              <Link href="/resources">See the parts and tools we use →</Link>
+            </p>
           </div>
 
           <section className="control-section">

@@ -102,14 +102,25 @@ test("major pages have route-specific metadata and repository links", async () =
   assert.match(learnHtml, /Read the step/i);
   assert.match(learnHtml, /Give this prompt to Codex/i);
   assert.match(learnHtml, /You’re finished when/i);
-  assert.match(learnHtml, /Optional — after step seven/i);
+  assert.match(learnHtml, /Before Step 1/i);
+  assert.match(learnHtml, /Set Up Your Tools/i);
+  assert.match(learnHtml, /ChatGPT is not intended for children under 13/i);
+  assert.match(learnHtml, /ages 13–17 need permission from a parent or guardian/i);
+  assert.match(learnHtml, /adult must conduct the direct interaction/i);
+  assert.match(learnHtml, /Codex availability and usage can depend on your account/i);
+  assert.match(learnHtml, /Optional — after step eight/i);
   assert.match(learnHtml, /Keep improving/i);
-  assert.match(learnHtml, /The numbered path is complete/i);
+  assert.match(learnHtml, /The eight-step path is complete/i);
   assert.match(
     learnHtml,
     /Project link: https:\/\/github\.com\/prichardsondev\/no-dark-nights/i,
   );
   assert.match(learnHtml, /Create your lithophane STL/i);
+  assert.match(learnHtml, /Save your work with Git and GitHub/i);
+  assert.match(learnHtml, /Never force-push, delete history/i);
+  assert.match(learnHtml, /Test the website and STL/i);
+  assert.match(learnHtml, /complete automated suite passes/i);
+  assert.match(learnHtml, /If Sites is unavailable/i);
   assert.match(learnHtml, /Keep the photograph on my computer/i);
   assert.match(learnHtml, /Download the printable STL/i);
   assert.match(learnHtml, /Slice, fit-test, print, and share/i);
@@ -120,12 +131,53 @@ test("major pages have route-specific metadata and repository links", async () =
     learnHtml,
     /A working night light and a story you can share\./i,
   );
+  assert.match(learnHtml, /What this teaches/i);
+  assert.match(learnHtml, /What you need first/i);
+  assert.match(learnHtml, /Stop or ask permission when/i);
+  assert.match(learnHtml, /What you should inspect/i);
+  assert.match(learnHtml, /Reflect/i);
+  assert.match(learnHtml, /For educators/i);
+  assert.match(learnHtml, /Do not require a public website/i);
   assert.ok([307, 308].includes(promptsResponse.status));
   const redirectLocation = new URL(
     promptsResponse.headers.get("location") ?? "",
     "http://localhost",
   );
   assert.equal(`${redirectLocation.pathname}${redirectLocation.hash}`, "/learn#step-1");
+});
+
+test("Studio explains the physical tools and Resources lists safe examples", async () => {
+  const [studioResponse, resourcesResponse] = await Promise.all([
+    render("/studio"),
+    render("/resources"),
+  ]);
+  const [studioHtml, resourcesHtml] = await Promise.all([
+    studioResponse.text(),
+    resourcesResponse.text(),
+  ]);
+
+  assert.match(studioHtml, /The Studio creates an STL file/i);
+  assert.match(studioHtml, /slicer software/i);
+  assert.match(studioHtml, /compatible 3D printer/i);
+  assert.match(studioHtml, /href="\/resources"/i);
+
+  assert.match(resourcesHtml, /What we use/i);
+  assert.match(resourcesHtml, /amazon\.com\/dp\/B06VTGDD33/i);
+  assert.match(resourcesHtml, /amazon\.com\/dp\/B078YCCTTJ/i);
+  assert.match(resourcesHtml, /products\/a1-mini/i);
+  assert.match(resourcesHtml, /products\/pla-basic-filament/i);
+  assert.match(resourcesHtml, /LED bulbs only/i);
+  assert.match(resourcesHtml, /16\.5 mm style/i);
+  assert.match(resourcesHtml, /does not use affiliate links/i);
+  assert.match(resourcesHtml, /receives no commission/i);
+  assert.equal(
+    [
+      ...resourcesHtml.matchAll(
+        /href="https:\/\/(?:www\.amazon\.com|us\.store\.bambulab\.com)[^"]*" target="_blank" rel="noopener noreferrer"/gi,
+      ),
+    ].length,
+    4,
+  );
 });
 
 test("homepage presents three clear paths and Lights belongs to this maker", async () => {
