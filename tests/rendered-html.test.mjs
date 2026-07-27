@@ -57,6 +57,8 @@ test("server-renders the No Dark Nights home and studio", async () => {
   assert.match(studioHtml, /Turn a favorite photo into a little light/i);
   assert.match(studioHtml, /Your photo stays on this device/i);
   assert.match(studioHtml, /Choose a photo/i);
+  assert.match(studioHtml, /Add a name or message/i);
+  assert.match(studioHtml, /aria-label="Bottom text"/i);
   assert.doesNotMatch(
     `${homeHtml}${studioHtml}`,
     /codex-preview|react-loading-skeleton/i,

@@ -300,6 +300,25 @@ summary:focus-visible {
   margin-top: 22px;
 }
 
+.text-setting {
+  display: block;
+  margin-top: 22px;
+}
+
+.text-setting input {
+  width: 100%;
+  padding: 12px 13px;
+  border: 1px solid #cfc7b9;
+  border-radius: 0;
+  background: #fffdf8;
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.text-setting input::placeholder {
+  color: #9a958c;
+}
+
 .setting-label {
   display: flex;
   gap: 20px;

@@ -56,9 +56,10 @@ Open the local address printed in the terminal.
 1. Open `/studio`.
 2. Choose a JPG, PNG, WebP, AVIF, GIF, HEIC, or HEIF image.
 3. Frame the image and measure the slot on your night-light housing.
-4. Inspect the preview when WebGL is available.
-5. Download the STL and verify it in your slicer.
-6. Print a small adapter fit test before a full print.
+4. Optionally add a name, date, or website to the bottom adapter.
+5. Inspect the preview when WebGL is available.
+6. Download the STL and verify it in your slicer.
+7. Print a small adapter fit test before a full print.
 
 Source photos stay on the device. The STL generator does not require WebGL, so
 STL creation remains available when the interactive preview cannot run.
@@ -113,6 +114,8 @@ See [SECURITY.md](SECURITY.md) for reporting and privacy details.
 ## License and gallery rights
 
 The software and documentation are available under the [MIT License](LICENSE).
+Bundled font notices are listed in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 Personal and gallery photographs are **not** covered by the MIT License. They
 remain copyrighted by their respective owners and are displayed only with

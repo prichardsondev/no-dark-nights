@@ -25,6 +25,11 @@ import {
   createLithophaneGeometry,
   estimateTriangleCount,
 } from "./lithophane-geometry";
+import {
+  MAX_LABEL_LENGTH,
+  createLabelGeometry,
+  normalizeLabelText,
+} from "./lithophane-label";
 import { detectWebGLSupport } from "./webgl-support";
 
 type UploadedImage = {
@@ -371,12 +376,14 @@ function ModelPreview({
   image,
   crop,
   settings,
+  labelText,
   lit,
   cameraView,
 }: {
   image: UploadedImage;
   crop: CropSettings;
   settings: LithophaneSettings;
+  labelText: string;
   lit: boolean;
   cameraView: "front" | "angle" | "side";
 }) {
@@ -531,6 +538,18 @@ function ModelPreview({
     const modelGroup = new THREE.Group();
     modelGroup.position.copy(center).multiplyScalar(-1);
     modelGroup.add(mesh);
+    const labelGeometry = createLabelGeometry(labelText, settings);
+    const labelMaterial = labelGeometry
+      ? new THREE.MeshPhysicalMaterial({
+          color: lit ? 0x3a1607 : 0xf4e2b9,
+          roughness: 0.72,
+          metalness: 0,
+          side: THREE.DoubleSide,
+        })
+      : null;
+    if (labelGeometry && labelMaterial) {
+      modelGroup.add(new THREE.Mesh(labelGeometry, labelMaterial));
+    }
     scene.add(modelGroup);
 
     const glowTexture = lit ? createGlowTexture() : null;
@@ -607,6 +626,8 @@ function ModelPreview({
       resizeObserver.disconnect();
       controls.dispose();
       geometry.dispose();
+      labelGeometry?.dispose();
+      labelMaterial?.dispose();
       material.dispose();
       photoTexture?.dispose();
       glowMaterial?.dispose();
@@ -614,7 +635,7 @@ function ModelPreview({
       renderer.dispose();
       renderer.domElement.remove();
     };
-  }, [cameraView, crop, image, lit, settings]);
+  }, [cameraView, crop, image, labelText, lit, settings]);
 
   if (previewUnavailable) {
     return <PreviewUnavailable imageUrl={image.previewUrl} />;
@@ -638,6 +659,7 @@ export function LithophaneStudio() {
   const [view, setView] = useState<"model" | "lit">("lit");
   const [cameraView, setCameraView] =
     useState<"front" | "angle" | "side">("angle");
+  const [labelText, setLabelText] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
@@ -802,8 +824,14 @@ export function LithophaneStudio() {
         modelSettings,
       );
       const mesh = new THREE.Mesh(geometry);
+      const labelGeometry = createLabelGeometry(labelText, modelSettings);
+      const exportGroup = new THREE.Group();
+      exportGroup.add(mesh);
+      if (labelGeometry) {
+        exportGroup.add(new THREE.Mesh(labelGeometry));
+      }
       const exporter = new STLExporter();
-      const result = exporter.parse(mesh, { binary: true });
+      const result = exporter.parse(exportGroup, { binary: true });
       const bytes =
         result instanceof DataView
           ? new Uint8Array(result.buffer, result.byteOffset, result.byteLength)
@@ -813,6 +841,7 @@ export function LithophaneStudio() {
         safeFilename(image.name),
       );
       geometry.dispose();
+      labelGeometry?.dispose();
       setNotice("Your STL is ready. Check it in your slicer before printing.");
     } catch {
       setNotice("The model could not be generated. Try a larger detail value.");
@@ -825,6 +854,7 @@ export function LithophaneStudio() {
     setSettings(DEFAULT_SETTINGS);
     setCrop(DEFAULT_CROP);
     setPreset("reference");
+    setLabelText("");
     setNotice(null);
   };
 
@@ -1101,6 +1131,36 @@ export function LithophaneStudio() {
               </div>
             </details>
           </section>
+
+          <section className="control-section">
+            <div className="section-heading">
+              <span>04</span>
+              <div>
+                <h2>Add a name or message</h2>
+                <p>Raise custom text on the printable bottom adapter.</p>
+              </div>
+            </div>
+            <label className="text-setting">
+              <span className="setting-label">
+                <span>Bottom text</span>
+                <span className="setting-value">
+                  {normalizeLabelText(labelText).length}/{MAX_LABEL_LENGTH}
+                </span>
+              </span>
+              <input
+                aria-label="Bottom text"
+                type="text"
+                maxLength={MAX_LABEL_LENGTH}
+                value={labelText}
+                placeholder="A name or website"
+                onChange={(event) => setLabelText(event.target.value)}
+              />
+              <span className="setting-help">
+                The text follows the adapter curve and automatically fits the
+                available width. Leave blank for no text.
+              </span>
+            </label>
+          </section>
         </aside>
 
         <section className="preview-panel">
@@ -1139,6 +1199,7 @@ export function LithophaneStudio() {
                     image={image}
                     crop={crop}
                     settings={modelSettings}
+                    labelText={labelText}
                     lit={view === "lit"}
                     cameraView={cameraView}
                   />

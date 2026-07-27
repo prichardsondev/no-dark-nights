@@ -8,6 +8,7 @@ import {
   DEFAULT_CROP,
   DEFAULT_SETTINGS,
 } from "../app/lithophane-geometry.ts";
+import { createLabelGeometry } from "../app/lithophane-label.ts";
 import { detectWebGLSupport } from "../app/webgl-support.ts";
 
 test("detects unavailable and failed WebGL initialization", () => {
@@ -43,6 +44,7 @@ test("Studio keeps controls and STL generation available without WebGL", async (
   assert.match(studio, /you can still download the\s+printable STL/i);
   assert.match(studio, /const generateStl = async/);
   assert.match(studio, /createLithophaneGeometry/);
+  assert.match(studio, /createLabelGeometry/);
   assert.match(studio, /new STLExporter/);
 });
 
@@ -66,7 +68,18 @@ test("exports a neutral image to binary STL without a WebGL renderer", () => {
       resolution: 2,
     },
   );
-  const result = new STLExporter().parse(new THREE.Mesh(geometry), {
+  const labelGeometry = createLabelGeometry("Avery", {
+    ...DEFAULT_SETTINGS,
+    width: 40,
+    height: 45,
+    radius: 50,
+    resolution: 2,
+  });
+  assert.ok(labelGeometry);
+  const group = new THREE.Group();
+  group.add(new THREE.Mesh(geometry));
+  group.add(new THREE.Mesh(labelGeometry));
+  const result = new STLExporter().parse(group, {
     binary: true,
   });
 
@@ -74,4 +87,5 @@ test("exports a neutral image to binary STL without a WebGL renderer", () => {
   assert.ok(result.byteLength > 84);
   assert.equal(result.getUint32(80, true) * 50 + 84, result.byteLength);
   geometry.dispose();
+  labelGeometry.dispose();
 });

@@ -6,6 +6,12 @@ import {
   calculateUncroppedWidth,
   createLithophaneGeometry,
 } from "../app/lithophane-geometry.ts";
+import {
+  LABEL_RAISE,
+  MAX_LABEL_LENGTH,
+  createLabelGeometry,
+  normalizeLabelText,
+} from "../app/lithophane-label.ts";
 
 function solidSource(width, height, value = 128) {
   const data = new Uint8ClampedArray(width * height * 4);
@@ -58,6 +64,30 @@ test("adapter thickness matches its slider step and displayed precision", () => 
 
   assert.ok(Math.abs(stepsFromMinimum - Math.round(stepsFromMinimum)) < 1e-9);
   assert.equal(REFERENCE_SETTINGS.adapterThickness.toFixed(2), "3.25");
+});
+
+test("custom text is fitted and raised on the bottom adapter", () => {
+  const settings = { ...REFERENCE_SETTINGS, width: 80 };
+  const text = normalizeLabelText(
+    `  NoDarkNights.com ${"x".repeat(MAX_LABEL_LENGTH)}  `,
+  );
+  assert.equal(Array.from(text).length, MAX_LABEL_LENGTH);
+
+  const geometry = createLabelGeometry("NoDarkNights.com", settings);
+  assert.ok(geometry);
+  geometry.computeBoundingBox();
+  const bounds = geometry.boundingBox;
+  assert.ok(bounds);
+  assert.ok(bounds.min.x >= -settings.width / 2);
+  assert.ok(bounds.max.x <= settings.width / 2);
+  assert.ok(bounds.min.y > settings.slotDepth + settings.slotWidth / 2);
+  assert.equal(bounds.min.z, 0);
+  assert.ok(
+    Math.abs(
+      bounds.max.z - (settings.adapterThickness + LABEL_RAISE),
+    ) < 1e-5,
+  );
+  geometry.dispose();
 });
 
 test("generated night light is build-plate oriented and manifold", () => {
