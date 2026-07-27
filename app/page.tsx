@@ -8,30 +8,81 @@ export default function Home() {
       <main>
         <section className="home-opening site-width">
           <div className="opening-copy">
-            <span className="site-eyebrow">Photo → code → print → light</span>
-            <h1>Build a night light from a photo.</h1>
+            <span className="site-eyebrow">
+              A night-light studio and hands-on learning project
+            </span>
+            <h1>Make a light. Learn how the whole thing works.</h1>
             <p>
-              Use the maker now, or follow the project from its first Codex
-              prompt to a light you can plug in.
+              No Dark Nights turns a photo into a printable lithophane. Use the
+              Studio immediately, see lights from this maker, or build your own
+              version of the entire site.
             </p>
           </div>
           <div className="opening-actions" aria-label="Start here">
+            <Link className="start-card" href="/lights">
+              <span>01</span>
+              <strong>Buy a Light</strong>
+              <p>
+                See lights created by this maker. Purchase one or ask about
+                receiving one as a gift.
+              </p>
+              <i>View Lights</i>
+            </Link>
             <Link className="start-card primary" href="/studio">
-              <strong>Make a light</strong>
-              <p>Upload a photo, preview the real model, and download an STL.</p>
-              <i>Open studio</i>
+              <span>02</span>
+              <strong>Make an STL</strong>
+              <p>
+                Turn a photo into a downloadable lithophane STL using the
+                Studio. No coding or AI agent required.
+              </p>
+              <i>Open the Studio</i>
             </Link>
             <Link className="start-card" href="/learn#step-1">
-              <strong>Build the whole project</strong>
-              <p>Read each lesson, give its prompt to Codex, and check the result.</p>
-              <i>Start step 1</i>
-            </Link>
-            <Link className="start-card" href="/gallery">
-              <strong>See finished lights</strong>
-              <p>Browse night lights made from photographs and illustrations.</p>
-              <i>Open gallery</i>
+              <span>03</span>
+              <strong>Build Your Own Site</strong>
+              <p>
+                Learn AI agents, web development, Git, GitHub, Sites, and 3D
+                printing by creating your own version.
+              </p>
+              <i>Start Learning</i>
             </Link>
           </div>
+        </section>
+
+        <section className="education-brief site-width">
+          <div className="education-intro">
+            <span className="site-eyebrow">Use it or build it</span>
+            <h2>A real project with two ways in.</h2>
+            <p>
+              Anyone can make an STL in the Studio. Learners can go further and
+              build, personalize, test, and publish their own copy with an AI
+              agent guiding each step.
+            </p>
+          </div>
+          <div className="participation-levels">
+            <article>
+              <span>For everyone</span>
+              <h3>Use the Studio</h3>
+              <p>No coding, agent, account, or programming experience needed.</p>
+              <Link href="/studio">Make an STL →</Link>
+            </article>
+            <article>
+              <span>For learners</span>
+              <h3>Build your own</h3>
+              <p>Follow seven agent-guided steps from source code to print.</p>
+              <Link href="/learn">See the learning path →</Link>
+            </article>
+          </div>
+          <ul className="learning-topics" aria-label="What the project teaches">
+            <li>AI agent literacy</li>
+            <li>Web development</li>
+            <li>Git and GitHub</li>
+            <li>Image and 3D-model processing</li>
+            <li>3D printing</li>
+            <li>Design and iteration</li>
+            <li>Entrepreneurship and community giving</li>
+            <li>Privacy, consent, and responsible publishing</li>
+          </ul>
         </section>
 
         <section className="compact-story site-width">
@@ -41,9 +92,9 @@ export default function Home() {
           </div>
           <div>
             <p>
-              We make custom lights and give many of them away. This project
-              gives away the process too: the maker, code, prompts, tests, and
-              lessons.
+              Each deployed copy belongs to its maker. The owner can offer
+              lights directly, give them away, and share the complete process:
+              the Studio, code, prompts, tests, and lessons.
             </p>
             <Link className="text-link" href="/about">
               Why we built it
@@ -70,37 +121,6 @@ export default function Home() {
               </figure>
             ))}
           </div>
-        </section>
-
-        <section className="how-it-works site-width">
-          <div className="section-bar">
-            <div>
-              <span className="site-eyebrow">How the project moves</span>
-              <h2>Ask. Check. Print. Share.</h2>
-            </div>
-          </div>
-          <ol className="process-grid">
-            <li>
-              <span>ASK</span>
-              <strong>Describe</strong>
-              <p>Tell Codex what you want to make and what must stay true.</p>
-            </li>
-            <li>
-              <span>CHECK</span>
-              <strong>Inspect</strong>
-              <p>Review the page, the model, the changes, and the test results.</p>
-            </li>
-            <li>
-              <span>PRINT</span>
-              <strong>Print</strong>
-              <p>Measure the light, slice the STL, and start with a fit test.</p>
-            </li>
-            <li>
-              <span>SHARE</span>
-              <strong>Share</strong>
-              <p>Gift the light, tell its story, or help someone build another.</p>
-            </li>
-          </ol>
         </section>
 
         <section className="home-invitation">

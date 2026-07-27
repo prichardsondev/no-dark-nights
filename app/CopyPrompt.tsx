@@ -20,7 +20,7 @@ export function CopyPrompt({
   prompt: string;
 }) {
   const [copyState, dispatch] = useReducer(copyStateReducer, "ready");
-  const resetTimer = useRef<ReturnType<typeof window.setTimeout> | null>(null);
+  const resetTimer = useRef<number | null>(null);
   const feedback = copyFeedback(copyState);
 
   useEffect(

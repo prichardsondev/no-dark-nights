@@ -14,13 +14,17 @@ export function SiteHeader() {
       </Link>
       <nav className="ndn-nav" aria-label="Main navigation">
         {navigation.map((item) => (
-          <Link key={item.href} href={item.href}>
+          <Link
+            className={item.primary ? "primary-nav-link" : undefined}
+            key={item.href}
+            href={item.href}
+          >
             {item.label}
           </Link>
         ))}
       </nav>
       <Link className="header-action" href="/studio">
-        Open studio
+        Make an STL
       </Link>
     </header>
   );
@@ -34,6 +38,8 @@ export function SiteFooter() {
         <p>Make one. Give one. Teach one.</p>
       </div>
       <div className="footer-links">
+        <Link href="/lights">This maker’s lights</Link>
+        <Link href="/studio">Make an STL</Link>
         <Link href="/about">Our story</Link>
         <Link href="/learn">Start learning</Link>
         <Link href="/resources">Print safely</Link>

@@ -49,8 +49,13 @@ test("server-renders the No Dark Nights home and studio", async () => {
     homeHtml,
     /<title>No Dark Nights \| Make, learn, and share the light<\/title>/i,
   );
-  assert.match(homeHtml, /Build a night light from a photo/i);
-  assert.match(homeHtml, /Build the whole project/i);
+  assert.match(homeHtml, /Buy a Light/i);
+  assert.match(homeHtml, /Make an STL/i);
+  assert.match(homeHtml, /Build Your Own Site/i);
+  assert.match(homeHtml, /No coding or AI agent required/i);
+  assert.match(homeHtml, /A real project with two ways in/i);
+  assert.match(homeHtml, /AI agent literacy/i);
+  assert.match(homeHtml, /Privacy, consent, and responsible publishing/i);
   assert.match(homeHtml, /Make one\. Give one\. Teach one\./i);
   assert.match(homeHtml, /no-dark-nights-social-v2\.png/i);
 
@@ -68,6 +73,7 @@ test("server-renders the No Dark Nights home and studio", async () => {
 test("major pages have route-specific metadata and repository links", async () => {
   const expected = [
     ["/studio", "Night-light Studio"],
+    ["/lights", "Lights"],
     ["/learn", "Learn"],
     ["/gallery", "Gallery"],
     ["/resources", "Printing Resources"],
@@ -122,6 +128,42 @@ test("major pages have route-specific metadata and repository links", async () =
   assert.equal(`${redirectLocation.pathname}${redirectLocation.hash}`, "/learn#step-1");
 });
 
+test("homepage presents three clear paths and Lights belongs to this maker", async () => {
+  const [homeResponse, lightsResponse, makerData] = await Promise.all([
+    render("/"),
+    render("/lights"),
+    readFile(new URL("../app/maker-profile.ts", import.meta.url), "utf8"),
+  ]);
+  assert.equal(homeResponse.status, 200);
+  assert.equal(lightsResponse.status, 200);
+
+  const [homeHtml, lightsHtml] = await Promise.all([
+    homeResponse.text(),
+    lightsResponse.text(),
+  ]);
+
+  assert.match(homeHtml, /href="\/lights"[^>]*>[\s\S]*?Buy a Light/i);
+  assert.match(homeHtml, /href="\/studio"[^>]*>[\s\S]*?Make an STL/i);
+  assert.match(
+    homeHtml,
+    /href="\/learn#step-1"[^>]*>[\s\S]*?Build Your Own Site/i,
+  );
+  assert.match(homeHtml, /Lights[\s\S]*Studio[\s\S]*Learn/i);
+
+  assert.match(lightsHtml, /This page belongs to the owner of this site/i);
+  assert.match(lightsHtml, /not a marketplace or a directory/i);
+  assert.match(lightsHtml, /Example listing/i);
+  assert.match(lightsHtml, /example listings until the site owner replaces them/i);
+  assert.match(lightsHtml, /arranged directly with the adult owner of this site/i);
+  assert.doesNotMatch(lightsHtml, /<form|<input|<button/i);
+
+  assert.match(makerData, /PERSONALIZE THIS FILE FIRST/);
+  assert.match(makerData, /studioName/);
+  assert.match(makerData, /contactHref/);
+  assert.match(makerData, /isExample:\s*true/);
+  assert.match(makerData, /Never put a child's personal email address/i);
+});
+
 test("keeps STL generation local and removes starter UI", async () => {
   const [studio, geometry, homePage, studioPage, packageJson] = await Promise.all([
     readFile(new URL("../app/LithophaneStudio.tsx", import.meta.url), "utf8"),
@@ -168,4 +210,9 @@ test("keeps every gallery image inside an equal frame", async () => {
   assert.doesNotMatch(`${siteChrome}${studio}`, /brand-mark|brand-moon|brand-lamp/);
   assert.match(siteChrome, /className="brand-dot"/);
   assert.match(studio, /className="brand-dot"/);
+  assert.match(
+    styles,
+    /a:focus-visible[\s\S]{0,240}outline:\s*3px solid/i,
+  );
+  assert.match(styles, /\.ndn-nav\s*\{[\s\S]*?overflow-x:\s*auto/s);
 });

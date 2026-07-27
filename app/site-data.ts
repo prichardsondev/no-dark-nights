@@ -2,11 +2,12 @@ export const REPOSITORY_URL =
   "https://github.com/prichardsondev/no-dark-nights";
 
 export const navigation = [
-  { href: "/studio", label: "Make" },
-  { href: "/learn", label: "Learn" },
-  { href: "/gallery", label: "Gallery" },
-  { href: "/resources", label: "Resources" },
-  { href: "/code", label: "Code" },
+  { href: "/lights", label: "Lights", primary: true },
+  { href: "/studio", label: "Studio", primary: true },
+  { href: "/learn", label: "Learn", primary: true },
+  { href: "/gallery", label: "Gallery", primary: false },
+  { href: "/resources", label: "Resources", primary: false },
+  { href: "/code", label: "Code", primary: false },
 ];
 
 export const galleryItems = [

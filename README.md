@@ -12,8 +12,9 @@ classrooms, and curious adults. It includes:
 - beginner-friendly Codex prompts;
 - geometry and page tests;
 - practical printing and privacy guidance.
+- an owner-customizable page for example lights and adult-controlled contact.
 
-**Live private preview:** [no-dark-nights-studio.prichardsondev.chatgpt.site](https://no-dark-nights-studio.prichardsondev.chatgpt.site)
+**Live site:** [no-dark-nights-studio.prichardsondev.chatgpt.site](https://no-dark-nights-studio.prichardsondev.chatgpt.site)
 
 **Public source:** [github.com/prichardsondev/no-dark-nights](https://github.com/prichardsondev/no-dark-nights)
 
@@ -71,6 +72,7 @@ The default slot width is 16.5 mm. Measure your own housing before printing.
 ```text
 no-dark-nights/
 ├── app/                 website, studio, and STL engine
+├── app/maker-profile.ts maker name, contact link, and light listings
 ├── tests/               geometry, resilience, and page checks
 ├── examples/            rules for shareable examples
 ├── public/gallery/      displayed images with separate rights
@@ -86,12 +88,14 @@ no-dark-nights/
 npm run dev      # run the local website
 npm run build    # create the production build
 npm run lint     # check code style and common mistakes
+npm run typecheck # check TypeScript types
 npm test         # build and run all automated checks
 ```
 
 ## Routes
 
 - `/` — project home
+- `/lights` — lights and adult-controlled contact for this site’s maker
 - `/studio` — local image-to-STL studio
 - `/learn` — seven-stage learning path with a Codex prompt for every step
 - `/prompts` — redirects old links to the first Learn step
@@ -99,6 +103,22 @@ npm test         # build and run all automated checks
 - `/resources` — printer, material, light, and slicer guidance
 - `/code` — source-code map and repository link
 - `/about` — mission and project story
+
+## Personalize the maker and lights
+
+Edit [`app/maker-profile.ts`](app/maker-profile.ts) to change:
+
+- the studio and maker names;
+- the short maker introduction;
+- the adult-controlled contact link and label;
+- listing images, titles, descriptions, and optional price or `Gift` labels.
+
+The bundled listings are marked as examples. Replace them before presenting
+them as current offerings. Each deployed copy represents its own maker; the
+Lights page is not a marketplace or maker directory.
+
+Never add a child’s personal email address, phone number, school, or home
+address. Use a contact page or account controlled by a trusted adult.
 
 ## Privacy and safety
 

@@ -23,6 +23,10 @@ printable STL, and finished lithophane night light.
 - Prefer plain language that a first-time builder can understand.
 - Keep source-photo processing on the user’s device.
 - Never publish personal gallery photographs without explicit permission.
+- Keep maker identity, adult-controlled contact, and light listings in
+  `app/maker-profile.ts`.
+- Treat `/lights` as this site owner’s page, never as a marketplace or maker
+  directory. Do not publish a child’s personal contact information.
 - Keep the real `nodarknights.com` domain untouched during private review work.
 - Use “Make one. Give one. Teach one.” as the shared mission phrase.
 

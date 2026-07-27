@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 const title = "No Dark Nights | Make, learn, and share the light";
 const description =
-  "Build with Codex, turn a favorite photo into a printable lithophane, and make a real night light.";
+  "See lights from this maker, turn a photo into a printable lithophane STL, or learn to build your own No Dark Nights site.";
 
 export async function generateMetadata(): Promise<Metadata> {
   const incomingHeaders = await headers();
@@ -41,7 +41,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: `${origin}/no-dark-nights-social-v2.png`,
           width: 1200,
           height: 630,
-          alt: "No Dark Nights: make a light, learn the project, and share it.",
+          alt: "No Dark Nights: see lights, make an STL, or build your own site.",
         },
       ],
     },
