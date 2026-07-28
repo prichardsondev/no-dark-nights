@@ -79,7 +79,15 @@ test("server-renders the No Dark Nights home and studio", async () => {
   assert.match(homeHtml, /no-dark-nights-social-v2\.png/i);
 
   assert.match(studioHtml, /Turn a favorite photo into a little light/i);
-  assert.match(studioHtml, /Your photo stays on this device/i);
+  assert.match(
+    studioHtml,
+    /Turn a photo into a curved, print-ready lithophane for a night light\.[\s\S]*Your photo is processed only on your computer\./i,
+  );
+  assert.match(
+    studioHtml,
+    /The Studio processes your photo in this browser and does not upload it/i,
+  );
+  assert.match(studioHtml, /Stays on your computer/i);
   assert.match(studioHtml, /Choose a photo/i);
   assert.match(studioHtml, /Optional short message/i);
   assert.match(studioHtml, /aria-label="Bottom text"/i);

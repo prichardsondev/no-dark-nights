@@ -1108,7 +1108,7 @@ export function LithophaneStudio() {
     }
 
     setIsGenerating(true);
-    setNotice("Building the printable model on this device…");
+    setNotice("Building the printable model on your computer…");
     await new Promise((resolve) => window.setTimeout(resolve, 40));
     try {
       const geometry = createLithophaneGeometry(
@@ -1180,8 +1180,8 @@ export function LithophaneStudio() {
             <span className="eyebrow">Made for smiles</span>
             <h1>Turn a favorite photo into a little light.</h1>
             <p>
-              Shape a curved, print-ready night-light lithophane. Your photo
-              stays on this device.
+              Turn a photo into a curved, print-ready lithophane for a night
+              light. Your photo is processed only on your computer.
             </p>
             <p className="studio-requirements">
               The Studio creates an STL file. You will still need slicer
@@ -1190,8 +1190,9 @@ export function LithophaneStudio() {
               <Link href="/resources">See the parts and tools we use →</Link>
             </p>
             <p className="studio-photo-privacy">
-              This Studio reads the photo only on this device. Attaching a
-              private photo to Codex is a separate action—do not do that.
+              The Studio processes your photo in this browser and does not
+              upload it. Attaching a private photo to Codex is a separate
+              action—do not do that.
             </p>
           </div>
 
@@ -1587,7 +1588,7 @@ export function LithophaneStudio() {
               </div>
               <div>
                 <span>Privacy</span>
-                <strong>Stays on device</strong>
+                <strong>Stays on your computer</strong>
               </div>
             </div>
             {notice && (
