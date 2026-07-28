@@ -63,6 +63,8 @@ Open Codex and paste this:
 ```text
 I want to build the No Dark Nights project.
 
+Original site: https://nodarknights.com
+
 Project link: https://github.com/prichardsondev/no-dark-nights
 
 I am a beginner, so please explain each step in simple words.

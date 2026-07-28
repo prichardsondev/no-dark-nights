@@ -158,6 +158,14 @@ test("major pages have route-specific metadata and repository links", async () =
     learnHtml,
     /Project link: https:\/\/github\.com\/prichardsondev\/no-dark-nights/i,
   );
+  assert.match(
+    learnHtml,
+    /Original site: https:\/\/nodarknights\.com/i,
+  );
+  assert.match(
+    learnHtml,
+    /I want to build the No Dark Nights project\.[\s\S]*Original site: https:\/\/nodarknights\.com[\s\S]*Project link: https:\/\/github\.com\/prichardsondev\/no-dark-nights/i,
+  );
   assert.match(learnHtml, /Create your lithophane STL/i);
   assert.match(learnHtml, /Save your work with Git and GitHub/i);
   assert.match(learnHtml, /Never force-push, delete history/i);
