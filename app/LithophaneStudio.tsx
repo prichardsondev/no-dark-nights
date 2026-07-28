@@ -494,6 +494,11 @@ function NumberSetting({
           ? "Calculated automatically from the uncropped photo."
           : field.help}
       </span>
+      {field.key === "slotWidth" && (
+        <a className="fit-setting-link" href="#base-fit-lab">
+          Not sure which size fits? Print a three-size Fit Finder →
+        </a>
+      )}
     </label>
   );
 }

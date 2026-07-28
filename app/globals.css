@@ -364,6 +364,14 @@ summary:focus-visible {
   line-height: 1.4;
 }
 
+.fit-setting-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #805c25;
+  font-size: 12px;
+  font-weight: 800;
+}
+
 input[type="range"] {
   width: 100%;
   height: 3px;

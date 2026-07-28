@@ -96,6 +96,10 @@ test("server-renders the No Dark Nights home and studio", async () => {
   assert.match(studioHtml, /Download[\s\S]*3[\s\S]*-Size Fit Finder/i);
   assert.equal((studioHtml.match(/Include in download/g) ?? []).length, 3);
   assert.match(studioHtml, /Already printed one of these sizes/i);
+  assert.match(
+    studioHtml,
+    /href="#base-fit-lab"[^>]*>Not sure which size fits\? Print a three-size Fit Finder/i,
+  );
   assert.doesNotMatch(
     studioHtml,
     /<button(?=[^>]*disabled)[^>]*>\s*Download[\s\S]*3[\s\S]*-Size Fit Finder/i,
