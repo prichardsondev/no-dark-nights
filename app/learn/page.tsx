@@ -142,6 +142,14 @@ export default function LearnPage() {
                     </small>
                     <h2>{step.title}</h2>
                     <p>{step.summary}</p>
+                    {index === 7 && (
+                      <Link
+                        className="lesson-fit-link"
+                        href="/studio#base-fit-lab"
+                      >
+                        Open the Base Fit Lab →
+                      </Link>
+                    )}
                   </div>
                 </header>
                 <dl className="lesson-checkpoints">

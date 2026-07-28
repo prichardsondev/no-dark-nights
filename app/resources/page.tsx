@@ -118,7 +118,12 @@ export default function ResourcesPage() {
             <li>Confirm STL height, width, and slot width in the slicer.</li>
             <li>Check that the model sits flat on the build plate.</li>
             <li>Preview the first layers around the rounded slot.</li>
-            <li>Print a short adapter-only test when using a new light.</li>
+            <li>
+              Using a new light?{" "}
+              <Link href="/studio#base-fit-lab">
+                Print the three-size Base Fit Finder first.
+              </Link>
+            </li>
             <li>Children use 3D printers only with adult supervision.</li>
             <li>
               Avoid hot and moving parts, allow prints to cool, and follow the

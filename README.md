@@ -103,7 +103,8 @@ Open the local address printed in the terminal.
 4. Optionally add a nickname, kind word, or short message to the bottom adapter.
 5. Inspect the preview when WebGL is available.
 6. Download the STL and verify it in your slicer.
-7. Print a small adapter fit test before a full print.
+7. For a new housing, open the **Base Fit Lab** on the Studio page and download
+   one STL containing three small labeled fit coupons.
 
 Source photos stay on the device. The STL generator does not require WebGL, so
 STL creation remains available when the interactive preview cannot run.
@@ -111,7 +112,12 @@ Never attach a private source photograph to Codex. The learner or supervising
 adult checks it visually inside the Studio; automated tests use a neutral
 project image.
 
-The default slot width is 16.5 mm. Measure your own housing before printing.
+The Base Fit Lab starts with 16.0, 16.5, and 17.0 mm coupons. Print them flat,
+let them cool, unplug the light, and try the 16.5 mm center coupon first. Pick
+the snug size that slides on without force or wobble, then use its button to
+change only the Studio slot width. The default slot width remains 16.5 mm.
+Printer tuning, material, shrinkage, and housing shape can affect real fit, so
+this physical test is more useful than guessing a measurement.
 
 ## Project map
 

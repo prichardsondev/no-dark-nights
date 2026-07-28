@@ -89,6 +89,28 @@ test("server-renders the No Dark Nights home and studio", async () => {
     studioHtml,
     /Attaching a[\s\S]*private photo to Codex is a separate action/i,
   );
+  assert.match(studioHtml, /id="base-fit-lab"/i);
+  assert.match(studioHtml, /Base Fit Lab/i);
+  assert.match(studioHtml, /Download 3-Size Fit Finder/i);
+  assert.doesNotMatch(
+    studioHtml,
+    /<button(?=[^>]*disabled)[^>]*>\s*Download 3-Size Fit Finder/i,
+  );
+  assert.match(studioHtml, /16\.0[\s\S]*16\.5[\s\S]*17\.0/i);
+  assert.match(studioHtml, /same rounded slot, 5 mm entry lips/i);
+  assert.match(
+    studioHtml,
+    /No calipers\? Start with the three-size Fit Finder/i,
+  );
+  assert.match(studioHtml, /Unplug the night light/i);
+  assert.match(
+    studioHtml,
+    /Print[\s\S]*Cool[\s\S]*Test unplugged[\s\S]*Choose/i,
+  );
+  assert.match(studioHtml, /All too tight/i);
+  assert.match(studioHtml, /All too loose/i);
+  assert.match(studioHtml, /Almost right/i);
+  assert.match(studioHtml, /teaches tolerance/i);
   assert.doesNotMatch(
     `${homeHtml}${studioHtml}`,
     /codex-preview|react-loading-skeleton/i,
@@ -222,7 +244,8 @@ test("major pages have route-specific metadata and repository links", async () =
   assert.doesNotMatch(learnHtml, /Record the source image filename/i);
   assert.match(learnHtml, /Download the printable STL/i);
   assert.match(learnHtml, /Slice, fit-test, print, and share/i);
-  assert.match(learnHtml, /adapter-only fit test/i);
+  assert.match(learnHtml, /Base Fit Lab/i);
+  assert.match(learnHtml, /href="\/studio#base-fit-lab"/i);
   assert.match(
     learnHtml,
     /one set of slicer settings works for every machine/i,
@@ -283,6 +306,8 @@ test("Studio explains the physical tools and Resources lists safe examples", asy
     studioHtml,
     /Before printing[\s\S]*href="\/resources"[^>]*>View printing resources/i,
   );
+  assert.match(resourcesHtml, /href="\/studio#base-fit-lab"/i);
+  assert.match(resourcesHtml, /three-size Base Fit Finder/i);
 
   assert.match(resourcesHtml, /What we use/i);
   assert.match(resourcesHtml, /amazon\.com\/dp\/B06VTGDD33/i);

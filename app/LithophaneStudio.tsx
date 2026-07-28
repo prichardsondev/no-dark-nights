@@ -30,6 +30,17 @@ import {
   createLabelGeometry,
   normalizeLabelText,
 } from "./lithophane-label";
+import {
+  FIT_FINDER_DEFAULT_CENTER,
+  FIT_FINDER_DEFAULT_SPACING,
+  FIT_FINDER_SPACING_OPTIONS,
+  createFitFinderParts,
+  fitFinderFilename,
+  formatSlotWidth,
+  normalizeFitFinder,
+  withFitFinderSlotWidth,
+  type FitFinderSpacing,
+} from "./base-fit-geometry";
 import { detectWebGLSupport } from "./webgl-support";
 
 type UploadedImage = {
@@ -166,6 +177,242 @@ function downloadBlob(blob: Blob, filename: string) {
   anchor.click();
   anchor.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function BaseFitLab({
+  settings,
+  onUseSlotWidth,
+}: {
+  settings: LithophaneSettings;
+  onUseSlotWidth: (slotWidth: number) => void;
+}) {
+  const [centerInput, setCenterInput] = useState(
+    FIT_FINDER_DEFAULT_CENTER.toString(),
+  );
+  const [spacing, setSpacing] = useState<FitFinderSpacing>(
+    FIT_FINDER_DEFAULT_SPACING,
+  );
+  const [status, setStatus] = useState<string | null>(null);
+  const normalized = useMemo(
+    () => normalizeFitFinder(Number(centerInput), spacing),
+    [centerInput, spacing],
+  );
+
+  const downloadFitFinder = () => {
+    setCenterInput(normalized.center.toString());
+    let parts: ReturnType<typeof createFitFinderParts> = [];
+    try {
+      parts = createFitFinderParts(normalized.widths, settings);
+      const group = new THREE.Group();
+      for (const part of parts) {
+        group.add(new THREE.Mesh(part.baseGeometry));
+        group.add(new THREE.Mesh(part.labelGeometry));
+      }
+      const result = new STLExporter().parse(group, { binary: true });
+      const bytes =
+        result instanceof DataView
+          ? new Uint8Array(result.buffer, result.byteOffset, result.byteLength)
+          : new TextEncoder().encode(result);
+      downloadBlob(
+        new Blob([bytes.slice().buffer], { type: "model/stl" }),
+        fitFinderFilename(normalized.widths),
+      );
+      setStatus(
+        `Fit Finder ready: ${normalized.widths.map(formatSlotWidth).join(", ")} mm.`,
+      );
+    } catch {
+      setStatus(
+        "The Fit Finder could not be generated. Check the center value and try again.",
+      );
+    } finally {
+      for (const part of parts) {
+        part.baseGeometry.dispose();
+        part.labelGeometry.dispose();
+      }
+    }
+  };
+
+  return (
+    <section
+      className="base-fit-lab"
+      id="base-fit-lab"
+      aria-labelledby="base-fit-lab-title"
+    >
+      <div className="fit-lab-intro">
+        <span className="eyebrow">Small print, useful answer</span>
+        <h2 id="base-fit-lab-title">Base Fit Lab</h2>
+        <h3>Print a Fit Finder</h3>
+        <p>
+          Not sure which slot width fits your night-light? Print three small
+          base tests instead of an entire lithophane. Each test is labeled with
+          its slot width.
+        </p>
+        <p className="fit-caliper-note">
+          Have calipers? Measure the housing thickness and use that as the
+          center value. No calipers? Start with the three-size Fit Finder.
+        </p>
+        <p
+          className="fit-workflow"
+          aria-label="Print, then cool, then test unplugged, then choose"
+        >
+          <strong>Print</strong> <span aria-hidden="true">→</span>{" "}
+          <strong>Cool</strong> <span aria-hidden="true">→</span>{" "}
+          <strong>Test unplugged</strong> <span aria-hidden="true">→</span>{" "}
+          <strong>Choose</strong>
+        </p>
+      </div>
+
+      <div className="fit-lab-grid">
+        <div className="fit-lab-controls">
+          <label className="fit-number-field">
+            <span>
+              Center slot width <small>mm</small>
+            </span>
+            <input
+              type="number"
+              min="10"
+              max="30"
+              step="0.25"
+              inputMode="decimal"
+              value={centerInput}
+              onChange={(event) => {
+                setCenterInput(event.target.value);
+                setStatus(null);
+              }}
+            />
+          </label>
+          <fieldset className="fit-spacing">
+            <legend>Spacing between tests</legend>
+            {FIT_FINDER_SPACING_OPTIONS.map((option) => (
+              <label key={option}>
+                <input
+                  type="radio"
+                  name="fit-spacing"
+                  value={option}
+                  checked={spacing === option}
+                  onChange={() => {
+                    setSpacing(option);
+                    setStatus(null);
+                  }}
+                />
+                {option} mm
+              </label>
+            ))}
+          </fieldset>
+          {normalized.correction && (
+            <p className="fit-correction" role="status">
+              {normalized.correction}
+            </p>
+          )}
+          <p className="fit-production-note">
+            Coupons use the same rounded slot, 5 mm entry lips,{" "}
+            {formatSlotWidth(settings.slotDepth)} mm depth, and{" "}
+            {settings.adapterThickness.toFixed(2)} mm adapter thickness as the
+            current Studio model. The Fit Finder tests slot width; you still
+            need to check slot depth and the other dimensions of your housing.
+          </p>
+          <button
+            type="button"
+            className="generate-button fit-download"
+            onClick={downloadFitFinder}
+          >
+            Download 3-Size Fit Finder
+            <span aria-hidden="true">→</span>
+          </button>
+          {status && (
+            <p className="fit-status" role="status" aria-live="polite">
+              {status}
+            </p>
+          )}
+        </div>
+
+        <div
+          className="fit-coupon-preview"
+          aria-label="Fit Finder coupon preview"
+        >
+          <p>One STL · three separate labeled pieces</p>
+          <small>
+            Each printed number is the intended internal slot width in
+            millimeters.
+          </small>
+          <div className="fit-coupon-row">
+            {normalized.widths.map((width) => (
+              <div className="fit-coupon" key={width}>
+                <span>{formatSlotWidth(width)}</span>
+                <i aria-hidden="true" />
+                <button
+                  type="button"
+                  onClick={() => {
+                    onUseSlotWidth(width);
+                    setStatus(
+                      `${formatSlotWidth(width)} mm is now the Studio slot width. Other settings were kept.`,
+                    );
+                  }}
+                >
+                  Use {formatSlotWidth(width)} mm in Studio
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="fit-lab-guidance">
+        <article>
+          <h3>How to test</h3>
+          <p>
+            After printing, let all three pieces cool completely. With the
+            night-light unplugged, try each size. The best fit should slide on
+            without forcing and should not wobble.
+          </p>
+          <ol>
+            <li>Slice and print the three small coupons flat on the bed.</li>
+            <li>Let them cool completely.</li>
+            <li>Unplug the night light before checking the fit.</li>
+            <li>Try the center coupon first (16.5 mm by default).</li>
+            <li>
+              Choose a snug fit that slides on without force, wobble, cracking,
+              or stress.
+            </li>
+            <li>
+              Use that labeled size in Studio, then download the full model.
+            </li>
+          </ol>
+          <ul>
+            <li>
+              <strong>All too tight:</strong> increase the center value and
+              print another set.
+            </li>
+            <li>
+              <strong>All too loose:</strong> decrease the center value and
+              print another set.
+            </li>
+            <li>
+              <strong>Almost right:</strong> use 0.25 mm spacing around the
+              closest size.
+            </li>
+          </ul>
+        </article>
+        <article>
+          <h3>Learn about tolerance</h3>
+          <p>
+            Printers and materials do not reproduce dimensions perfectly.
+            Testing nearby sizes teaches tolerance: the difference between the
+            intended measurement and the fit produced by a real printer and
+            material.
+          </p>
+          <p>
+            A smaller number makes a tighter slot. A larger number adds
+            clearance. Never force a test piece onto the housing. Test only
+            while the night-light is unplugged, let pieces cool, never modify
+            electrical components, and follow the light and printer
+            manufacturers’ instructions. Young makers follow their family’s or
+            educator’s guidance.
+          </p>
+        </article>
+      </div>
+    </section>
+  );
 }
 
 function NumberSetting({
@@ -1328,6 +1575,13 @@ export function LithophaneStudio() {
           </div>
         </section>
       </div>
+      <BaseFitLab
+        settings={settings}
+        onUseSlotWidth={(slotWidth) => {
+          setSettings((current) => withFitFinderSlotWidth(current, slotWidth));
+          setPreset("custom");
+        }}
+      />
     </main>
   );
 }

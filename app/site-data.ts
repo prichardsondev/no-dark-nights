@@ -392,7 +392,7 @@ Please help me:
 3. Confirm that the adapter base sits flat on the build plate and the lithophane stands in the intended upright printing orientation.
 4. Preview the first layers, the rounded slot, the adapter area, and the transition into the picture panel. Point out gaps, unsupported areas, or surprising toolpaths.
 5. Compare my choices with the No Dark Nights Resources page and its “What We Use” links, while treating them as examples rather than purchasing requirements or universal settings.
-6. If this is a new housing, uncertain measurement, or changed adapter, help me create or slice a small adapter-only fit test before the full print.
+6. If this is a new housing, uncertain measurement, or changed adapter, open the Base Fit Lab at https://nodarknights.com/studio#base-fit-lab and make the three-size adapter Fit Finder before the full print.
 7. Check the cooled fit test on the unplugged light housing. If it is too tight or loose, return to the Studio measurements and make a corrected STL before continuing.
 8. Prepare and print the complete lithophane with adult guidance where appropriate, following the printer and material manufacturers’ instructions.
 9. Inspect the cooled finished print for cracks, sharp edges, poor layer bonding, blocked openings, or a bad fit before using it with the light.
