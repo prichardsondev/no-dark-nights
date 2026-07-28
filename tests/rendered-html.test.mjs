@@ -319,6 +319,11 @@ test("Grant Kit renders a reusable, measurable, print-ready program brief", asyn
   assert.match(html, /Complete lithophanes may take longer/i);
   assert.match(html, /What each learner produces/i);
   assert.match(html, /A personalized, working website/i);
+  assert.match(
+    html,
+    /A downloadable lithophane STL generated from their own site/i,
+  );
+  assert.match(html, /A finished physical lithophane night-light/i);
   assert.match(html, /A Base Fit Lab calibration result/i);
   assert.match(html, /Outcome[\s\S]*Evidence/i);
   assert.match(

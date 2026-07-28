@@ -36,9 +36,9 @@ const learningAreas = [
 const learnerArtifacts = [
   "A personalized, working website",
   "A reviewed source repository and Git history",
-  "A lithophane STL generated from their own site",
+  "A downloadable lithophane STL generated from their own site",
   "A Base Fit Lab calibration result",
-  "A printed lithophane night-light",
+  "A finished physical lithophane night-light",
   "A privacy-safe project story or short reflection",
   "A portfolio-ready explanation of the process",
 ];
