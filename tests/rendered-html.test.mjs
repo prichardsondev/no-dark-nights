@@ -721,4 +721,5 @@ test("keeps every gallery image inside an equal frame", async () => {
   assert.match(studio, /className="brand-dot"/);
   assert.match(styles, /a:focus-visible[\s\S]{0,240}outline:\s*3px solid/i);
   assert.match(styles, /\.ndn-nav\s*\{[\s\S]*?overflow-x:\s*auto/s);
+  assert.match(styles, /\.panel-intro h1\s*\{[^}]*line-height:\s*1\.04/s);
 });

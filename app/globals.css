@@ -176,7 +176,7 @@ summary:focus-visible {
   font-size: clamp(42px, 4.4vw, 70px);
   font-weight: 400;
   letter-spacing: -0.045em;
-  line-height: 0.98;
+  line-height: 1.04;
 }
 
 .panel-intro p {
