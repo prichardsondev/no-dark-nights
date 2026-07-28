@@ -24,7 +24,7 @@ export default function Home() {
               <strong>Make an STL</strong>
               <p>
                 Turn a photograph into a printable lithophane night-light STL.
-                The photo stays on this device. No coding or AI agent is
+                The photo stays on your computer. No coding or AI agent is
                 required.
               </p>
               <i>Open the Studio</i>

@@ -64,6 +64,7 @@ test("server-renders the No Dark Nights home and studio", async () => {
   assert.match(homeHtml, /See the Lights/i);
   assert.doesNotMatch(homeHtml, /Buy a Light/i);
   assert.match(homeHtml, /No coding or AI agent is required/i);
+  assert.match(homeHtml, /The photo stays on your computer/i);
   assert.match(homeHtml, /printable lithophane night-light STL/i);
   assert.match(homeHtml, /your own version of the website/i);
   assert.match(
