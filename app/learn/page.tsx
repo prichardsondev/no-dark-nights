@@ -363,7 +363,9 @@ export default function LearnPage() {
           <p className="educator-note">
             Do not require a public website, personal photograph, purchase, or
             physical print to complete the learning activity. Follow school and
-            family policies, and use OpenAI&apos;s age guidance above.
+            family policies, and use OpenAI&apos;s age guidance above. Planning
+            a class or funding request?{" "}
+            <Link href="/grants">Use the Grant Kit</Link>.
           </p>
         </section>
         <section className="next-step">

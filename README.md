@@ -153,6 +153,7 @@ npm test         # build and run all automated checks
 - `/prompts` — redirects old links to the first Learn step
 - `/gallery` — finished lights
 - `/resources` — printer, material, light, and slicer guidance
+- `/grants` — reusable program brief, outcomes, budget framework, and print-ready grant kit
 - `/safety` — child-safety, photograph, contact, hosting, and reporting guidance
 - `/code` — source-code map and repository link
 - `/about` — mission and project story

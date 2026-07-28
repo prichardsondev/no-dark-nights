@@ -135,6 +135,7 @@ test("major pages have route-specific metadata and repository links", async () =
     ["/learn", "Learn"],
     ["/gallery", "Gallery"],
     ["/resources", "Printing Resources"],
+    ["/grants", "Grant Kit"],
     ["/code", "Code"],
     ["/about", "About"],
     ["/safety", "Safety &amp; Privacy"],
@@ -162,6 +163,7 @@ test("major pages have route-specific metadata and repository links", async () =
   );
   const learnHtml = await learnResponse.text();
   assert.match(learnHtml, /Read the step/i);
+  assert.match(learnHtml, /href="\/grants"[^>]*>Use the Grant Kit<\/a>/i);
   assert.match(learnHtml, /Give this prompt to Codex/i);
   assert.match(learnHtml, /You’re finished when/i);
   assert.match(learnHtml, /Before Step 1/i);
@@ -296,6 +298,72 @@ test("major pages have route-specific metadata and repository links", async () =
   assert.equal(
     `${redirectLocation.pathname}${redirectLocation.hash}`,
     "/learn#step-1",
+  );
+});
+
+test("Grant Kit renders a reusable, measurable, print-ready program brief", async () => {
+  const [response, styles, component] = await Promise.all([
+    render("/grants"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+    readFile(new URL("../app/GrantActions.tsx", import.meta.url), "utf8"),
+  ]);
+
+  assert.equal(response.status, 200);
+  const html = await response.text();
+
+  assert.match(html, /<title>Grant Kit \| No Dark Nights<\/title>/i);
+  assert.match(html, /A six-hour, project-based AI and 3D-printing program/i);
+  assert.match(html, /Two three-hour instructional sessions/i);
+  assert.match(html, /Supervised printing between sessions/i);
+  assert.match(html, /Complete lithophanes may take longer/i);
+  assert.match(html, /What each learner produces/i);
+  assert.match(html, /A personalized, working website/i);
+  assert.match(html, /A Base Fit Lab calibration result/i);
+  assert.match(html, /Outcome[\s\S]*Evidence/i);
+  assert.match(
+    html,
+    /Guide an AI coding agent and review its work[\s\S]*Prompt history/i,
+  );
+  assert.match(html, /Reusable equipment/i);
+  assert.match(html, /Per-learner or recurring costs/i);
+  assert.match(html, /Program delivery/i);
+  assert.match(
+    html,
+    /No Dark Nights has not yet published formal pilot results/i,
+  );
+  assert.match(html, /Copy Program Summary/i);
+  assert.match(html, /Print \/ Save as PDF/i);
+  assert.match(html, /href="\/safety"/i);
+  assert.match(html, /href="\/studio#base-fit-lab"/i);
+  assert.match(html, /<h1[^>]*>[\s\S]*six-hour/i);
+  assert.match(html, /<h2[^>]*>[\s\S]*What each learner produces/i);
+  assert.doesNotMatch(html, /<form\b/i);
+  assert.doesNotMatch(html, /\$[0-9]/);
+  assert.doesNotMatch(html, /<script[^>]+(?:analytics|tracking)/i);
+
+  assert.match(component, /navigator\.clipboard/);
+  assert.match(component, /window\.print\(\)/);
+  assert.match(component, /role="status"/);
+  assert.match(component, /aria-live="polite"/);
+  assert.match(component, /Copy failed — select the program summary/i);
+  assert.match(styles, /@media print\s*\{/i);
+  assert.match(
+    styles,
+    /\.grant-outcomes-table tr[\s\S]*break-inside:\s*avoid/i,
+  );
+  assert.match(
+    styles,
+    /\.grant-tool-actions[\s\S]*display:\s*none !important/i,
+  );
+  assert.match(
+    styles,
+    /@media \(max-width:\s*760px\)[\s\S]*\.grant-budget-grid[\s\S]*grid-template-columns:\s*1fr/i,
+  );
+
+  const grantLinks = html.match(/href="\/grants"/g) ?? [];
+  assert.ok(
+    grantLinks.length >= 2,
+    "Grant Kit should appear in the main navigation and footer",
   );
 });
 

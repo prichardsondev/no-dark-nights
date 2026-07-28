@@ -7,6 +7,7 @@ export const navigation = [
   { href: "/lights", label: "Lights", primary: true },
   { href: "/gallery", label: "Gallery", primary: false },
   { href: "/resources", label: "Resources", primary: false },
+  { href: "/grants", label: "Grant Kit", primary: false },
   { href: "/code", label: "Code", primary: false },
 ];
 

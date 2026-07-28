@@ -42,6 +42,7 @@ export function SiteFooter() {
         <Link href="/studio">Make an STL</Link>
         <Link href="/about">Our story</Link>
         <Link href="/learn">Start learning</Link>
+        <Link href="/grants">Grant Kit</Link>
         <Link href="/resources">Print safely</Link>
         <Link href="/safety">Safety &amp; privacy</Link>
         <a href={REPOSITORY_URL} rel="noreferrer" target="_blank">

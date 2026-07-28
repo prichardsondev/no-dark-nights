@@ -7,6 +7,7 @@ import {
   copyPromptText,
   copyStateReducer,
 } from "../app/copy-prompt-feedback.ts";
+import { grantCopyFeedback, PROGRAM_SUMMARY } from "../app/grant-actions.ts";
 
 test("successful copying shows visible and accessible confirmation", async () => {
   let copiedText = "";
@@ -58,4 +59,27 @@ test("clipboard failure is honest and keeps manual selection available", async (
   assert.match(component, /COPY_CONFIRMATION_MS/);
   assert.match(component, /dispatch\(\{ type: "reset" \}\)/);
   assert.doesNotMatch(component, /execCommand|setCopyState\\("copied"\\)/);
+});
+
+test("Grant Kit summary copy feedback is visible, accessible, and honest", async () => {
+  let copiedText = "";
+  const success = await copyPromptText(PROGRAM_SUMMARY, {
+    async writeText(value) {
+      copiedText = value;
+    },
+  });
+
+  assert.equal(copiedText, PROGRAM_SUMMARY);
+  assert.deepEqual(grantCopyFeedback(success), {
+    buttonLabel: "Copied!",
+    announcement: "Program summary copied to your clipboard.",
+  });
+  assert.equal(grantCopyFeedback("ready").buttonLabel, "Copy Program Summary");
+
+  const failure = await copyPromptText(PROGRAM_SUMMARY, null);
+  assert.deepEqual(grantCopyFeedback(failure), {
+    buttonLabel: "Try copy again",
+    announcement:
+      "Copy failed — select the program summary and copy it manually",
+  });
 });
