@@ -259,12 +259,7 @@ Keep maker and light information in app/maker-profile.ts. Clearly mark anything 
 
 Contact remains disabled by default in every repository clone.
 
-Use the setup sentence at the top of this prompt:
-- Adult maker: contact is optional. If I choose to add it, accept only my adult-managed email as a valid mailto: address or a secure HTTPS contact page. Show me the public label and exact destination before changing anything. Prefer the project’s supported hosting environment configuration instead of committing contact information into source files. Stop for my confirmation before changing Sites environment configuration or deploying.
-- Young maker with an adult: do not ask for the young maker’s or parent’s email address or any other personal contact information. When no adult-controlled contact has been deliberately configured, use this public text: “This learner site does not publish contact information. Please contact the maker through their parent, guardian, teacher, or program.” Do not create a fake or example email link. A supervising adult may separately take control later and deliberately add an adult-managed contact method.
-- School, library, or makerspace: contact is optional. Accept only an organization-managed email as a valid mailto: address or a secure HTTPS contact page. Never request or publish a student’s contact information. Show the public label and exact destination before changing anything. Prefer the project’s supported hosting environment configuration instead of committing contact information into source files. Stop for confirmation before changing Sites environment configuration or deploying.
-
-Do not ask me for a full name, personal email, phone number, address, school, social account, contact link, or a parent’s email except for the optional adult-managed or organization-managed contact described above.
+Never request or publish a child’s email address, phone number, full name, school, address, social account, or contact link. If an adult maker or organization manager deliberately asks to add contact, accept only an adult- or organization-managed mailto: address or secure HTTPS contact page. Show the exact public label and destination and stop for confirmation before changing environment configuration or deploying. Otherwise, keep contact disabled. Never create a fake or example email address.
 
 For any gallery image, require adult permission, remove EXIF and location metadata, and inspect it for addresses, school names, uniforms, license plates, recognizable locations, full names, and identifying filenames before publication. Keep the homepage’s three paths, the compact design, keyboard access, phone layout, source-photo privacy, and all lithophane geometry unchanged.
 

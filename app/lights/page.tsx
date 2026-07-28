@@ -44,9 +44,9 @@ export default function LightsPage() {
               </a>
             ) : (
               <p className="contact-not-set">
-                This learner site does not publish contact information. Please
-                contact the maker through their parent, guardian, teacher, or
-                program.
+                This site does not publish contact information. If the maker is
+                a child, please contact them through their parent, guardian,
+                teacher, or program.
               </p>
             )}
             {contactEmail && (

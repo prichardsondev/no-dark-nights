@@ -134,25 +134,17 @@ test("major pages have route-specific metadata and repository links", async () =
   assert.match(learnHtml, /Before Step 1/i);
   assert.match(learnHtml, /Get ready/i);
   assert.match(learnHtml, /Access to Codex through the ChatGPT desktop app/i);
-  assert.match(learnHtml, /Who is managing this project\?/i);
-  assert.match(learnHtml, /Adult maker/i);
-  assert.match(learnHtml, /Young maker with an adult/i);
-  assert.match(learnHtml, /School, library, or makerspace/i);
+  assert.match(learnHtml, /Young makers: work with a trusted adult\./i);
   assert.match(
     learnHtml,
-    /Everyone follows the same learning path\. This choice only changes account, publishing, and contact guidance\./i,
+    /If you are under 13, an adult must conduct the ChatGPT\/Codex interactions\.[\s\S]*Ages 13–17 need parent or guardian permission\.[\s\S]*Adults should manage accounts, contact information, publishing, purchases, printer use, and electrical safety\./i,
   );
-  assert.match(learnHtml, /<fieldset>[\s\S]*learner-setup[\s\S]*<\/fieldset>/i);
-  assert.match(
+  assert.doesNotMatch(
     learnHtml,
-    /<legend class="sr-only">Choose one working setup<\/legend>/i,
+    /learner-setup|Who is managing this project|Choose one working setup/i,
   );
-  assert.equal([...learnHtml.matchAll(/name="learner-setup"/gi)].length, 3);
-  assert.match(
-    learnHtml,
-    /role="status" aria-live="polite" aria-atomic="true"/i,
-  );
-  assert.match(learnHtml, /<button disabled="" type="button">Copy prompt/i);
+  assert.match(learnHtml, /<button type="button">Copy prompt/i);
+  assert.doesNotMatch(learnHtml, /<button disabled[^>]*>Copy prompt/i);
   assert.match(
     learnHtml,
     /Download and install the official ChatGPT desktop app/i,
@@ -434,61 +426,45 @@ test("homepage presents three clear paths and Lights belongs to this maker", asy
   assert.equal(profileModule.makerProfile.contactHref, "");
   assert.match(
     lightsHtml,
-    /This learner site does not publish contact information[\s\S]*parent, guardian, teacher, or program/i,
+    /This site does not publish contact information[\s\S]*If the maker is a child[\s\S]*parent, guardian, teacher, or program/i,
   );
 });
 
 test("Learn prompts protect private photos and keep learner contact disabled", async () => {
   const { optionalPromptCards, promptCards } =
     await import("../app/site-data.ts");
-  const { buildSetupPrompt, getSetupPromptSentence, learnerSetups } =
-    await import("../app/learner-setup.ts");
   const stepThree = promptCards.find((card) => card.stage === "Step 3");
 
   assert.equal(promptCards.length, 8);
-  assert.equal(learnerSetups.length, 3);
   assert.ok(stepThree);
   assert.match(
     stepThree.prompt,
     /Contact remains disabled by default in every repository clone/i,
   );
-  assert.match(stepThree.prompt, /Adult maker: contact is optional/i);
   assert.match(
     stepThree.prompt,
-    /valid mailto: address or a secure HTTPS contact page/i,
+    /Never request or publish a child’s email address, phone number, full name, school, address, social account, or contact link/i,
   );
   assert.match(
     stepThree.prompt,
-    /Show me the public label and exact destination before changing anything/i,
+    /If an adult maker or organization manager deliberately asks to add contact/i,
   );
   assert.match(
     stepThree.prompt,
-    /supported hosting environment configuration instead of committing contact information/i,
+    /adult- or organization-managed mailto: address or secure HTTPS contact page/i,
   );
   assert.match(
     stepThree.prompt,
-    /Stop for my confirmation before changing Sites environment configuration or deploying/i,
+    /Show the exact public label and destination and stop for confirmation before changing environment configuration or deploying/i,
   );
+  assert.match(stepThree.prompt, /Otherwise, keep contact disabled/i);
   assert.match(
     stepThree.prompt,
-    /Young maker with an adult:[\s\S]*do not ask for the young maker’s or parent’s email address/i,
+    /Never create a fake or example email address/i,
   );
-  assert.match(
+  assert.doesNotMatch(
     stepThree.prompt,
-    /This learner site does not publish contact information\. Please contact the maker through their parent, guardian, teacher, or program\./i,
-  );
-  assert.match(stepThree.prompt, /Do not create a fake or example email link/i);
-  assert.match(
-    stepThree.prompt,
-    /School, library, or makerspace:[\s\S]*organization-managed email/i,
-  );
-  assert.match(
-    stepThree.prompt,
-    /Never request or publish a student’s contact information/i,
-  );
-  assert.match(
-    stepThree.prompt,
-    /Do not ask me for a full name, personal email, phone number, address, school, social account, contact link, or a parent’s email except for the optional adult-managed or organization-managed contact described above/i,
+    /Use the setup sentence|Adult maker:|Young maker with an adult:|School, library, or makerspace:/i,
   );
   const requestedPersonalization =
     stepThree.prompt.match(/Ask me for:([\s\S]*?)\n\nKeep maker/i)?.[1] ?? "";
@@ -496,21 +472,6 @@ test("Learn prompts protect private photos and keep learner contact disabled", a
     requestedPersonalization,
     /full name|personal email|phone number|address|school|social account|contact link|parent’s email/i,
   );
-
-  for (const setup of learnerSetups) {
-    const setupSentence = getSetupPromptSentence(setup.id);
-    assert.equal(setupSentence, setup.promptSentence);
-
-    for (const card of promptCards) {
-      const copiedPrompt = buildSetupPrompt(card.prompt, setup.id);
-      assert.equal(copiedPrompt, `${setup.promptSentence}\n\n${card.prompt}`);
-      assert.equal(
-        copiedPrompt.split(setup.promptSentence).length - 1,
-        1,
-        `${setup.label} guidance should appear exactly once`,
-      );
-    }
-  }
 
   for (const card of [...promptCards, ...optionalPromptCards]) {
     assert.match(
@@ -539,10 +500,12 @@ test("Learn prompts protect private photos and keep learner contact disabled", a
     new URL("../app/learn/page.tsx", import.meta.url),
     "utf8",
   );
-  assert.match(learnPageSource, /useState<LearnerSetupId \| null>\(null\)/);
   assert.doesNotMatch(
     learnPageSource,
-    /localStorage|sessionStorage|document\.cookie|fetch\(|sendBeacon|analytics|database/i,
+    /"use client"|useState|learnerSetup|learner-setup|setupSentence|localStorage|sessionStorage|document\.cookie|fetch\(|sendBeacon|analytics|database/i,
+  );
+  await assert.rejects(
+    access(new URL("../app/learner-setup.ts", import.meta.url)),
   );
 });
 

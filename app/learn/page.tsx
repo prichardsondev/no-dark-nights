@@ -1,45 +1,16 @@
-"use client";
-
+import type { Metadata } from "next";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
 import { CopyPrompt } from "../CopyPrompt";
 import { PageIntro, SiteShell } from "../SiteChrome";
-import {
-  getSetupPromptSentence,
-  learnerSetups,
-  type LearnerSetupId,
-} from "../learner-setup";
 import { learningSteps, optionalPromptCards, promptCards } from "../site-data";
 
+export const metadata: Metadata = {
+  title: "Learn | No Dark Nights",
+  description:
+    "Set up Codex, then follow eight beginner-friendly steps from downloading the project to printing and reflecting.",
+};
+
 export default function LearnPage() {
-  const [learnerSetup, setLearnerSetup] = useState<LearnerSetupId | null>(null);
-  const [showSetupConfirmation, setShowSetupConfirmation] = useState(false);
-  const setupTimer = useRef<number | null>(null);
-  const setupSentence = getSetupPromptSentence(learnerSetup);
-
-  useEffect(
-    () => () => {
-      if (setupTimer.current !== null) {
-        window.clearTimeout(setupTimer.current);
-      }
-    },
-    [],
-  );
-
-  const chooseSetup = (setupId: LearnerSetupId) => {
-    setLearnerSetup(setupId);
-    setShowSetupConfirmation(true);
-
-    if (setupTimer.current !== null) {
-      window.clearTimeout(setupTimer.current);
-    }
-
-    setupTimer.current = window.setTimeout(() => {
-      setShowSetupConfirmation(false);
-      setupTimer.current = null;
-    }, 3200);
-  };
-
   return (
     <SiteShell>
       <main className="content-page site-width">
@@ -49,41 +20,17 @@ export default function LearnPage() {
           description="Set up your tools first. Then read, copy, inspect, and reflect through eight clear steps."
         />
         <section
-          className="learner-safety-gate"
-          aria-labelledby="learner-setup-title"
+          className="learner-safety-notice"
+          aria-labelledby="young-maker-guidance"
         >
-          <div>
-            <span className="site-eyebrow">Choose your safe setup</span>
-            <h2 id="learner-setup-title">Who is managing this project?</h2>
-            <p>
-              Everyone follows the same learning path. This choice only changes
-              account, publishing, and contact guidance.
-            </p>
-          </div>
-          <fieldset>
-            <legend className="sr-only">Choose one working setup</legend>
-            {learnerSetups.map((setup) => (
-              <label key={setup.id}>
-                <input
-                  checked={learnerSetup === setup.id}
-                  name="learner-setup"
-                  onChange={() => chooseSetup(setup.id)}
-                  type="radio"
-                  value={setup.id}
-                />
-                <span>{setup.label}</span>
-              </label>
-            ))}
-          </fieldset>
-          <p
-            className="setup-confirmation"
-            role="status"
-            aria-live="polite"
-            aria-atomic="true"
-          >
-            {showSetupConfirmation
-              ? "Your prompts now include the guidance for this setup."
-              : ""}
+          <h2 id="young-maker-guidance">
+            Young makers: work with a trusted adult.
+          </h2>
+          <p>
+            If you are under 13, an adult must conduct the ChatGPT/Codex
+            interactions. Ages 13–17 need parent or guardian permission. Adults
+            should manage accounts, contact information, publishing, purchases,
+            printer use, and electrical safety.
           </p>
         </section>
         <ol className="learn-guide" aria-label="How each lesson works">
@@ -120,7 +67,7 @@ export default function LearnPage() {
               <ul>
                 <li>A supported Mac or Windows computer</li>
                 <li>Access to Codex through the ChatGPT desktop app</li>
-                <li>The safe working setup you selected above</li>
+                <li>A trusted adult&apos;s help when required</li>
               </ul>
             </div>
             <div>
@@ -218,11 +165,7 @@ export default function LearnPage() {
                 </dl>
                 <div className="lesson-prompt">
                   <span>Give this prompt to Codex</span>
-                  <CopyPrompt
-                    {...prompt}
-                    disabled={!learnerSetup}
-                    setupSentence={setupSentence}
-                  />
+                  <CopyPrompt {...prompt} />
                 </div>
                 <aside className="lesson-finish">
                   <div>
@@ -250,12 +193,7 @@ export default function LearnPage() {
           </div>
           <div className="optional-prompt-grid">
             {optionalPromptCards.map((prompt) => (
-              <CopyPrompt
-                key={prompt.title}
-                {...prompt}
-                disabled={!learnerSetup}
-                setupSentence={setupSentence}
-              />
+              <CopyPrompt key={prompt.title} {...prompt} />
             ))}
           </div>
         </section>

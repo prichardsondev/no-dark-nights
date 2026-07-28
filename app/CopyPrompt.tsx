@@ -7,27 +7,21 @@ import {
   copyPromptText,
   copyStateReducer,
 } from "./copy-prompt-feedback";
-import { prependSetupSentence } from "./learner-setup";
 
 export function CopyPrompt({
   title,
   stage,
   purpose,
   prompt,
-  disabled = false,
-  setupSentence = "",
 }: {
   title: string;
   stage: string;
   purpose: string;
   prompt: string;
-  disabled?: boolean;
-  setupSentence?: string;
 }) {
   const [copyState, dispatch] = useReducer(copyStateReducer, "ready");
   const resetTimer = useRef<number | null>(null);
   const feedback = copyFeedback(copyState);
-  const promptWithSetup = prependSetupSentence(prompt, setupSentence);
 
   useEffect(
     () => () => {
@@ -44,7 +38,7 @@ export function CopyPrompt({
       resetTimer.current = null;
     }
 
-    const result = await copyPromptText(promptWithSetup, navigator.clipboard);
+    const result = await copyPromptText(prompt, navigator.clipboard);
     dispatch({ type: result });
 
     if (result === "copied") {
@@ -63,7 +57,7 @@ export function CopyPrompt({
           <h3>{title}</h3>
           <p>{purpose}</p>
         </div>
-        <button disabled={disabled} type="button" onClick={() => void copy()}>
+        <button type="button" onClick={() => void copy()}>
           {feedback.buttonLabel}
         </button>
       </div>
@@ -85,7 +79,7 @@ export function CopyPrompt({
         className="selectable-prompt"
         tabIndex={0}
       >
-        {promptWithSetup}
+        {prompt}
       </pre>
     </article>
   );
