@@ -305,14 +305,21 @@ test("homepage presents three clear paths and Lights belongs to this maker", asy
     assert.match(lightsHtml, /Contact the maker[\s\S]{0,30}↗/i);
     assert.match(lightsHtml, /This opens an email addressed to/i);
     assert.match(lightsHtml, /paul@oddlytrue\.ai/i);
-    assert.match(lightsHtml, /contactHref/i);
-    assert.match(lightsHtml, /app\/maker-profile\.ts/i);
+    assert.doesNotMatch(lightsHtml, /contactHref|app\/maker-profile\.ts/i);
   } else {
     assert.match(
       lightsHtml,
       /An adult-controlled contact method has not been configured yet/i,
     );
   }
+});
+
+test("Learn Step 3 keeps contact personalization guidance off the Lights page", async () => {
+  const { promptCards } = await import("../app/site-data.ts");
+  const stepThree = promptCards.find((card) => card.stage === "Step 3");
+
+  assert.ok(stepThree);
+  assert.match(stepThree.prompt, /contactHref in app\/maker-profile\.ts/i);
 });
 
 test("maker contact links accept safe email or web destinations", async () => {

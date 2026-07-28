@@ -52,11 +52,6 @@ export default function LightsPage() {
                   This opens an email addressed to{" "}
                   <strong>{contactEmail}</strong>.
                 </p>
-                <p>
-                  Making your own site? Ask Codex to replace{" "}
-                  <code>contactHref</code> in <code>app/maker-profile.ts</code>{" "}
-                  with an adult-managed contact.
-                </p>
               </div>
             )}
           </div>

@@ -236,7 +236,7 @@ Ask me for:
 - the site or studio name;
 - the maker name I have permission to publish;
 - a short introduction;
-- an adult-controlled contact link and label;
+- an adult-controlled contact link and label, then set contactHref in app/maker-profile.ts to that approved contact;
 - the homepage words and color direction;
 - each light listing’s image, title, and short description;
 - permitted gallery images and privacy-safe captions.
