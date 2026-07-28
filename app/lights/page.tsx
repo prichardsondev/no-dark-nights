@@ -1,21 +1,27 @@
 import type { Metadata } from "next";
 import { PageIntro, SiteShell } from "../SiteChrome";
-import { lightListings, makerProfile } from "../maker-profile";
+import {
+  isValidContactHref,
+  lightListings,
+  makerProfile,
+} from "../maker-profile";
 
 export const metadata: Metadata = {
   title: "Lights | No Dark Nights",
   description:
-    "See example lithophane lights from the owner of this No Dark Nights site and learn how to contact the maker directly.",
+    "See lithophane lights from this maker and use an adult-controlled contact method to ask about creating one.",
 };
 
 export default function LightsPage() {
+  const hasContactMethod = isValidContactHref(makerProfile.contactHref);
+
   return (
     <SiteShell>
       <main className="content-page site-width">
         <PageIntro
           eyebrow="Lights from this maker"
           title={`Made by ${makerProfile.studioName}.`}
-          description="This page belongs to the owner of this site. It is not a marketplace or a directory of other makers."
+          description="See something you like? Contact the maker to ask about creating one from your photograph or artwork."
         />
 
         <section className="maker-profile" aria-labelledby="maker-name">
@@ -25,7 +31,7 @@ export default function LightsPage() {
           </div>
           <div>
             <p>{makerProfile.introduction}</p>
-            {makerProfile.contactHref ? (
+            {hasContactMethod ? (
               <a
                 href={makerProfile.contactHref}
                 rel="noreferrer"
@@ -35,7 +41,7 @@ export default function LightsPage() {
               </a>
             ) : (
               <p className="contact-not-set">
-                This maker has not added an adult-controlled contact link yet.
+                An adult-controlled contact method has not been configured yet.
               </p>
             )}
           </div>
@@ -44,12 +50,8 @@ export default function LightsPage() {
         <section className="lights-section" aria-labelledby="available-lights">
           <div className="section-bar">
             <div>
-              <span className="site-eyebrow">Sample offerings</span>
-              <h2 id="available-lights">Lights this maker can offer.</h2>
+              <h2 id="available-lights">Lights I can make</h2>
             </div>
-            <p className="example-note">
-              These are example listings until the site owner replaces them.
-            </p>
           </div>
           <div className="lights-grid">
             {lightListings.map((light) => (
@@ -57,26 +59,34 @@ export default function LightsPage() {
                 <div className="light-listing-image">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={light.image} alt={light.alt} />
-                  {light.isExample && <span>Example listing</span>}
                 </div>
                 <div className="light-listing-copy">
-                  <div>
-                    <h3>{light.title}</h3>
-                    <p>{light.description}</p>
-                  </div>
-                  {light.offerLabel && <strong>{light.offerLabel}</strong>}
+                  <h3>{light.title}</h3>
+                  <p>{light.description}</p>
                 </div>
               </article>
             ))}
           </div>
         </section>
 
-        <aside className="maker-arrangements" aria-label="Buying and gifts">
-          <strong>Talk directly with this maker.</strong>
+        <aside className="maker-arrangements" aria-labelledby="contact-title">
+          <strong id="contact-title">Interested in a light?</strong>
           <p>
-            No Dark Nights does not provide checkout or process payments.
-            Availability, gifts, prices, pickup, shipping, and payment—when
-            applicable—are arranged directly with the adult owner of this site.
+            Contact the adult who manages this site. There is no online
+            checkout. Availability, cost, pickup, shipping, and payment—when
+            applicable—are arranged directly with the maker.
+          </p>
+        </aside>
+
+        <aside className="maker-safety" aria-labelledby="maker-safety-title">
+          <strong id="maker-safety-title">For parents and young makers</strong>
+          <p>
+            Use a parent, guardian, teacher, school, makerspace, or other trusted
+            adult&apos;s contact method. Never publish a child&apos;s personal
+            email, phone number, full name, school details, or home address.
+            Adults should arrange pickup or shipping using a safe public
+            location, approved organization address, business address, or post
+            office box—not a child&apos;s home address.
           </p>
         </aside>
       </main>

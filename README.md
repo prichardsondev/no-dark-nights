@@ -145,14 +145,14 @@ Edit [`app/maker-profile.ts`](app/maker-profile.ts) to change:
 - the studio and maker names;
 - the short maker introduction;
 - the adult-controlled contact link and label;
-- listing images, titles, descriptions, and optional price or `Gift` labels.
+- listing images, titles, and descriptions.
 
-The bundled listings are marked as examples. Replace them before presenting
-them as current offerings. Each deployed website represents its own maker; the
-Lights page is not a marketplace or maker directory.
+Replace the bundled listings before presenting them as current work. Each
+deployed website represents its own maker; the Lights page is not a marketplace
+or maker directory.
 
 Never add a child’s personal email address, phone number, school, or home
-address. Use a contact page or account controlled by a trusted adult.
+address. Use a `mailto:` link or contact page controlled by a trusted adult.
 
 Before publishing, replace or remove every sample listing and have a trusted
 adult review all maker information, contact links, photographs, and captions.

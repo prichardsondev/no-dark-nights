@@ -246,10 +246,11 @@ test("Studio explains the physical tools and Resources lists safe examples", asy
 });
 
 test("homepage presents three clear paths and Lights belongs to this maker", async () => {
-  const [homeResponse, lightsResponse, makerData] = await Promise.all([
+  const [homeResponse, lightsResponse, makerData, profileModule] = await Promise.all([
     render("/"),
     render("/lights"),
     readFile(new URL("../app/maker-profile.ts", import.meta.url), "utf8"),
+    import("../app/maker-profile.ts"),
   ]);
   assert.equal(homeResponse.status, 200);
   assert.equal(lightsResponse.status, 200);
@@ -267,18 +268,50 @@ test("homepage presents three clear paths and Lights belongs to this maker", asy
   );
   assert.match(homeHtml, /Lights[\s\S]*Studio[\s\S]*Learn/i);
 
-  assert.match(lightsHtml, /This page belongs to the owner of this site/i);
-  assert.match(lightsHtml, /not a marketplace or a directory/i);
-  assert.match(lightsHtml, /Example listing/i);
-  assert.match(lightsHtml, /example listings until the site owner replaces them/i);
-  assert.match(lightsHtml, /arranged directly with the adult owner of this site/i);
+  assert.match(lightsHtml, /Lights I can make/i);
+  assert.match(
+    lightsHtml,
+    /Contact the maker to ask about creating one from your photograph or artwork/i,
+  );
+  assert.doesNotMatch(lightsHtml, /Example listing/i);
+  assert.doesNotMatch(lightsHtml, />Gift</i);
+  assert.match(lightsHtml, /Interested in a light\?/i);
+  assert.match(
+    lightsHtml,
+    /Availability, cost, pickup, shipping, and payment—when applicable—are arranged directly with the maker/i,
+  );
+  assert.match(lightsHtml, /For parents and young makers/i);
+  assert.match(lightsHtml, /Never publish a child(?:&#x27;|')s personal email/i);
+  assert.match(lightsHtml, /not a child(?:&#x27;|')s home address/i);
   assert.doesNotMatch(lightsHtml, /<form|<input|<button/i);
 
   assert.match(makerData, /PERSONALIZE THIS FILE FIRST/);
   assert.match(makerData, /studioName/);
   assert.match(makerData, /contactHref/);
-  assert.match(makerData, /isExample:\s*true/);
+  assert.match(makerData, /contactLabel:\s*"Contact the maker"/);
+  assert.doesNotMatch(makerData, /nodarknights\.com/i);
+  assert.doesNotMatch(makerData, /Example listing|offerLabel:\s*"Gift"/i);
   assert.match(makerData, /Never put a child's personal email address/i);
+
+  if (profileModule.isValidContactHref(profileModule.makerProfile.contactHref)) {
+    assert.match(lightsHtml, /Contact the maker[\s\S]{0,30}↗/i);
+  } else {
+    assert.match(
+      lightsHtml,
+      /An adult-controlled contact method has not been configured yet/i,
+    );
+  }
+});
+
+test("maker contact links accept safe email or web destinations", async () => {
+  const { isValidContactHref } = await import("../app/maker-profile.ts");
+
+  assert.equal(isValidContactHref("mailto:adult@example.org"), true);
+  assert.equal(isValidContactHref("https://example.org/contact"), true);
+  assert.equal(isValidContactHref(""), false);
+  assert.equal(isValidContactHref("mailto:not-an-address"), false);
+  assert.equal(isValidContactHref("javascript:alert(1)"), false);
+  assert.equal(isValidContactHref("http://example.org/contact"), false);
 });
 
 test("keeps STL generation local and removes starter UI", async () => {

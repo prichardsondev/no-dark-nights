@@ -94,7 +94,7 @@ export const learningSteps = [
     stopPoints:
       "Stop before publishing contact details or photographs; a trusted adult must review them.",
     inspect:
-      "Check the homepage, Lights, Gallery, phone layout, and every remaining “Example listing” label.",
+      "Check the homepage, Lights, Gallery, phone layout, and every image, title, and description.",
     deliverable: "A personalized site with reviewed maker information.",
     reflection:
       "How does your version show who made it without revealing private information?",
@@ -236,7 +236,7 @@ Ask me for:
 - a short introduction;
 - an adult-controlled contact link and label;
 - the homepage words and color direction;
-- each light listing’s image, title, short description, and optional price or “Gift” label;
+- each light listing’s image, title, and short description;
 - permitted gallery images and privacy-safe captions.
 
 Keep maker and light information in app/maker-profile.ts. Clearly mark anything I have not replaced as a sample. Before any public release, require me to replace every sample listing or intentionally remove it.
