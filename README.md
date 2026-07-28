@@ -159,10 +159,11 @@ Edit [`app/maker-profile.ts`](app/maker-profile.ts) to change:
 - the short maker introduction;
 - listing images, titles, and descriptions.
 
-Contact is disabled for learner sites. An adult site manager may later set the
-`MAKER_CONTACT_HREF` and `MAKER_CONTACT_LABEL` hosting environment values. Do
-not ask a learner for a full name, personal email, phone number, address,
-school, social account, contact link, or a parent’s email.
+Contact is disabled in repository clones. An adult maker may optionally set
+adult-managed contact, and a school, library, or makerspace may optionally set
+organization-managed contact, using the `MAKER_CONTACT_HREF` and
+`MAKER_CONTACT_LABEL` hosting environment values. Young-maker projects do not
+request or publish the young maker’s or parent’s contact information.
 
 Replace the bundled listings before presenting them as current work. Each
 deployed website represents its own maker; the Lights page is not a marketplace

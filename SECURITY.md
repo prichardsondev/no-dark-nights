@@ -3,9 +3,8 @@
 ## Report a problem
 
 Please do not open a public issue for a vulnerability, exposed credential, or
-private photograph. Use GitHub's private vulnerability reporting for
-`prichardsondev/no-dark-nights` when available, or contact the repository owner
-privately through the GitHub profile.
+private photograph. Use GitHub's enabled private vulnerability reporting for
+`prichardsondev/no-dark-nights`.
 
 Include the affected page or file, what you observed, and the smallest safe
 steps needed to reproduce it. Do not attach someone else's private image.
@@ -28,8 +27,9 @@ steps needed to reproduce it. Do not attach someone else's private image.
 ## Safe classroom use
 
 - Use neutral or permission-cleared images for lessons and tests.
-- Contact is disabled for learner sites. Only an adult site manager may later
-  configure an adult-controlled contact method.
+- Contact is disabled in repository clones. Only an adult maker or an
+  organization manager may deliberately configure an appropriate managed
+  contact method.
 - Do not include names, school details, addresses, or location metadata.
 - Use a private Sites review before making a student project public.
 - Ask a trusted adult to review publishing, purchases, electrical hardware,

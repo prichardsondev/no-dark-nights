@@ -7,21 +7,27 @@ import {
   copyPromptText,
   copyStateReducer,
 } from "./copy-prompt-feedback";
+import { prependSetupSentence } from "./learner-setup";
 
 export function CopyPrompt({
   title,
   stage,
   purpose,
   prompt,
+  disabled = false,
+  setupSentence = "",
 }: {
   title: string;
   stage: string;
   purpose: string;
   prompt: string;
+  disabled?: boolean;
+  setupSentence?: string;
 }) {
   const [copyState, dispatch] = useReducer(copyStateReducer, "ready");
   const resetTimer = useRef<number | null>(null);
   const feedback = copyFeedback(copyState);
+  const promptWithSetup = prependSetupSentence(prompt, setupSentence);
 
   useEffect(
     () => () => {
@@ -38,7 +44,7 @@ export function CopyPrompt({
       resetTimer.current = null;
     }
 
-    const result = await copyPromptText(prompt, navigator.clipboard);
+    const result = await copyPromptText(promptWithSetup, navigator.clipboard);
     dispatch({ type: result });
 
     if (result === "copied") {
@@ -57,11 +63,16 @@ export function CopyPrompt({
           <h3>{title}</h3>
           <p>{purpose}</p>
         </div>
-        <button type="button" onClick={() => void copy()}>
+        <button disabled={disabled} type="button" onClick={() => void copy()}>
           {feedback.buttonLabel}
         </button>
       </div>
-      <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+      <p
+        className="sr-only"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         {feedback.announcement}
       </p>
       {copyState === "failed" && (
@@ -74,7 +85,7 @@ export function CopyPrompt({
         className="selectable-prompt"
         tabIndex={0}
       >
-        {prompt}
+        {promptWithSetup}
       </pre>
     </article>
   );

@@ -1874,12 +1874,14 @@ input[type="range"]:disabled {
   margin-top: 2px;
 }
 
-.learner-safety-gate ul {
+.learner-safety-gate .setup-confirmation {
   grid-column: 1 / -1;
   margin: 0;
-  padding: 18px 18px 0 36px;
+  min-height: 20px;
+  padding-top: 14px;
   border-top: 1px solid var(--line);
-  columns: 2;
+  color: #5f492f;
+  font-weight: 700;
 }
 
 .gallery-safety,
@@ -2312,6 +2314,12 @@ input[type="range"]:disabled {
   cursor: pointer;
   font-size: 10px;
   font-weight: 800;
+}
+
+.prompt-card button:disabled {
+  border-color: rgba(23, 33, 44, 0.25);
+  color: rgba(23, 33, 44, 0.44);
+  cursor: not-allowed;
 }
 
 .prompt-card pre,
@@ -2969,9 +2977,8 @@ input[type="range"]:disabled {
     padding: 22px 18px;
   }
 
-  .learner-safety-gate ul {
+  .learner-safety-gate .setup-confirmation {
     grid-column: auto;
-    columns: 1;
   }
 
   .setup-ready-grid > div + div {

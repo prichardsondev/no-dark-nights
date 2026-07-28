@@ -30,6 +30,9 @@ printable STL, and finished lithophane night light.
 - Keep maker identity and light listings in `app/maker-profile.ts`. Learner
   clones default to no contact; only an adult site manager may configure contact
   through the hosting environment.
+- Keep one shared eight-step curriculum. Learn setup choices stay in React state
+  only and add one short account, publishing, and contact sentence when a prompt
+  is copied.
 - Treat `/lights` as this site owner’s page, never as a marketplace or maker
   directory. Do not publish a child’s personal contact information.
 - Keep the real `nodarknights.com` domain untouched during private review work.

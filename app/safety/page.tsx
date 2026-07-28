@@ -44,8 +44,9 @@ export default function SafetyPage() {
                 contact information.
               </li>
               <li>
-                Contact is disabled for learner sites. An adult site manager may
-                add an adult-controlled contact method later.
+                Contact is disabled in repository clones. An adult maker or
+                organization manager may deliberately add an appropriate managed
+                contact method later.
               </li>
               <li>
                 Adults control contact, purchasing, publication, and public
@@ -72,11 +73,11 @@ export default function SafetyPage() {
               attach a private photograph or a child&apos;s contact information.
             </p>
             <a
-              href={`${REPOSITORY_URL}/security`}
+              href={`${REPOSITORY_URL}/security/advisories/new`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              Open private reporting guidance ↗
+              Report a vulnerability privately ↗
             </a>
           </section>
         </div>

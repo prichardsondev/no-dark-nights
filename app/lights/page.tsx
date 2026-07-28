@@ -44,8 +44,9 @@ export default function LightsPage() {
               </a>
             ) : (
               <p className="contact-not-set">
-                Contact is disabled for learner sites. An adult site manager may
-                add an adult-controlled contact method later.
+                This learner site does not publish contact information. Please
+                contact the maker through their parent, guardian, teacher, or
+                program.
               </p>
             )}
             {contactEmail && (
