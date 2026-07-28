@@ -173,7 +173,7 @@ export function createFitCouponGeometry(
 }
 
 export function createFitFinderParts(
-  widths: readonly [number, number, number],
+  widths: readonly number[],
   settings: Pick<
     LithophaneSettings,
     "slotDepth" | "adapterThickness"
@@ -184,7 +184,8 @@ export function createFitFinderParts(
       2 * (Math.max(2, slotWidth / 2) + 5 + FIT_COUPON_OUTER_MARGIN),
   );
   const totalWidth =
-    couponWidths.reduce((sum, width) => sum + width, 0) + FIT_COUPON_GAP * 2;
+    couponWidths.reduce((sum, width) => sum + width, 0) +
+    FIT_COUPON_GAP * Math.max(0, widths.length - 1);
   let cursor = -totalWidth / 2;
 
   return widths.map((slotWidth, index) => {
@@ -215,6 +216,6 @@ export function createFitFinderParts(
   });
 }
 
-export function fitFinderFilename(widths: readonly [number, number, number]) {
+export function fitFinderFilename(widths: readonly number[]) {
   return `base-fit-finder-${widths.map(formatSlotWidth).join("-")}.stl`;
 }

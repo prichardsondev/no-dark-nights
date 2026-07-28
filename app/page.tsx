@@ -23,8 +23,9 @@ export default function Home() {
               <span>01</span>
               <strong>Make an STL</strong>
               <p>
-                Turn a photograph into a printable lithophane STL. The photo
-                stays on this device. No coding or AI agent is required.
+                Turn a photograph into a printable lithophane night-light STL.
+                The photo stays on this device. No coding or AI agent is
+                required.
               </p>
               <i>Open the Studio</i>
             </Link>
@@ -33,8 +34,8 @@ export default function Home() {
               <strong>Learn &amp; Build</strong>
               <p>
                 Follow the guided path to use Codex to build, personalize, test,
-                and publish your own version—with an adult involved when
-                required.
+                and publish your own version of the website—with an adult
+                involved when required.
               </p>
               <i>Start Learning</i>
             </Link>

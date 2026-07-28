@@ -193,16 +193,25 @@ function BaseFitLab({
     FIT_FINDER_DEFAULT_SPACING,
   );
   const [status, setStatus] = useState<string | null>(null);
+  const [includedCoupons, setIncludedCoupons] = useState([true, true, true]);
   const normalized = useMemo(
     () => normalizeFitFinder(Number(centerInput), spacing),
     [centerInput, spacing],
   );
+  const selectedWidths = normalized.widths.filter(
+    (_, index) => includedCoupons[index],
+  );
+  const selectedCount = selectedWidths.length;
 
   const downloadFitFinder = () => {
+    if (selectedCount === 0) {
+      setStatus("Choose at least one coupon to include in the download.");
+      return;
+    }
     setCenterInput(normalized.center.toString());
     let parts: ReturnType<typeof createFitFinderParts> = [];
     try {
-      parts = createFitFinderParts(normalized.widths, settings);
+      parts = createFitFinderParts(selectedWidths, settings);
       const group = new THREE.Group();
       for (const part of parts) {
         group.add(new THREE.Mesh(part.baseGeometry));
@@ -215,10 +224,10 @@ function BaseFitLab({
           : new TextEncoder().encode(result);
       downloadBlob(
         new Blob([bytes.slice().buffer], { type: "model/stl" }),
-        fitFinderFilename(normalized.widths),
+        fitFinderFilename(selectedWidths),
       );
       setStatus(
-        `Fit Finder ready: ${normalized.widths.map(formatSlotWidth).join(", ")} mm.`,
+        `Fit Finder ready: ${selectedWidths.map(formatSlotWidth).join(", ")} mm.`,
       );
     } catch {
       setStatus(
@@ -315,10 +324,16 @@ function BaseFitLab({
             type="button"
             className="generate-button fit-download"
             onClick={downloadFitFinder}
+            disabled={selectedCount === 0}
           >
-            Download 3-Size Fit Finder
+            Download {selectedCount}-Size Fit Finder
             <span aria-hidden="true">→</span>
           </button>
+          {selectedCount === 0 && (
+            <p className="fit-correction" role="status">
+              Choose at least one coupon to include in the download.
+            </p>
+          )}
           {status && (
             <p className="fit-status" role="status" aria-live="polite">
               {status}
@@ -330,16 +345,39 @@ function BaseFitLab({
           className="fit-coupon-preview"
           aria-label="Fit Finder coupon preview"
         >
-          <p>One STL · three separate labeled pieces</p>
+          <p>
+            One STL · {selectedCount} separate labeled{" "}
+            {selectedCount === 1 ? "piece" : "pieces"}
+          </p>
           <small>
             Each printed number is the intended internal slot width in
-            millimeters.
+            millimeters. Already printed one of these sizes? Uncheck it to leave
+            it out of the STL.
           </small>
           <div className="fit-coupon-row">
-            {normalized.widths.map((width) => (
-              <div className="fit-coupon" key={width}>
+            {normalized.widths.map((width, index) => (
+              <div
+                className={`fit-coupon ${includedCoupons[index] ? "" : "excluded"}`}
+                key={width}
+              >
                 <span>{formatSlotWidth(width)}</span>
                 <i aria-hidden="true" />
+                <label className="coupon-inclusion">
+                  <input
+                    type="checkbox"
+                    checked={includedCoupons[index]}
+                    onChange={(event) => {
+                      const checked = event.target.checked;
+                      setIncludedCoupons((current) =>
+                        current.map((included, itemIndex) =>
+                          itemIndex === index ? checked : included,
+                        ),
+                      );
+                      setStatus(null);
+                    }}
+                  />
+                  Include in download
+                </label>
                 <button
                   type="button"
                   onClick={() => {
@@ -375,7 +413,8 @@ function BaseFitLab({
               or stress.
             </li>
             <li>
-              Use that labeled size in Studio, then download the full model.
+              Uncheck sizes you already printed, or use the best labeled size in
+              Studio and download the full model.
             </li>
           </ol>
           <ul>

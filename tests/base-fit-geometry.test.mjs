@@ -126,6 +126,24 @@ test("Fit Finder defaults to 16.0, 16.5, and 17.0 mm", () => {
   );
 });
 
+test("a repeat calibration can omit an already printed coupon", () => {
+  const parts = createFitFinderParts([15.5, 16]);
+  assert.equal(parts.length, 2);
+  assert.deepEqual(
+    parts.map((part) => part.slotWidth),
+    [15.5, 16],
+  );
+  assert.ok(
+    parts[0].baseGeometry.boundingBox.max.x <
+      parts[1].baseGeometry.boundingBox.min.x,
+  );
+  assert.equal(fitFinderFilename([15.5, 16]), "base-fit-finder-15.5-16.0.stl");
+  for (const part of parts) {
+    part.baseGeometry.dispose();
+    part.labelGeometry.dispose();
+  }
+});
+
 test("Fit Finder validates NaN, negative, boundary, and alternate spacing values", () => {
   const invalid = normalizeFitFinder(Number.NaN, 0.5);
   assert.equal(invalid.center, 16.5);

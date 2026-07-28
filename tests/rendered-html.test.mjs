@@ -64,6 +64,8 @@ test("server-renders the No Dark Nights home and studio", async () => {
   assert.match(homeHtml, /See the Lights/i);
   assert.doesNotMatch(homeHtml, /Buy a Light/i);
   assert.match(homeHtml, /No coding or AI agent is required/i);
+  assert.match(homeHtml, /printable lithophane night-light STL/i);
+  assert.match(homeHtml, /your own version of the website/i);
   assert.match(
     homeHtml,
     /personalized, tested, and published lithophane website/i,
@@ -91,10 +93,12 @@ test("server-renders the No Dark Nights home and studio", async () => {
   );
   assert.match(studioHtml, /id="base-fit-lab"/i);
   assert.match(studioHtml, /Base Fit Lab/i);
-  assert.match(studioHtml, /Download 3-Size Fit Finder/i);
+  assert.match(studioHtml, /Download[\s\S]*3[\s\S]*-Size Fit Finder/i);
+  assert.equal((studioHtml.match(/Include in download/g) ?? []).length, 3);
+  assert.match(studioHtml, /Already printed one of these sizes/i);
   assert.doesNotMatch(
     studioHtml,
-    /<button(?=[^>]*disabled)[^>]*>\s*Download 3-Size Fit Finder/i,
+    /<button(?=[^>]*disabled)[^>]*>\s*Download[\s\S]*3[\s\S]*-Size Fit Finder/i,
   );
   assert.match(studioHtml, /16\.0[\s\S]*16\.5[\s\S]*17\.0/i);
   assert.match(studioHtml, /same rounded slot, 5 mm entry lips/i);
