@@ -116,14 +116,33 @@ test("major pages have route-specific metadata and repository links", async () =
   assert.match(learnHtml, /Give this prompt to Codex/i);
   assert.match(learnHtml, /You’re finished when/i);
   assert.match(learnHtml, /Before Step 1/i);
-  assert.match(learnHtml, /Set Up Your Tools/i);
+  assert.match(learnHtml, /Get ready/i);
+  assert.match(learnHtml, /Access to Codex through the ChatGPT desktop app/i);
+  assert.match(learnHtml, /An adult(?:&apos;|&#x27;|')s help if you are under 13/i);
+  assert.match(learnHtml, /Download and install the official ChatGPT desktop app/i);
+  assert.match(learnHtml, /Sign in and open Codex/i);
+  assert.match(learnHtml, /Return here and begin Step 1/i);
+  assert.match(learnHtml, /Download ChatGPT desktop/i);
+  assert.match(learnHtml, /https:\/\/chatgpt\.com\/download\//i);
+  assert.match(
+    learnHtml,
+    /href="#school-lab-setup"[^>]*>Educator or school lab\? View managed setup options\./i,
+  );
+  const setupHtml = learnHtml.match(
+    /<section class="setup-section"[\s\S]*?<\/section>/i,
+  )?.[0];
+  assert.ok(setupHtml, "Learn page should render the beginner setup section");
+  assert.doesNotMatch(setupHtml, /Amazon Bedrock|AWS credentials|GitHub|Sites/i);
+  assert.match(learnHtml, /For educators running a school lab/i);
+  assert.ok(
+    learnHtml.indexOf("For educators running a school lab") >
+      learnHtml.indexOf("Optional — after step eight"),
+    "Managed school-lab setup should appear after the numbered learning path",
+  );
   assert.match(learnHtml, /ChatGPT is not intended for children under 13/i);
   assert.match(learnHtml, /ages 13–17 need permission from a parent or guardian/i);
   assert.match(learnHtml, /adult must conduct the direct interaction/i);
-  assert.match(learnHtml, /Codex availability and usage can depend on your account/i);
-  assert.match(learnHtml, /Individual learner/i);
-  assert.match(learnHtml, /School-managed lab/i);
-  assert.match(learnHtml, /instructor-managed Amazon Bedrock/i);
+  assert.match(learnHtml, /Amazon Bedrock can provide supported OpenAI models/i);
   assert.match(
     learnHtml,
     /https:\/\/learn\.chatgpt\.com\/docs\/amazon-bedrock/i,
@@ -131,11 +150,7 @@ test("major pages have route-specific metadata and repository links", async () =
   assert.match(learnHtml, /Students must never paste AWS credentials/i);
   assert.match(learnHtml, /limited, revocable student access/i);
   assert.match(learnHtml, /Sites are not available through Bedrock-only authentication/i);
-  assert.match(
-    learnHtml,
-    /Working Codex access through ChatGPT or an instructor-managed Amazon Bedrock environment/i,
-  );
-  assert.match(learnHtml, /approved teacher\/school repository/i);
+  assert.match(learnHtml, /approved GitHub repository are valid completion points/i);
   assert.match(learnHtml, /Optional — after step eight/i);
   assert.match(learnHtml, /Keep improving/i);
   assert.match(learnHtml, /The eight-step path is complete/i);

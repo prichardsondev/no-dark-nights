@@ -49,163 +49,41 @@ export default function LearnPage() {
         <section className="setup-section" aria-labelledby="setup-title">
           <div className="setup-heading">
             <span className="site-eyebrow">Before Step 1</span>
-            <h2 id="setup-title">Set Up Your Tools</h2>
-            <p>
-              Codex is OpenAI&apos;s coding agent: you describe a goal, and it
-              can read, explain, and change a project with you. Choose the
-              individual path or a school-managed lab prepared by an instructor.
-            </p>
-            <div className="setup-links">
+            <h2 id="setup-title">Get ready</h2>
+          </div>
+          <div className="setup-ready-grid">
+            <div>
+              <h3>You&apos;ll need</h3>
+              <ul>
+                <li>A supported Mac or Windows computer</li>
+                <li>Access to Codex through the ChatGPT desktop app</li>
+                <li>An adult&apos;s help if you are under 13</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Getting started</h3>
+              <ol>
+                <li>Download and install the official ChatGPT desktop app.</li>
+                <li>Sign in and open Codex.</li>
+                <li>Return here and begin Step 1.</li>
+              </ol>
               <a
+                className="setup-primary-action"
                 href="https://chatgpt.com/download/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Download the official ChatGPT app ↗
-              </a>
-              <a
-                href="https://help.openai.com/en/articles/20001276/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                OpenAI desktop setup help ↗
+                Download ChatGPT desktop ↗
               </a>
             </div>
           </div>
-          <div className="codex-paths" aria-label="Two ways to access Codex">
-            <article>
-              <span>Individual learner</span>
-              <h3>Sign in with ChatGPT</h3>
-              <p>
-                Install the official ChatGPT desktop app for macOS or Windows,
-                sign in, and select Codex. Availability depends on the account,
-                plan, workspace, age requirements, and administrator.
-              </p>
-            </article>
-            <article>
-              <span>School-managed lab</span>
-              <h3>Use instructor-managed Amazon Bedrock</h3>
-              <p>
-                A teacher or administrator can prepare local Codex to use
-                supported OpenAI models through Amazon Bedrock, with managed
-                AWS sign-in and spending controls.
-              </p>
-              <p>
-                Students must never paste AWS credentials into prompts, source
-                files, committed <code>.env</code> files, screenshots, or
-                GitHub. Schools should provide limited, revocable student access
-                instead of root credentials or permanent shared keys.
-              </p>
-              <a
-                href="https://learn.chatgpt.com/docs/amazon-bedrock"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Official Amazon Bedrock setup guidance ↗
-              </a>
-            </article>
-          </div>
-          <div className="bedrock-boundary">
-            <strong>What works in a Bedrock classroom</strong>
-            <p>
-              Bedrock-backed Codex supports the local development workflow:
-              students can complete the local website, Git, an approved GitHub
-              repository, Studio, testing, and printing. OpenAI-hosted services
-              such as Sites are not available through Bedrock-only
-              authentication. Publishing is optional; an instructor with
-              eligible ChatGPT and Sites access may publish an approved preview
-              separately.
-            </p>
-          </div>
-          <div className="setup-grid">
-            <article>
-              <span>01</span>
-              <h3>Confirm your access</h3>
-              <p>
-                Individual learners select <strong>Continue to sign in</strong>{" "}
-                and then choose <strong>Codex</strong>. In a school lab, the
-                instructor confirms that the managed Bedrock environment is
-                ready. Start one local Codex task to check access.
-              </p>
-              <p>
-                Codex availability and usage can depend on your account, plan,
-                workspace, and administrator. This project does not promise
-                free access.
-              </p>
-            </article>
-            <article>
-              <span>02</span>
-              <h3>Choose a project folder</h3>
-              <p>
-                Make one easy-to-find folder for your projects. Codex will ask
-                before it opens folders or uses permissions. Read each request;
-                do not approve something you do not understand.
-              </p>
-              <p>
-                The Codex command-line tool or editor extension are optional
-                advanced choices. You do not need them for this path.
-              </p>
-            </article>
-            <article>
-              <span>03</span>
-              <h3>Know when an adult helps</h3>
-              <p>
-                An adult should handle accounts, installation, permissions,
-                publishing, purchases, and printer or electrical decisions
-                when appropriate.
-              </p>
-              <p>
-                Follow your school&apos;s or family&apos;s rules even when they
-                are stricter than this guide.
-              </p>
-            </article>
-          </div>
-          <div className="age-guidance">
-            <h3>Official age guidance</h3>
-            <p>
-              ChatGPT is not intended for children under 13. Young people ages
-              13–17 need permission from a parent or guardian. In an educational
-              activity for a child under 13, the adult must conduct the direct
-              interaction with ChatGPT.
-            </p>
-            <a
-              href="https://help.openai.com/en/articles/8313401-is-chatgpt-safe-for-all-ages"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Read OpenAI&apos;s age guidance ↗
-            </a>
-          </div>
-          <div className="readiness-card">
-            <div>
-              <h3>Ready for Step 1?</h3>
-              <p>Check these with an adult or teacher when appropriate.</p>
-            </div>
-            <ul>
-              <li>A supported Mac or Windows computer</li>
-              <li>
-                Working Codex access through ChatGPT or an instructor-managed
-                Amazon Bedrock environment
-              </li>
-              <li>A trusted adult for account or publishing decisions</li>
-              <li>An easy-to-find project folder</li>
-              <li>
-                A learner GitHub account or approved teacher/school repository
-                for Step 4
-              </li>
-              <li>Sites access, or permission to stop at local + GitHub</li>
-              <li>A photograph you have permission to use</li>
-              <li>A compatible printer and slicer for the physical stages</li>
-            </ul>
-            <p className="setup-trouble">
-              If Codex is missing, sign out and back in, update the desktop app,
-              check your plan or workspace access, or ask the instructor to
-              check the managed Bedrock environment. Ask a parent, teacher, or
-              workspace administrator instead of guessing. You can still use
-              the Studio to make an STL without Codex. See the{" "}
-              <Link href="/resources">parts and tools we use</Link>.
-            </p>
-          </div>
+          <p className="setup-sequence" aria-label="Install ChatGPT, then open Codex, then start Step 1">
+            Install ChatGPT <span aria-hidden="true">→</span> Open Codex{" "}
+            <span aria-hidden="true">→</span> Start Step 1
+          </p>
+          <a className="educator-setup-link" href="#school-lab-setup">
+            Educator or school lab? View managed setup options.
+          </a>
         </section>
         <section className="learn-start">
           <div>
@@ -290,6 +168,114 @@ export default function LearnPage() {
             {optionalPromptCards.map((prompt) => (
               <CopyPrompt key={prompt.title} {...prompt} />
             ))}
+          </div>
+        </section>
+        <section
+          id="school-lab-setup"
+          className="school-lab-section"
+          aria-labelledby="school-lab-title"
+        >
+          <div className="school-lab-heading">
+            <span className="site-eyebrow">Managed setup options</span>
+            <h2 id="school-lab-title">For educators running a school lab</h2>
+            <p>
+              A teacher or administrator can prepare a managed local Codex
+              environment for learners who cannot use the standard ChatGPT
+              sign-in path.
+            </p>
+          </div>
+          <div className="school-lab-grid">
+            <article>
+              <h3>Prepare managed access</h3>
+              <ul>
+                <li>
+                  Amazon Bedrock can provide supported OpenAI models through
+                  school-managed AWS sign-in and spending controls.
+                </li>
+                <li>
+                  An instructor or administrator should prepare and test the
+                  environment before learners begin.
+                </li>
+                <li>
+                  Provide limited, revocable student access—never root
+                  credentials or permanent shared keys.
+                </li>
+              </ul>
+              <a
+                href="https://learn.chatgpt.com/docs/amazon-bedrock"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Official Amazon Bedrock setup guidance ↗
+              </a>
+            </article>
+            <article>
+              <h3>Protect credentials</h3>
+              <ul>
+                <li>
+                  Students must never paste AWS credentials into prompts, source
+                  files, committed <code>.env</code> files, screenshots, or
+                  GitHub.
+                </li>
+                <li>
+                  Keep credentials out of project folders and revoke access when
+                  a class or lab session ends.
+                </li>
+                <li>
+                  Follow school privacy, account, permission, and spending
+                  policies.
+                </li>
+              </ul>
+            </article>
+            <article>
+              <h3>What students can complete</h3>
+              <ul>
+                <li>
+                  Bedrock-backed Codex supports the local website, Git, an
+                  approved GitHub repository, Studio, testing, and printing.
+                </li>
+                <li>
+                  A local project and approved GitHub repository are valid
+                  completion points.
+                </li>
+                <li>
+                  The Studio can make an STL without Codex. See the{" "}
+                  <Link href="/resources">parts and tools we use</Link>.
+                </li>
+              </ul>
+            </article>
+            <article>
+              <h3>Plan publishing separately</h3>
+              <ul>
+                <li>
+                  OpenAI-hosted services such as Sites are not available through
+                  Bedrock-only authentication.
+                </li>
+                <li>Publishing is optional for this learning path.</li>
+                <li>
+                  An instructor with eligible ChatGPT and Sites access may
+                  review and publish an approved preview separately.
+                </li>
+              </ul>
+            </article>
+          </div>
+          <div className="school-lab-note">
+            <h3>Age, consent, and adult responsibilities</h3>
+            <p>
+              ChatGPT is not intended for children under 13. Young people ages
+              13–17 need permission from a parent or guardian. In an educational
+              activity for a child under 13, the adult must conduct the direct
+              interaction with ChatGPT. Adults should also manage installation,
+              permissions, publishing, purchases, printer supervision, and
+              light safety when appropriate.
+            </p>
+            <a
+              href="https://help.openai.com/en/articles/8313401-is-chatgpt-safe-for-all-ages"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Read OpenAI&apos;s age guidance ↗
+            </a>
           </div>
         </section>
         <section className="educator-section" aria-labelledby="educators-title">
