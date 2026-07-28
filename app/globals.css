@@ -1836,6 +1836,71 @@ input[type="range"]:disabled {
   border-top: 1px solid var(--line);
 }
 
+.codex-paths {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+}
+
+.codex-paths article {
+  padding: 26px 30px;
+  border-right: 1px solid var(--line);
+}
+
+.codex-paths article:last-child {
+  border-right: 0;
+}
+
+.codex-paths article > span {
+  color: #9a784c;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.codex-paths h3 {
+  margin: 10px 0;
+  font-size: 17px;
+}
+
+.codex-paths p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.codex-paths p + p {
+  margin-top: 10px;
+}
+
+.codex-paths a {
+  display: inline-block;
+  margin-top: 14px;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 780;
+  text-underline-offset: 3px;
+}
+
+.bedrock-boundary {
+  padding: 22px 30px;
+  border-top: 1px solid var(--line);
+  background: #f1efe8;
+}
+
+.bedrock-boundary strong {
+  font-size: 13px;
+}
+
+.bedrock-boundary p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
 .setup-grid article {
   padding: 24px;
   border-right: 1px solid var(--line);
@@ -2726,6 +2791,7 @@ input[type="range"]:disabled {
   }
 
   .setup-grid,
+  .codex-paths,
   .readiness-card,
   .lesson-checkpoints,
   .lesson-finish,
@@ -2737,6 +2803,15 @@ input[type="range"]:disabled {
   .setup-grid article {
     border-right: 0;
     border-bottom: 1px solid var(--line);
+  }
+
+  .codex-paths article {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .codex-paths article:last-child {
+    border-bottom: 0;
   }
 
   .setup-grid article:last-child {

@@ -1,7 +1,7 @@
 /*
  * PERSONALIZE THIS FILE FIRST
  *
- * Every deployed copy of No Dark Nights belongs to its maker. Change the
+ * Every deployed No Dark Nights website belongs to its maker. Change the
  * profile, adult-controlled contact link, and example listings below without
  * editing the Lights page components.
  *

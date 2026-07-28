@@ -106,7 +106,7 @@ export const learningSteps = [
       "Review the changes, save a clear local Git commit, and push it to your own GitHub repository only after checking for private information.",
     teaches: "How Git records a checkpoint and GitHub stores a remote copy.",
     needs:
-      "Your personalized site, a GitHub account, and adult or teacher approval when required.",
+      "Your personalized site, a learner GitHub account or approved school repository, and adult or teacher approval when required.",
     stopPoints:
       "Stop for GitHub sign-in, repository visibility, permission, secret, or merge-conflict decisions.",
     inspect:
@@ -153,7 +153,7 @@ export const learningSteps = [
       "Use Sites only when it is available to your account, then create a private review link for a trusted adult or teacher.",
     teaches: "How deployment turns local files into a reviewable website.",
     needs:
-      "Passing checks, a reviewed GitHub copy, Sites access, and adult approval.",
+      "Passing checks, a reviewed GitHub repository, and either eligible Sites access or an instructor who can publish the approved preview.",
     stopPoints:
       "Stop for account, workspace, access-level, permission, or public-publishing decisions. Do not connect a real domain.",
     inspect:
@@ -330,7 +330,7 @@ We are finished when the complete automated suite passes and the website and STL
     purpose: "Creates a trusted review link when Sites is available.",
     prompt: `Prepare a private review version of my No Dark Nights site with Sites.
 
-I am a beginner. First explain that Sites turns the tested project into a hosted preview. Check whether Sites is available for my account and workspace; availability can depend on the account, plan, workspace settings, and administrator.
+I am a beginner. First explain that Sites turns the tested project into a hosted preview. Check how my local Codex is authenticated and whether Sites is available for my account and workspace; availability can depend on the account, plan, workspace settings, and administrator.
 
 Please:
 1. Confirm the GitHub commit from the previous steps and rerun the required release checks.
@@ -341,9 +341,11 @@ Please:
 6. After deployment, open the homepage, Lights, Studio, Learn, Gallery, Resources, Code, and About pages and verify the main desktop and phone layouts and links.
 7. Give me the private link and a short adult review checklist.
 
-If Sites is unavailable, do not pretend the deployment succeeded or choose another public host. Keep the completed project local and on the approved GitHub repository, explain what is unavailable, and give me a checklist for trying again with an adult or workspace administrator.
+If I use Bedrock-only authentication, recognize that it supports local Codex work but not OpenAI-hosted Sites. Do not keep retrying Sites and do not ask me for AWS credentials. Preserve the completed local website and approved GitHub repository. If an instructor has eligible ChatGPT and Sites access, prepare a clear handoff so the instructor can separately review and publish an approved preview.
 
-We are finished when a trusted adult has an approved private review link, or when the fully tested local and GitHub versions are safely saved and the Sites blocker is documented.`,
+If Sites is otherwise unavailable, do not pretend the deployment succeeded or choose another public host. Keep the completed project local and on the approved GitHub repository, explain what is unavailable, and give me a checklist for trying again with an adult or workspace administrator.
+
+Publishing is optional. We are finished when a trusted adult has an approved private review link, or when the fully tested local website and approved GitHub repository are safely saved and the Sites limitation is documented.`,
   },
   {
     title: "Slice, fit-test, print, and share",

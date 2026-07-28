@@ -53,6 +53,19 @@ test("server-renders the No Dark Nights home and studio", async () => {
   assert.match(homeHtml, /Make an STL/i);
   assert.match(homeHtml, /Build Your Own Site/i);
   assert.match(homeHtml, /No coding or AI agent required/i);
+  assert.match(
+    homeHtml,
+    /use an AI agent to build your own personalized lithophane website/i,
+  );
+  assert.match(
+    homeHtml,
+    /Use an AI agent to build, test, and publish your own personalized lithophane website/i,
+  );
+  assert.match(
+    homeHtml,
+    /personalized, tested, and published lithophane website/i,
+  );
+  assert.doesNotMatch(homeHtml, /their own copy|your own version/i);
   assert.match(homeHtml, /A real project with two ways in/i);
   assert.match(homeHtml, /AI agent literacy/i);
   assert.match(homeHtml, /Privacy, consent, and responsible publishing/i);
@@ -108,6 +121,21 @@ test("major pages have route-specific metadata and repository links", async () =
   assert.match(learnHtml, /ages 13–17 need permission from a parent or guardian/i);
   assert.match(learnHtml, /adult must conduct the direct interaction/i);
   assert.match(learnHtml, /Codex availability and usage can depend on your account/i);
+  assert.match(learnHtml, /Individual learner/i);
+  assert.match(learnHtml, /School-managed lab/i);
+  assert.match(learnHtml, /instructor-managed Amazon Bedrock/i);
+  assert.match(
+    learnHtml,
+    /https:\/\/learn\.chatgpt\.com\/docs\/amazon-bedrock/i,
+  );
+  assert.match(learnHtml, /Students must never paste AWS credentials/i);
+  assert.match(learnHtml, /limited, revocable student access/i);
+  assert.match(learnHtml, /Sites are not available through Bedrock-only authentication/i);
+  assert.match(
+    learnHtml,
+    /Working Codex access through ChatGPT or an instructor-managed Amazon Bedrock environment/i,
+  );
+  assert.match(learnHtml, /approved teacher\/school repository/i);
   assert.match(learnHtml, /Optional — after step eight/i);
   assert.match(learnHtml, /Keep improving/i);
   assert.match(learnHtml, /The eight-step path is complete/i);
@@ -121,6 +149,10 @@ test("major pages have route-specific metadata and repository links", async () =
   assert.match(learnHtml, /Test the website and STL/i);
   assert.match(learnHtml, /complete automated suite passes/i);
   assert.match(learnHtml, /If Sites is unavailable/i);
+  assert.match(learnHtml, /If I use Bedrock-only authentication/i);
+  assert.match(learnHtml, /Do not keep retrying Sites/i);
+  assert.match(learnHtml, /instructor can separately review and publish/i);
+  assert.match(learnHtml, /Publishing is optional/i);
   assert.match(learnHtml, /Keep the photograph on my computer/i);
   assert.match(learnHtml, /Download the printable STL/i);
   assert.match(learnHtml, /Slice, fit-test, print, and share/i);
@@ -138,6 +170,24 @@ test("major pages have route-specific metadata and repository links", async () =
   assert.match(learnHtml, /Reflect/i);
   assert.match(learnHtml, /For educators/i);
   assert.match(learnHtml, /Do not require a public website/i);
+  assert.match(
+    learnHtml,
+    /working website they can continue using as a maker portfolio, community-giving project, or foundation for a small creative enterprise/i,
+  );
+
+  const readme = await readFile(
+    new URL("../README.md", import.meta.url),
+    "utf8",
+  );
+  assert.match(readme, /Amazon Bedrock/);
+  assert.match(
+    readme,
+    /approved\s+learner or school-managed GitHub repository/,
+  );
+  assert.match(
+    readme,
+    /Sites are not available through Bedrock-only\s+authentication/,
+  );
   assert.ok([307, 308].includes(promptsResponse.status));
   const redirectLocation = new URL(
     promptsResponse.headers.get("location") ?? "",

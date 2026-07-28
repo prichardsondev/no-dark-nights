@@ -52,8 +52,8 @@ export default function LearnPage() {
             <h2 id="setup-title">Set Up Your Tools</h2>
             <p>
               Codex is OpenAI&apos;s coding agent: you describe a goal, and it
-              can read, explain, and change a project with you. Beginners should
-              start with the official ChatGPT desktop app for macOS or Windows.
+              can read, explain, and change a project with you. Choose the
+              individual path or a school-managed lab prepared by an instructor.
             </p>
             <div className="setup-links">
               <a
@@ -72,15 +72,60 @@ export default function LearnPage() {
               </a>
             </div>
           </div>
+          <div className="codex-paths" aria-label="Two ways to access Codex">
+            <article>
+              <span>Individual learner</span>
+              <h3>Sign in with ChatGPT</h3>
+              <p>
+                Install the official ChatGPT desktop app for macOS or Windows,
+                sign in, and select Codex. Availability depends on the account,
+                plan, workspace, age requirements, and administrator.
+              </p>
+            </article>
+            <article>
+              <span>School-managed lab</span>
+              <h3>Use instructor-managed Amazon Bedrock</h3>
+              <p>
+                A teacher or administrator can prepare local Codex to use
+                supported OpenAI models through Amazon Bedrock, with managed
+                AWS sign-in and spending controls.
+              </p>
+              <p>
+                Students must never paste AWS credentials into prompts, source
+                files, committed <code>.env</code> files, screenshots, or
+                GitHub. Schools should provide limited, revocable student access
+                instead of root credentials or permanent shared keys.
+              </p>
+              <a
+                href="https://learn.chatgpt.com/docs/amazon-bedrock"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Official Amazon Bedrock setup guidance ↗
+              </a>
+            </article>
+          </div>
+          <div className="bedrock-boundary">
+            <strong>What works in a Bedrock classroom</strong>
+            <p>
+              Bedrock-backed Codex supports the local development workflow:
+              students can complete the local website, Git, an approved GitHub
+              repository, Studio, testing, and printing. OpenAI-hosted services
+              such as Sites are not available through Bedrock-only
+              authentication. Publishing is optional; an instructor with
+              eligible ChatGPT and Sites access may publish an approved preview
+              separately.
+            </p>
+          </div>
           <div className="setup-grid">
             <article>
               <span>01</span>
-              <h3>Install and sign in</h3>
+              <h3>Confirm your access</h3>
               <p>
-                Open the app, select <strong>Continue to sign in</strong>,
-                finish the browser sign-in, then choose <strong>Codex</strong>{" "}
-                from the top-left menu. Confirm you can start a local Codex
-                task.
+                Individual learners select <strong>Continue to sign in</strong>{" "}
+                and then choose <strong>Codex</strong>. In a school lab, the
+                instructor confirms that the managed Bedrock environment is
+                ready. Start one local Codex task to check access.
               </p>
               <p>
                 Codex availability and usage can depend on your account, plan,
@@ -138,19 +183,26 @@ export default function LearnPage() {
             </div>
             <ul>
               <li>A supported Mac or Windows computer</li>
-              <li>An eligible OpenAI account and working Codex access</li>
+              <li>
+                Working Codex access through ChatGPT or an instructor-managed
+                Amazon Bedrock environment
+              </li>
               <li>A trusted adult for account or publishing decisions</li>
               <li>An easy-to-find project folder</li>
-              <li>A GitHub account for Step 4</li>
+              <li>
+                A learner GitHub account or approved teacher/school repository
+                for Step 4
+              </li>
               <li>Sites access, or permission to stop at local + GitHub</li>
               <li>A photograph you have permission to use</li>
               <li>A compatible printer and slicer for the physical stages</li>
             </ul>
             <p className="setup-trouble">
               If Codex is missing, sign out and back in, update the desktop app,
-              check your plan or workspace access, and ask a parent, teacher, or
-              workspace administrator. You can still use the Studio to make an
-              STL without Codex. See the{" "}
+              check your plan or workspace access, or ask the instructor to
+              check the managed Bedrock environment. Ask a parent, teacher, or
+              workspace administrator instead of guessing. You can still use
+              the Studio to make an STL without Codex. See the{" "}
               <Link href="/resources">parts and tools we use</Link>.
             </p>
           </div>
@@ -280,6 +332,11 @@ export default function LearnPage() {
                 A project map, personalized local site, reviewed Git commit,
                 STL and settings note, test report, optional private preview,
                 fit test, finished light, and short reflection.
+              </p>
+              <p>
+                Learners finish with a working website they can continue using
+                as a maker portfolio, community-giving project, or foundation
+                for a small creative enterprise.
               </p>
             </article>
           </div>

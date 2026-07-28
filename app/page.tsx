@@ -14,8 +14,8 @@ export default function Home() {
             <h1>Make a light. Learn how the whole thing works.</h1>
             <p>
               No Dark Nights turns a photo into a printable lithophane. Use the
-              Studio immediately, see lights from this maker, or build your own
-              version of the entire site.
+              Studio immediately, see lights from this maker, or use an AI agent
+              to build your own personalized lithophane website.
             </p>
           </div>
           <div className="opening-actions" aria-label="Start here">
@@ -41,8 +41,9 @@ export default function Home() {
               <span>03</span>
               <strong>Build Your Own Site</strong>
               <p>
-                Learn AI agents, web development, Git, GitHub, Sites, and 3D
-                printing by creating your own version.
+                Use an AI agent to build, test, and publish your own personalized
+                lithophane website while learning web development, Git, GitHub,
+                Sites, and 3D printing.
               </p>
               <i>Start Learning</i>
             </Link>
@@ -54,9 +55,9 @@ export default function Home() {
             <span className="site-eyebrow">Use it or build it</span>
             <h2>A real project with two ways in.</h2>
             <p>
-              Anyone can make an STL in the Studio. Learners can go further and
-              build, personalize, test, and publish their own copy with an AI
-              agent guiding each step.
+              Anyone can use the Studio to make an STL. Learners can go further
+              and use an AI agent to turn No Dark Nights into their own
+              personalized, tested, and published lithophane website.
             </p>
           </div>
           <div className="participation-levels">
@@ -92,7 +93,7 @@ export default function Home() {
           </div>
           <div>
             <p>
-              Each deployed copy belongs to its maker. The owner can offer
+              Each deployed website belongs to its maker. The owner can offer
               lights directly, give them away, and share the complete process:
               the Studio, code, prompts, tests, and lessons.
             </p>

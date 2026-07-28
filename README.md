@@ -1,7 +1,7 @@
 # No Dark Nights
 
 Make a night light from a photo, learn how the website works, and build your
-own version with Codex.
+own personalized lithophane website with Codex.
 
 No Dark Nights is a free prompt-to-product learning project for kids, families,
 classrooms, and curious adults. It includes:
@@ -24,12 +24,27 @@ You do not need to understand the code before you begin.
 
 ### Set up Codex
 
-For the agent-guided learning path, install the official
+Individual learners can install the official
 [ChatGPT desktop app](https://chatgpt.com/download/) for macOS or Windows, sign
 in, and choose **Codex** from the top-left menu. Codex availability and usage
 can depend on the account, plan, workspace settings, and administrator; the
 project does not promise free access. The Codex CLI and IDE extension are
 optional advanced alternatives.
+
+A school-managed lab can configure local Codex to use supported OpenAI models
+through [Amazon Bedrock](https://learn.chatgpt.com/docs/amazon-bedrock).
+A teacher or administrator must prepare AWS authentication, access, and
+spending controls. Students must never paste AWS credentials into prompts,
+source files, committed `.env` files, screenshots, or GitHub. Schools should
+use managed, limited, revocable student access rather than root credentials or
+permanent shared keys.
+
+Bedrock-only authentication supports the local website, Git, an approved
+learner or school-managed GitHub repository, Studio, testing, and printing.
+OpenAI-hosted services such as Sites are not available through Bedrock-only
+authentication. Publishing is optional; an instructor with eligible ChatGPT
+and Sites access may publish an approved preview separately. A tested local
+website and approved GitHub repository are valid completion outcomes.
 
 ChatGPT is not intended for children under 13. Ages 13–17 require parent or
 guardian consent. In an educational activity for a child under 13, an adult
@@ -133,7 +148,7 @@ Edit [`app/maker-profile.ts`](app/maker-profile.ts) to change:
 - listing images, titles, descriptions, and optional price or `Gift` labels.
 
 The bundled listings are marked as examples. Replace them before presenting
-them as current offerings. Each deployed copy represents its own maker; the
+them as current offerings. Each deployed website represents its own maker; the
 Lights page is not a marketplace or maker directory.
 
 Never add a child’s personal email address, phone number, school, or home
