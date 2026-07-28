@@ -17,6 +17,19 @@ export default function GalleryPage() {
           title="Finished night lights."
           description="Eight lights made from photographs and illustrations. Personal photographs appear here only when sharing has been requested or approved."
         />
+        <aside
+          className="gallery-safety"
+          aria-labelledby="gallery-safety-title"
+        >
+          <strong id="gallery-safety-title">
+            Before adding a gallery photo
+          </strong>
+          <p>
+            Get adult permission, remove EXIF and location metadata, and check
+            for addresses, school names, uniforms, license plates, or
+            recognizable locations. Use no full names or identifying filenames.
+          </p>
+        </aside>
         <div className="gallery-grid">
           {galleryItems.map((item, index) => (
             <figure key={item.src}>

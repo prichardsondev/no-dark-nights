@@ -23,9 +23,13 @@ printable STL, and finished lithophane night light.
 - Do not add a giant hero, jumbotron, carousel, or marketing filler.
 - Prefer plain language that a first-time builder can understand.
 - Keep source-photo processing on the user’s device.
+- Never open, read, attach, upload, or analyze a learner’s private source
+  photograph. The learner or supervising adult checks it visually. Inspect the
+  STL, settings, tests, and geometry instead; tests use neutral project images.
 - Never publish personal gallery photographs without explicit permission.
-- Keep maker identity, adult-controlled contact, and light listings in
-  `app/maker-profile.ts`.
+- Keep maker identity and light listings in `app/maker-profile.ts`. Learner
+  clones default to no contact; only an adult site manager may configure contact
+  through the hosting environment.
 - Treat `/lights` as this site owner’s page, never as a marketplace or maker
   directory. Do not publish a child’s personal contact information.
 - Keep the real `nodarknights.com` domain untouched during private review work.

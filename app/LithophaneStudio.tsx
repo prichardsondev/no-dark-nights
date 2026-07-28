@@ -33,7 +33,6 @@ import {
 import { detectWebGLSupport } from "./webgl-support";
 
 type UploadedImage = {
-  name: string;
   previewUrl: string;
   source: SourceImage;
 };
@@ -158,11 +157,6 @@ const settingFields: Array<{
   },
 ];
 
-function safeFilename(filename: string) {
-  const base = filename.replace(/\.[^/.]+$/, "");
-  return `${base.replace(/[^a-z0-9-_]+/gi, "-").replace(/^-|-$/g, "") || "night-light"}-lithophane.stl`;
-}
-
 function downloadBlob(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
@@ -208,7 +202,9 @@ function NumberSetting({
         disabled={disabled}
       />
       <span className="setting-help">
-        {disabled ? "Calculated automatically from the uncropped photo." : field.help}
+        {disabled
+          ? "Calculated automatically from the uncropped photo."
+          : field.help}
       </span>
     </label>
   );
@@ -238,9 +234,8 @@ function createPhotoTexture({
     0,
   );
 
-  const angle = 2 * Math.asin(
-    Math.min(0.999999, settings.width / (2 * settings.radius)),
-  );
+  const angle =
+    2 * Math.asin(Math.min(0.999999, settings.width / (2 * settings.radius)));
   const imageArcLength = Math.max(
     0.1,
     angle * settings.radius - settings.frameWidth * 2,
@@ -432,9 +427,15 @@ function ModelPreview({
     renderer.toneMappingExposure = lit ? 1.38 : 1.05;
     mount.appendChild(renderer.domElement);
 
-    const geometry = createLithophaneGeometry(image.source, crop, settings, true);
+    const geometry = createLithophaneGeometry(
+      image.source,
+      crop,
+      settings,
+      true,
+    );
     geometry.computeBoundingBox();
-    const center = geometry.boundingBox?.getCenter(new THREE.Vector3()) ??
+    const center =
+      geometry.boundingBox?.getCenter(new THREE.Vector3()) ??
       new THREE.Vector3();
     const photoTexture = createPhotoTexture({ image, crop, settings });
     if (photoTexture) {
@@ -443,9 +444,8 @@ function ModelPreview({
         renderer.capabilities.getMaxAnisotropy(),
       );
     }
-    const angle = 2 * Math.asin(
-      Math.min(0.999999, settings.width / (2 * settings.radius)),
-    );
+    const angle =
+      2 * Math.asin(Math.min(0.999999, settings.width / (2 * settings.radius)));
     const totalArcLength = angle * settings.radius;
     const imageArcLength = Math.max(
       0.1,
@@ -457,20 +457,21 @@ function ModelPreview({
     );
     const circleCenterY =
       settings.slotDepth + settings.lightDistance - settings.radius;
-    const material: THREE.Material = lit && photoTexture
-      ? new THREE.ShaderMaterial({
-          uniforms: {
-            photoMap: { value: photoTexture },
-            curveAngle: { value: angle },
-            totalArcLength: { value: totalArcLength },
-            imageArcLength: { value: imageArcLength },
-            imageHeight: { value: imageHeight },
-            frameWidth: { value: settings.frameWidth },
-            circleCenterY: { value: circleCenterY },
-            contrast: { value: settings.contrast },
-            invertImage: { value: settings.invert ? 1 : 0 },
-          },
-          vertexShader: `
+    const material: THREE.Material =
+      lit && photoTexture
+        ? new THREE.ShaderMaterial({
+            uniforms: {
+              photoMap: { value: photoTexture },
+              curveAngle: { value: angle },
+              totalArcLength: { value: totalArcLength },
+              imageArcLength: { value: imageArcLength },
+              imageHeight: { value: imageHeight },
+              frameWidth: { value: settings.frameWidth },
+              circleCenterY: { value: circleCenterY },
+              contrast: { value: settings.contrast },
+              invertImage: { value: settings.invert ? 1 : 0 },
+            },
+            vertexShader: `
             varying vec3 vLocalPosition;
             varying vec3 vViewNormal;
             void main() {
@@ -479,7 +480,7 @@ function ModelPreview({
               gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
             }
           `,
-          fragmentShader: `
+            fragmentShader: `
             uniform sampler2D photoMap;
             uniform float curveAngle;
             uniform float totalArcLength;
@@ -524,16 +525,16 @@ function ModelPreview({
               gl_FragColor = vec4(color * shapeLight, 1.0);
             }
           `,
-          side: THREE.DoubleSide,
-        })
-      : new THREE.MeshPhysicalMaterial({
-          color: 0xf4e2b9,
-          roughness: 0.68,
-          metalness: 0,
-          clearcoat: 0.08,
-          clearcoatRoughness: 0.72,
-          side: THREE.DoubleSide,
-        });
+            side: THREE.DoubleSide,
+          })
+        : new THREE.MeshPhysicalMaterial({
+            color: 0xf4e2b9,
+            roughness: 0.68,
+            metalness: 0,
+            clearcoat: 0.08,
+            clearcoatRoughness: 0.72,
+            side: THREE.DoubleSide,
+          });
     const mesh = new THREE.Mesh(geometry, material);
     const modelGroup = new THREE.Group();
     modelGroup.position.copy(center).multiplyScalar(-1);
@@ -642,11 +643,7 @@ function ModelPreview({
   }
 
   return (
-    <div
-      ref={mountRef}
-      className="model-mount"
-      data-testid="model-preview"
-    />
+    <div ref={mountRef} className="model-mount" data-testid="model-preview" />
   );
 }
 
@@ -657,8 +654,9 @@ export function LithophaneStudio() {
   const [crop, setCrop] = useState<CropSettings>(DEFAULT_CROP);
   const [preset, setPreset] = useState<PresetName>("reference");
   const [view, setView] = useState<"model" | "lit">("lit");
-  const [cameraView, setCameraView] =
-    useState<"front" | "angle" | "side">("angle");
+  const [cameraView, setCameraView] = useState<"front" | "angle" | "side">(
+    "angle",
+  );
   const [labelText, setLabelText] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -705,8 +703,9 @@ export function LithophaneStudio() {
       "image/heic",
       "image/heif",
     ]);
-    const supportedExtension =
-      /\.(?:avif|gif|heic|heif|jpe?g|png|webp)$/i.test(file.name);
+    const supportedExtension = /\.(?:avif|gif|heic|heif|jpe?g|png|webp)$/i.test(
+      file.name,
+    );
     if (
       (!file.type && !supportedExtension) ||
       (file.type && !supportedTypes.has(file.type))
@@ -766,7 +765,6 @@ export function LithophaneStudio() {
       setImage((current) => {
         if (current) URL.revokeObjectURL(current.previewUrl);
         return {
-          name: file.name,
           previewUrl,
           source: {
             data: imageData.data,
@@ -806,7 +804,9 @@ export function LithophaneStudio() {
       return;
     }
     if (modelSettings.maxThickness <= modelSettings.minThickness) {
-      setNotice("Maximum thickness needs to be greater than minimum thickness.");
+      setNotice(
+        "Maximum thickness needs to be greater than minimum thickness.",
+      );
       return;
     }
     if (modelSettings.width >= modelSettings.radius * 1.96) {
@@ -838,7 +838,7 @@ export function LithophaneStudio() {
           : new TextEncoder().encode(result);
       downloadBlob(
         new Blob([bytes.slice().buffer], { type: "model/stl" }),
-        safeFilename(image.name),
+        "lithophane.stl",
       );
       geometry.dispose();
       labelGeometry?.dispose();
@@ -896,6 +896,10 @@ export function LithophaneStudio() {
               physical light.{" "}
               <Link href="/resources">See the parts and tools we use →</Link>
             </p>
+            <p className="studio-photo-privacy">
+              This Studio reads the photo only on this device. Attaching a
+              private photo to Codex is a separate action—do not do that.
+            </p>
           </div>
 
           <section className="control-section">
@@ -920,18 +924,26 @@ export function LithophaneStudio() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={image.previewUrl} alt="" />
                   <div>
-                    <strong>{image.name}</strong>
-                    <button type="button" onClick={() => fileInputRef.current?.click()}>
+                    <strong>Photo ready</strong>
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
                       Replace photo
                     </button>
                   </div>
                 </>
               ) : (
                 <>
-                  <span className="upload-symbol" aria-hidden="true">＋</span>
+                  <span className="upload-symbol" aria-hidden="true">
+                    ＋
+                  </span>
                   <div>
                     <strong>Drop a photo here</strong>
-                    <button type="button" onClick={() => fileInputRef.current?.click()}>
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
                       or choose a file
                     </button>
                   </div>
@@ -987,7 +999,10 @@ export function LithophaneStudio() {
                 step="0.01"
                 value={crop.zoom}
                 onChange={(event) =>
-                  setCrop((current) => ({ ...current, zoom: Number(event.target.value) }))
+                  setCrop((current) => ({
+                    ...current,
+                    zoom: Number(event.target.value),
+                  }))
                 }
                 disabled={!image || !crop.enabled}
               />
@@ -1035,7 +1050,9 @@ export function LithophaneStudio() {
             <label className="setting-field">
               <span className="setting-label">
                 <span>Photo contrast</span>
-                <span className="setting-value">{settings.contrast.toFixed(2)}×</span>
+                <span className="setting-value">
+                  {settings.contrast.toFixed(2)}×
+                </span>
               </span>
               <input
                 type="range"
@@ -1043,7 +1060,9 @@ export function LithophaneStudio() {
                 max="1.8"
                 step="0.02"
                 value={settings.contrast}
-                onChange={(event) => updateSetting("contrast", Number(event.target.value))}
+                onChange={(event) =>
+                  updateSetting("contrast", Number(event.target.value))
+                }
               />
             </label>
             <label className="toggle-row">
@@ -1070,7 +1089,10 @@ export function LithophaneStudio() {
               <span>03</span>
               <div>
                 <h2>Fit the night light</h2>
-                <p>Start with our usual fit, or adjust it for another light housing.</p>
+                <p>
+                  Start with our usual fit, or adjust it for another light
+                  housing.
+                </p>
               </div>
             </div>
             <div className="preset-row">
@@ -1142,7 +1164,7 @@ export function LithophaneStudio() {
             <div className="section-heading">
               <span>04</span>
               <div>
-                <h2>Add a name or message</h2>
+                <h2>Optional short message</h2>
                 <p>Raise custom text on the printable bottom adapter.</p>
               </div>
             </div>
@@ -1158,12 +1180,13 @@ export function LithophaneStudio() {
                 type="text"
                 maxLength={MAX_LABEL_LENGTH}
                 value={labelText}
-                placeholder="A name or website"
+                placeholder="Shine bright"
                 onChange={(event) => setLabelText(event.target.value)}
               />
               <span className="setting-help">
-                The text follows the adapter curve and automatically fits the
-                available width. Leave blank for no text.
+                Use a nickname, kind word, or short message. Do not include a
+                full name, school, address, email, phone number, username, or
+                website. Leave blank for no text.
               </span>
             </label>
           </section>
@@ -1215,11 +1238,13 @@ export function LithophaneStudio() {
                   role="group"
                   aria-label="Camera angle"
                 >
-                  {([
-                    ["front", "Front"],
-                    ["angle", "3/4"],
-                    ["side", "Side"],
-                  ] as const).map(([value, label]) => (
+                  {(
+                    [
+                      ["front", "Front"],
+                      ["angle", "3/4"],
+                      ["side", "Side"],
+                    ] as const
+                  ).map(([value, label]) => (
                     <button
                       key={value}
                       type="button"
@@ -1245,7 +1270,10 @@ export function LithophaneStudio() {
                 <p>
                   We&apos;ll turn its light and shadow into printable thickness.
                 </p>
-                <button type="button" onClick={() => fileInputRef.current?.click()}>
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                >
                   Choose a photo
                 </button>
               </div>
@@ -1269,7 +1297,11 @@ export function LithophaneStudio() {
                 <strong>Stays on device</strong>
               </div>
             </div>
-            {notice && <p className="notice" role="status">{notice}</p>}
+            {notice && (
+              <p className="notice" role="status">
+                {notice}
+              </p>
+            )}
             <div className="dock-actions">
               <button type="button" className="reset-button" onClick={reset}>
                 Reset settings
@@ -1280,7 +1312,11 @@ export function LithophaneStudio() {
                 onClick={() => void generateStl()}
                 disabled={isGenerating}
               >
-                {isGenerating ? "Building model…" : image ? "Download printable STL" : "Choose a photo"}
+                {isGenerating
+                  ? "Building model…"
+                  : image
+                    ? "Download printable STL"
+                    : "Choose a photo"}
                 <span aria-hidden="true">→</span>
               </button>
             </div>

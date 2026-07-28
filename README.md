@@ -14,7 +14,7 @@ classrooms, and curious adults. It includes:
 - practical printing and privacy guidance.
 - an owner-customizable page for example lights and adult-controlled contact.
 
-**Live site:** [no-dark-nights-studio.prichardsondev.chatgpt.site](https://no-dark-nights-studio.prichardsondev.chatgpt.site)
+**Live site:** [nodarknights.com](https://nodarknights.com)
 
 **Public source:** [github.com/prichardsondev/no-dark-nights](https://github.com/prichardsondev/no-dark-nights)
 
@@ -46,10 +46,12 @@ authentication. Publishing is optional; an instructor with eligible ChatGPT
 and Sites access may publish an approved preview separately. A tested local
 website and approved GitHub repository are valid completion outcomes.
 
-ChatGPT is not intended for children under 13. Ages 13–17 require parent or
-guardian consent. In an educational activity for a child under 13, an adult
-must conduct the direct ChatGPT interaction. Follow family and school policies
-and read [OpenAI's current age guidance](https://help.openai.com/en/articles/8313401-is-chatgpt-safe-for-all-ages).
+Under 13, an adult must conduct all ChatGPT/Codex interactions. Ages 13–17
+require parent or guardian permission. GitHub personal accounts require users
+to be at least 13, so under-13 work must use an adult-, teacher-, or
+organization-controlled repository. Accounts must not be shared. Follow family
+and school policies and read
+[OpenAI's current age guidance](https://help.openai.com/en/articles/8313401-is-chatgpt-safe-for-all-ages).
 
 Anyone can use the deployed Studio without Codex. Building a physical light
 also requires slicer software and access to a compatible 3D printer. See
@@ -66,6 +68,11 @@ I want to build the No Dark Nights project.
 Original site: https://nodarknights.com
 
 Project link: https://github.com/prichardsondev/no-dark-nights
+
+Never open, read, attach, upload, or analyze my private source photograph. I or
+my supervising adult will check it visually inside the Studio. You may inspect
+the generated STL, settings, tests, and geometry. Use only the neutral
+project-provided image for automated tests.
 
 I am a beginner, so please explain each step in simple words.
 
@@ -93,13 +100,16 @@ Open the local address printed in the terminal.
 1. Open `/studio`.
 2. Choose a JPG, PNG, WebP, AVIF, GIF, HEIC, or HEIF image.
 3. Frame the image and measure the slot on your night-light housing.
-4. Optionally add a name, date, or website to the bottom adapter.
+4. Optionally add a nickname, kind word, or short message to the bottom adapter.
 5. Inspect the preview when WebGL is available.
 6. Download the STL and verify it in your slicer.
 7. Print a small adapter fit test before a full print.
 
 Source photos stay on the device. The STL generator does not require WebGL, so
 STL creation remains available when the interactive preview cannot run.
+Never attach a private source photograph to Codex. The learner or supervising
+adult checks it visually inside the Studio; automated tests use a neutral
+project image.
 
 The default slot width is 16.5 mm. Measure your own housing before printing.
 
@@ -137,6 +147,7 @@ npm test         # build and run all automated checks
 - `/prompts` — redirects old links to the first Learn step
 - `/gallery` — finished lights
 - `/resources` — printer, material, light, and slicer guidance
+- `/safety` — child-safety, photograph, contact, hosting, and reporting guidance
 - `/code` — source-code map and repository link
 - `/about` — mission and project story
 
@@ -146,15 +157,16 @@ Edit [`app/maker-profile.ts`](app/maker-profile.ts) to change:
 
 - the studio and maker names;
 - the short maker introduction;
-- the adult-controlled contact link and label;
 - listing images, titles, and descriptions.
+
+Contact is disabled for learner sites. An adult site manager may later set the
+`MAKER_CONTACT_HREF` and `MAKER_CONTACT_LABEL` hosting environment values. Do
+not ask a learner for a full name, personal email, phone number, address,
+school, social account, contact link, or a parent’s email.
 
 Replace the bundled listings before presenting them as current work. Each
 deployed website represents its own maker; the Lights page is not a marketplace
 or maker directory.
-
-Never add a child’s personal email address, phone number, school, or home
-address. Use a `mailto:` link or contact page controlled by a trusted adult.
 
 Before publishing, replace or remove every sample listing and have a trusted
 adult review all maker information, contact links, photographs, and captions.
@@ -162,13 +174,20 @@ adult review all maker information, contact links, photographs, and captions.
 ## Privacy and safety
 
 - Source photos are processed locally in the browser.
+- Giving a photograph to an AI agent is a separate action. Never provide a
+  private source photograph to Codex.
 - Do not publish names, school details, addresses, or personal photographs
   without permission.
+- Before a gallery image is published, an adult removes EXIF/location metadata
+  and checks for identifying details and filenames.
 - A trusted adult should review publishing and plug-in light choices.
 - Always inspect an STL in a slicer before printing.
-- Keep printed parts and plug-in lights away from excess heat.
+- Children use printers with adult supervision and avoid hot or moving parts.
+- Use only a commercially manufactured, undamaged LED night-light. Never print
+  or modify electrical components.
 
-See [SECURITY.md](SECURITY.md) for reporting and privacy details.
+See [Safety & Privacy](https://nodarknights.com/safety) and
+[SECURITY.md](SECURITY.md) for reporting and privacy details.
 
 ## License and gallery rights
 

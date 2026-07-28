@@ -19,33 +19,34 @@ export default function Home() {
             </p>
           </div>
           <div className="opening-actions" aria-label="Start here">
-            <Link className="start-card" href="/lights">
-              <span>01</span>
-              <strong>Buy a Light</strong>
-              <p>
-                See lights created by this maker. Purchase one or ask about
-                receiving one as a gift.
-              </p>
-              <i>View Lights</i>
-            </Link>
             <Link className="start-card primary" href="/studio">
-              <span>02</span>
+              <span>01</span>
               <strong>Make an STL</strong>
               <p>
-                Turn a photo into a downloadable lithophane STL using the
-                Studio. No coding or AI agent required.
+                Turn a photograph into a printable lithophane STL. The photo
+                stays on this device. No coding or AI agent is required.
               </p>
               <i>Open the Studio</i>
             </Link>
-            <Link className="start-card" href="/learn#step-1">
-              <span>03</span>
-              <strong>Build Your Own Site</strong>
+            <Link className="start-card" href="/learn">
+              <span>02</span>
+              <strong>Learn &amp; Build</strong>
               <p>
-                Use an AI agent to build, test, and publish your own personalized
-                lithophane website while learning web development, Git, GitHub,
-                Sites, and 3D printing.
+                Follow the guided path to use Codex to build, personalize, test,
+                and publish your own version—with an adult involved when
+                required.
               </p>
               <i>Start Learning</i>
+            </Link>
+            <Link className="start-card" href="/lights">
+              <span>03</span>
+              <strong>See the Lights</strong>
+              <p>
+                See examples made by this site&apos;s maker. Adults may contact
+                the adult managing this site about receiving or purchasing a
+                light.
+              </p>
+              <i>View Lights</i>
             </Link>
           </div>
         </section>
@@ -64,7 +65,9 @@ export default function Home() {
             <article>
               <span>For everyone</span>
               <h3>Use the Studio</h3>
-              <p>No coding, agent, account, or programming experience needed.</p>
+              <p>
+                No coding, agent, account, or programming experience needed.
+              </p>
               <Link href="/studio">Make an STL →</Link>
             </article>
             <article>

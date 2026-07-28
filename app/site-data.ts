@@ -2,13 +2,20 @@ export const REPOSITORY_URL =
   "https://github.com/prichardsondev/no-dark-nights";
 
 export const navigation = [
-  { href: "/lights", label: "Lights", primary: true },
   { href: "/studio", label: "Studio", primary: true },
   { href: "/learn", label: "Learn", primary: true },
+  { href: "/lights", label: "Lights", primary: true },
   { href: "/gallery", label: "Gallery", primary: false },
   { href: "/resources", label: "Resources", primary: false },
   { href: "/code", label: "Code", primary: false },
 ];
+
+const PRIVATE_IMAGE_RULES = `Private-image rules:
+- Never open, read, attach, upload, or analyze my private source photograph.
+- I or my supervising adult will visually check the photograph and use it only inside the Studio.
+- You may inspect the generated STL, recorded settings, automated tests, and geometry.
+- Automated tests must use a neutral image provided by the project.
+- Studio processing is local. Giving a photograph to an AI agent is a separate action, so do not ask me to provide the photograph to you.`;
 
 export const galleryItems = [
   {
@@ -90,9 +97,9 @@ export const learningSteps = [
     teaches:
       "How content, design choices, privacy, and reusable data work together.",
     needs:
-      "Your project map, an adult-controlled contact choice, and permission for every image you may publish.",
+      "Your project map and adult permission for every image you may publish.",
     stopPoints:
-      "Stop before publishing contact details or photographs; a trusted adult must review them.",
+      "Contact stays disabled unless an adult site manager adds it later. Stop before publishing any photograph; a trusted adult must review it.",
     inspect:
       "Check the homepage, Lights, Gallery, phone layout, and every image, title, and description.",
     deliverable: "A personalized site with reviewed maker information.",
@@ -120,11 +127,12 @@ export const learningSteps = [
     title: "Create a lithophane STL",
     summary:
       "Choose a permitted photo, measure your light, frame the image, inspect the preview, and download a local STL.",
-    teaches: "How image choices and real measurements become printable geometry.",
+    teaches:
+      "How image choices and real measurements become printable geometry.",
     needs:
       "A photo you may use, a ruler or calipers, and the night-light housing you plan to fit.",
     stopPoints:
-      "Do not upload or publish the source photo. Stop instead of guessing an unknown measurement.",
+      "Keep the source photo inside the Studio. Never give it to Codex. Stop instead of guessing an unknown measurement.",
     inspect:
       "Check framing, size, slot width, orientation, optional bottom text, and the saved settings note.",
     deliverable: "Your first custom lithophane STL.",
@@ -135,9 +143,10 @@ export const learningSteps = [
     title: "Test the website and STL",
     summary:
       "Run the complete project checks, inspect every important page, and verify the STL before anything is published or printed.",
-    teaches: "How automated checks and human inspection catch different problems.",
+    teaches:
+      "How automated checks and human inspection catch different problems.",
     needs:
-      "Your personalized site, downloaded STL, settings note, and source image.",
+      "Your personalized site, downloaded STL, settings note, and the neutral project test image.",
     stopPoints:
       "Do not change geometry just to silence a test; investigate and explain a real failure first.",
     inspect:
@@ -177,7 +186,8 @@ export const learningSteps = [
     inspect:
       "Preview toolpaths, test the adapter, inspect the cooled print, verify the unplugged housing fit, and follow manufacturer guidance.",
     deliverable: "A working night light and a story you can share.",
-    reflection: "What worked, what did you change, and what would you try next?",
+    reflection:
+      "What worked, what did you change, and what would you try next?",
   },
 ];
 
@@ -187,6 +197,8 @@ export const promptCards = [
     stage: "Step 1",
     purpose: "Gets the code onto your computer and starts the website.",
     prompt: `I want to build the No Dark Nights project.
+
+${PRIVATE_IMAGE_RULES}
 
 Original site: https://nodarknights.com
 
@@ -213,6 +225,8 @@ We are finished when I can see the No Dark Nights homepage and you tell me where
     purpose: "Takes you on a plain-language tour before you edit anything.",
     prompt: `Help me understand this No Dark Nights project before I change it.
 
+${PRIVATE_IMAGE_RULES}
+
 I am a beginner. First inspect the project, including the website pages, the maker profile data, the code that creates the 3D model, and the tests.
 
 Do not edit files yet. Explain unfamiliar words in plain language. Show me:
@@ -230,28 +244,33 @@ Finish with a short project map and three safe changes I could make first. Ask m
     purpose: "Replaces the samples while protecting the working Studio.",
     prompt: `Help me personalize this website so it clearly belongs to its maker.
 
+${PRIVATE_IMAGE_RULES}
+
 Keep the lithophane maker working. I am a beginner, so explain the files you edit.
 
 Ask me for:
 - the site or studio name;
-- the maker name I have permission to publish;
 - a short introduction;
-- an adult-controlled contact link and label, then set contactHref in app/maker-profile.ts to that approved contact;
 - the homepage words and color direction;
 - each light listing’s image, title, and short description;
 - permitted gallery images and privacy-safe captions.
 
 Keep maker and light information in app/maker-profile.ts. Clearly mark anything I have not replaced as a sample. Before any public release, require me to replace every sample listing or intentionally remove it.
 
-Do not publish a child’s email, phone number, school, home address, full name, or location clues. Use only images I confirm I may publish. Keep the homepage’s three paths, the compact design, keyboard access, phone layout, source-photo privacy, and all lithophane geometry unchanged.
+Contact is disabled for learner sites. An adult site manager may add an adult-controlled contact method later. Do not ask me for a full name, personal email, phone number, address, school, social account, contact link, or a parent’s email.
+
+For any gallery image, require adult permission, remove EXIF and location metadata, and inspect it for addresses, school names, uniforms, license plates, recognizable locations, full names, and identifying filenames before publication. Keep the homepage’s three paths, the compact design, keyboard access, phone layout, source-photo privacy, and all lithophane geometry unchanged.
 
 Run the relevant checks. Show me the personalized pages, remaining sample content, files changed, and one design choice in plain words. We are finished when a trusted adult has reviewed the maker information and every image intended for publishing.`,
   },
   {
     title: "Save your work with Git and GitHub",
     stage: "Step 4",
-    purpose: "Creates a safe checkpoint and remote copy of the personalized site.",
+    purpose:
+      "Creates a safe checkpoint and remote copy of the personalized site.",
     prompt: `Help me safely save my personalized No Dark Nights project with Git and GitHub.
+
+${PRIVATE_IMAGE_RULES}
 
 I am a beginner. Explain that Git records changes in my project and GitHub can store a copy online. Do not publish anything until I understand what will happen.
 
@@ -276,23 +295,25 @@ We are finished when the clean commit is on the intended GitHub repository, I kn
     purpose: "Turns a permitted photo into a measured, printable model.",
     prompt: `Help me create my first custom lithophane STL with the local No Dark Nights website.
 
+${PRIVATE_IMAGE_RULES}
+
 I am a beginner, so guide me one small step at a time and explain unfamiliar words. Use the project’s Resources page for parts and printing guidance.
 
 Before we begin:
 1. Ask me to confirm that I took the photograph or have permission to use it.
 2. Explain briefly that clear, well-lit images with good contrast and an obvious subject usually work best.
-3. Keep the photograph on my computer. Do not upload, publish, commit, or add it to the repository.
+3. Keep the photograph on my computer. Do not ask me to attach it or show it to you.
 
 Then help me:
 1. Start the local No Dark Nights website if it is not already running.
 2. Open the Studio page.
 3. Measure or verify the height, width, and slot width of my night-light housing. If I do not know a measurement, stop and help me find it instead of guessing.
 4. Choose the closest size preset, then adjust the measurements only if my housing requires it.
-5. Select the photograph and frame the important part. Help me check zoom, position, contrast, and invert only when useful.
-6. Inspect the interactive 3D preview. If WebGL is unavailable, use the photo framing view and continue because STL generation should still work.
-7. Ask whether I want optional text raised on the bottom adapter, such as a first name or short message. Do not add private information unless I choose it.
+5. Tell me how to select and frame the photograph, then let me or my supervising adult visually check zoom, position, contrast, and invert inside the Studio. Do not inspect the photograph yourself.
+6. Let me inspect the interactive 3D preview. If WebGL is unavailable, explain how I can use the photo framing view and continue because STL generation should still work.
+7. Ask whether I want an optional short message raised on the bottom adapter. Use only a nickname, kind word, or short message. Do not use a full name, school, address, email, phone number, username, or website.
 8. Download the printable STL.
-9. Record the source image filename, model height, model width, slot width, curve radius, adapter thickness, chosen preset, photo adjustments, and optional adapter text in a short settings note. Do not copy the photograph itself into the project.
+9. Record “Source image: local private image—not stored,” followed by the model height, model width, slot width, curve radius, adapter thickness, chosen preset, photo adjustments, and optional adapter text in a short settings note.
 
 We are finished when the STL is downloaded, the important measurements have been checked, and I have a settings note I can use again.`,
   },
@@ -301,6 +322,8 @@ We are finished when the STL is downloaded, the important measurements have been
     stage: "Step 6",
     purpose: "Checks the public experience and printable model before release.",
     prompt: `Test my No Dark Nights website and lithophane STL before I publish or print them.
+
+${PRIVATE_IMAGE_RULES}
 
 I am a beginner. Explain each check and do not hide failures. Read AGENTS.md first. Do not change the lithophane geometry unless a test proves a real problem and you explain it to me.
 
@@ -314,7 +337,7 @@ Website checks:
 7. Check that every photo and caption has permission and does not expose private information.
 
 STL checks:
-1. Use my source image, downloaded STL, and settings note without uploading or publishing the source image.
+1. Use the downloaded STL and settings note. Do not request or inspect my source image.
 2. Verify image direction, height, width, slot width, curve, adapter thickness, bottom text, and build-plate orientation.
 3. Check for a closed manifold mesh, outward-facing triangles, duplicate or degenerate triangles, open edges, and unexpected size.
 4. Open the STL in my slicer and inspect the first layers, rounded slot, adapter, panel transition, and full toolpath preview.
@@ -331,6 +354,8 @@ We are finished when the complete automated suite passes and the website and STL
     stage: "Step 7",
     purpose: "Creates a trusted review link when Sites is available.",
     prompt: `Prepare a private review version of my No Dark Nights site with Sites.
+
+${PRIVATE_IMAGE_RULES}
 
 I am a beginner. First explain that Sites turns the tested project into a hosted preview. Check how my local Codex is authenticated and whether Sites is available for my account and workspace; availability can depend on the account, plan, workspace settings, and administrator.
 
@@ -354,6 +379,8 @@ Publishing is optional. We are finished when a trusted adult has an approved pri
     stage: "Step 8",
     purpose: "Checks the fit and guides the model safely from slicer to light.",
     prompt: `Help me turn my finished lithophane STL into a working night light.
+
+${PRIVATE_IMAGE_RULES}
 
 I am a beginner. Guide me carefully, explain slicer terms in plain language, and involve a trusted adult where appropriate. Do not assume one printer profile or one set of slicer settings works for every machine.
 
@@ -382,9 +409,11 @@ export const optionalPromptCards = [
     purpose: "Adds a finished light without exposing private information.",
     prompt: `Add a new gallery story for a night light I made.
 
-I will provide a photograph of the finished light and tell you what inspired it.
+${PRIVATE_IMAGE_RULES}
 
-Do not publish names, addresses, school details, or other private information. Use the image only after I confirm I have permission to share it. Match the existing gallery style and image size.
+My supervising adult and I will visually review a photograph of the finished light. We will provide it only after deciding it is safe and approved for public display.
+
+Before publication, require adult permission, remove EXIF and location metadata, and inspect the public-ready gallery image for addresses, school names, uniforms, license plates, recognizable locations, full names, and identifying filenames. Match the existing gallery style and image size.
 
 Finish when the entry has useful image description text, a short natural caption, and looks good beside the other gallery images and on a phone.`,
   },
@@ -393,6 +422,8 @@ Finish when the entry has useful image description text, a short natural caption
     stage: "Optional",
     purpose: "Keeps follow-up changes small enough to understand.",
     prompt: `Help me improve one part of my project without making it more complicated.
+
+${PRIVATE_IMAGE_RULES}
 
 First inspect the current page. Ask me what feels confusing, slow, or unfinished.
 

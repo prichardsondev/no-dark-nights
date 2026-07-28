@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { PageIntro, SiteShell } from "../SiteChrome";
 import {
+  getMakerProfile,
   getMailtoAddress,
   isValidContactHref,
   lightListings,
-  makerProfile,
 } from "../maker-profile";
 
 export const metadata: Metadata = {
@@ -14,36 +14,38 @@ export const metadata: Metadata = {
 };
 
 export default function LightsPage() {
-  const hasContactMethod = isValidContactHref(makerProfile.contactHref);
-  const contactEmail = getMailtoAddress(makerProfile.contactHref);
+  const profile = getMakerProfile();
+  const hasContactMethod = isValidContactHref(profile.contactHref);
+  const contactEmail = getMailtoAddress(profile.contactHref);
 
   return (
     <SiteShell>
       <main className="content-page site-width">
         <PageIntro
           eyebrow="Lights from this maker"
-          title={`Made by ${makerProfile.studioName}.`}
+          title={`Made by ${profile.studioName}.`}
           description="See something you like? Contact the maker to ask about creating one from your photograph or artwork."
         />
 
         <section className="maker-profile" aria-labelledby="maker-name">
           <div>
             <span className="site-eyebrow">Meet the maker</span>
-            <h2 id="maker-name">{makerProfile.makerName}</h2>
+            <h2 id="maker-name">{profile.makerName}</h2>
           </div>
           <div>
-            <p>{makerProfile.introduction}</p>
+            <p>{profile.introduction}</p>
             {hasContactMethod ? (
               <a
-                href={makerProfile.contactHref}
+                href={profile.contactHref}
                 rel={contactEmail ? undefined : "noreferrer"}
                 target={contactEmail ? undefined : "_blank"}
               >
-                {makerProfile.contactLabel} ↗
+                {profile.contactLabel} ↗
               </a>
             ) : (
               <p className="contact-not-set">
-                An adult-controlled contact method has not been configured yet.
+                Contact is disabled for learner sites. An adult site manager may
+                add an adult-controlled contact method later.
               </p>
             )}
             {contactEmail && (
@@ -91,12 +93,12 @@ export default function LightsPage() {
         <aside className="maker-safety" aria-labelledby="maker-safety-title">
           <strong id="maker-safety-title">For parents and young makers</strong>
           <p>
-            Use a parent, guardian, teacher, school, makerspace, or other trusted
-            adult&apos;s contact method. Never publish a child&apos;s personal
-            email, phone number, full name, school details, or home address.
-            Adults should arrange pickup or shipping using a safe public
-            location, approved organization address, business address, or post
-            office box—not a child&apos;s home address.
+            Use a parent, guardian, teacher, school, makerspace, or other
+            trusted adult&apos;s contact method. Never publish a child&apos;s
+            personal email, phone number, full name, school details, or home
+            address. Adults should arrange pickup or shipping using a safe
+            public location, approved organization address, business address, or
+            post office box—not a child&apos;s home address.
           </p>
         </aside>
       </main>

@@ -80,6 +80,14 @@ export default function ResourcesPage() {
               money or receive commission from any link on this page.
             </p>
           </div>
+          <aside className="adult-purchase-notice">
+            <strong>Adults handle purchases.</strong>
+            <p>
+              Children should not buy products or create shopping accounts. A
+              parent, guardian, teacher, library, makerspace, or other trusted
+              adult should choose and purchase any needed equipment.
+            </p>
+          </aside>
           <div className="what-we-use-grid">
             {whatWeUse.map((item) => (
               <article key={item.title}>
@@ -97,8 +105,8 @@ export default function ResourcesPage() {
             ))}
           </div>
           <p className="disclosure-note">
-            Prices and availability change. Measure for compatibility and
-            follow each manufacturer&apos;s instructions.
+            Prices and availability change. Measure for compatibility and follow
+            each manufacturer&apos;s instructions.
           </p>
         </section>
         <section className="checklist-section">
@@ -111,7 +119,20 @@ export default function ResourcesPage() {
             <li>Check that the model sits flat on the build plate.</li>
             <li>Preview the first layers around the rounded slot.</li>
             <li>Print a short adapter-only test when using a new light.</li>
-            <li>Keep plug-in lights and finished prints away from excess heat.</li>
+            <li>Children use 3D printers only with adult supervision.</li>
+            <li>
+              Avoid hot and moving parts, allow prints to cool, and follow the
+              printer and material manufacturer&apos;s safety and ventilation
+              instructions.
+            </li>
+            <li>
+              Use only a commercially manufactured, undamaged LED night-light.
+              Never print or modify electrical components.
+            </li>
+            <li>
+              A trusted adult inspects the finished print and plugs in the
+              light.
+            </li>
           </ul>
         </section>
         <section className="next-step">

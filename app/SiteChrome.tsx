@@ -43,13 +43,14 @@ export function SiteFooter() {
         <Link href="/about">Our story</Link>
         <Link href="/learn">Start learning</Link>
         <Link href="/resources">Print safely</Link>
+        <Link href="/safety">Safety &amp; privacy</Link>
         <a href={REPOSITORY_URL} rel="noreferrer" target="_blank">
           GitHub source
         </a>
       </div>
       <p className="footer-note">
-        Photos are shown only with permission. The studio keeps source images
-        on your device.
+        Photos are shown only with permission. The studio keeps source images on
+        your device.
       </p>
     </footer>
   );

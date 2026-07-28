@@ -2,11 +2,13 @@
  * PERSONALIZE THIS FILE FIRST
  *
  * Every deployed No Dark Nights website belongs to its maker. Change the
- * profile, adult-controlled contact link, and light listings below without
- * editing the Lights page components.
+ * profile and light listings below without editing the Lights page components.
  *
- * Never put a child's personal email address, phone number, school, or home
- * address here. Use a contact page or account controlled by a trusted adult.
+ * Learner copies publish no contact method by default. An adult site manager
+ * may set MAKER_CONTACT_HREF and MAKER_CONTACT_LABEL in the hosting
+ * environment later. Never ask a learner for a full name, personal email,
+ * phone number, address, school, social account, contact link, or a parent's
+ * email.
  */
 
 export const makerProfile = {
@@ -14,10 +16,18 @@ export const makerProfile = {
   makerName: "The No Dark Nights maker",
   introduction:
     "I make custom lithophane night lights from meaningful photographs and illustrations. Many are made as gifts simply to put a smile on someone’s face.",
-  // Temporary adult-managed contact. Replace this when personalizing the site.
-  contactHref: "mailto:paul@oddlytrue.ai",
+  contactHref: "",
   contactLabel: "Contact the maker",
 };
+
+export function getMakerProfile() {
+  return {
+    ...makerProfile,
+    contactHref: process.env.MAKER_CONTACT_HREF?.trim() ?? "",
+    contactLabel:
+      process.env.MAKER_CONTACT_LABEL?.trim() || makerProfile.contactLabel,
+  };
+}
 
 export function isValidContactHref(contactHref: string) {
   const href = contactHref.trim();
@@ -57,8 +67,7 @@ export const lightListings = [
     image: "/gallery/amber-light.jpg",
     alt: "Example amber lithophane night light showing a puppy",
     title: "A pet portrait",
-    description:
-      "Turn a clear pet photograph into a softly glowing keepsake.",
+    description: "Turn a clear pet photograph into a softly glowing keepsake.",
   },
   {
     id: "illustrated-light",

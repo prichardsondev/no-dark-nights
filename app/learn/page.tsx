@@ -2,11 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CopyPrompt } from "../CopyPrompt";
 import { PageIntro, SiteShell } from "../SiteChrome";
-import {
-  learningSteps,
-  optionalPromptCards,
-  promptCards,
-} from "../site-data";
+import { learningSteps, optionalPromptCards, promptCards } from "../site-data";
 
 export const metadata: Metadata = {
   title: "Learn | No Dark Nights",
@@ -23,6 +19,50 @@ export default function LearnPage() {
           title="Build the whole project, one step at a time."
           description="Set up your tools first. Then read, copy, inspect, and reflect through eight clear steps."
         />
+        <section
+          className="learner-safety-gate"
+          aria-labelledby="learner-setup-title"
+        >
+          <div>
+            <span className="site-eyebrow">Choose your safe setup</span>
+            <h2 id="learner-setup-title">Who is doing this activity?</h2>
+            <p>Select the one setup you are using. Do not enter your age.</p>
+          </div>
+          <fieldset>
+            <legend className="sr-only">Choose one working setup</legend>
+            <label>
+              <input type="radio" name="learner-setup" />
+              <span>Adult learner</span>
+            </label>
+            <label>
+              <input type="radio" name="learner-setup" />
+              <span>Teen learner with parent or guardian permission</span>
+            </label>
+            <label>
+              <input type="radio" name="learner-setup" />
+              <span>
+                Child under 13 working with an adult—the adult conducts all
+                Codex interactions
+              </span>
+            </label>
+            <label>
+              <input type="radio" name="learner-setup" />
+              <span>Teacher, library, or makerspace-managed activity</span>
+            </label>
+          </fieldset>
+          <ul>
+            <li>
+              Under 13: an adult must conduct the ChatGPT/Codex interactions.
+            </li>
+            <li>Ages 13–17: parent or guardian permission is required.</li>
+            <li>GitHub personal accounts require users to be at least 13.</li>
+            <li>
+              Under-13 work must use an adult-, teacher-, or
+              organization-controlled repository.
+            </li>
+            <li>Accounts must not be shared.</li>
+          </ul>
+        </section>
         <ol className="learn-guide" aria-label="How each lesson works">
           <li>
             <span>1</span>
@@ -57,7 +97,7 @@ export default function LearnPage() {
               <ul>
                 <li>A supported Mac or Windows computer</li>
                 <li>Access to Codex through the ChatGPT desktop app</li>
-                <li>An adult&apos;s help if you are under 13</li>
+                <li>The safe working setup you selected above</li>
               </ul>
             </div>
             <div>
@@ -77,7 +117,10 @@ export default function LearnPage() {
               </a>
             </div>
           </div>
-          <p className="setup-sequence" aria-label="Install ChatGPT, then open Codex, then start Step 1">
+          <p
+            className="setup-sequence"
+            aria-label="Install ChatGPT, then open Codex, then start Step 1"
+          >
             Install ChatGPT <span aria-hidden="true">→</span> Open Codex{" "}
             <span aria-hidden="true">→</span> Start Step 1
           </p>
@@ -89,18 +132,30 @@ export default function LearnPage() {
           <div>
             <h2>Four useful words</h2>
             <dl className="tiny-glossary">
-              <div><dt>Repository</dt><dd>The project folder and its history.</dd></div>
-              <div><dt>Clone</dt><dd>Download your own working copy.</dd></div>
-              <div><dt>Local</dt><dd>Running only on your computer.</dd></div>
-              <div><dt>STL</dt><dd>A file that describes a printable 3D shape.</dd></div>
+              <div>
+                <dt>Repository</dt>
+                <dd>The project folder and its history.</dd>
+              </div>
+              <div>
+                <dt>Clone</dt>
+                <dd>Download your own working copy.</dd>
+              </div>
+              <div>
+                <dt>Local</dt>
+                <dd>Running only on your computer.</dd>
+              </div>
+              <div>
+                <dt>STL</dt>
+                <dd>A file that describes a printable 3D shape.</dd>
+              </div>
             </dl>
           </div>
           <div>
             <h2>One path, eight checkpoints</h2>
             <p>
-              Do not skip a finish line. Each step tells you what to learn,
-              what you need, when to stop, what to inspect, and what to explain
-              in your own words.
+              Do not skip a finish line. Each step tells you what to learn, what
+              you need, when to stop, what to inspect, and what to explain in
+              your own words.
             </p>
           </div>
         </section>
@@ -113,7 +168,9 @@ export default function LearnPage() {
                 <header className="lesson-heading">
                   <span>{step.number}</span>
                   <div>
-                    <small>Step {index + 1} of {learningSteps.length}</small>
+                    <small>
+                      Step {index + 1} of {learningSteps.length}
+                    </small>
                     <h2>{step.title}</h2>
                     <p>{step.summary}</p>
                   </div>
@@ -266,8 +323,8 @@ export default function LearnPage() {
               13–17 need permission from a parent or guardian. In an educational
               activity for a child under 13, the adult must conduct the direct
               interaction with ChatGPT. Adults should also manage installation,
-              permissions, publishing, purchases, printer supervision, and
-              light safety when appropriate.
+              permissions, publishing, purchases, printer supervision, and light
+              safety when appropriate.
             </p>
             <a
               href="https://help.openai.com/en/articles/8313401-is-chatgpt-safe-for-all-ages"
@@ -315,9 +372,9 @@ export default function LearnPage() {
             <article>
               <h3>Evidence of learning</h3>
               <p>
-                A project map, personalized local site, reviewed Git commit,
-                STL and settings note, test report, optional private preview,
-                fit test, finished light, and short reflection.
+                A project map, personalized local site, reviewed Git commit, STL
+                and settings note, test report, optional private preview, fit
+                test, finished light, and short reflection.
               </p>
               <p>
                 Learners finish with a working website they can continue using
