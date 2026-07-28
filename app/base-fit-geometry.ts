@@ -42,7 +42,7 @@ function roundHundredth(value: number) {
 }
 
 export function formatSlotWidth(value: number) {
-  return Number.isInteger(value * 10) ? value.toFixed(1) : value.toFixed(2);
+  return value.toFixed(2).replace(/\.?0+$/, "");
 }
 
 export function normalizeFitFinder(
@@ -199,7 +199,7 @@ export function createFitFinderParts(
     const baseGeometry = createFitCouponGeometry(slotWidth, settings);
     baseGeometry.translate(centerX, 0, 0);
     baseGeometry.computeBoundingBox();
-    const label = formatSlotWidth(slotWidth);
+    const label = `${formatSlotWidth(slotWidth)} mm`;
     const labelGeometry = createFlatLabelGeometry({
       text: label,
       fontSize: 5,

@@ -122,7 +122,7 @@ test("Fit Finder defaults to 16.0, 16.5, and 17.0 mm", () => {
   assert.equal(result.correction, null);
   assert.equal(
     fitFinderFilename(result.widths),
-    "base-fit-finder-16.0-16.5-17.0.stl",
+    "base-fit-finder-16-16.5-17.stl",
   );
 });
 
@@ -137,7 +137,7 @@ test("a repeat calibration can omit an already printed coupon", () => {
     parts[0].baseGeometry.boundingBox.max.x <
       parts[1].baseGeometry.boundingBox.min.x,
   );
-  assert.equal(fitFinderFilename([15.5, 16]), "base-fit-finder-15.5-16.0.stl");
+  assert.equal(fitFinderFilename([15.5, 16]), "base-fit-finder-15.5-16.stl");
   for (const part of parts) {
     part.baseGeometry.dispose();
     part.labelGeometry.dispose();
@@ -237,7 +237,12 @@ test("each coupon is flat, outward, manifold, clean, and uses the exact shared p
       { degenerate: 0, duplicate: 0 },
     );
     assert.ok(triangleStats(base).signedVolume > 0);
-    assert.equal(part.label, part.slotWidth.toFixed(1));
+    assert.equal(
+      part.label,
+      `${part.slotWidth.toFixed(2).replace(/\.?0+$/, "")} mm`,
+    );
+    assert.ok(label.boundingBox.min.x > base.boundingBox.min.x);
+    assert.ok(label.boundingBox.max.x < base.boundingBox.max.x);
     assert.ok(label.boundingBox.min.y > profile.capY);
     assert.ok(
       Math.abs(

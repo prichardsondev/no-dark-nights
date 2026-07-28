@@ -227,7 +227,9 @@ function BaseFitLab({
         fitFinderFilename(selectedWidths),
       );
       setStatus(
-        `Fit Finder ready: ${selectedWidths.map(formatSlotWidth).join(", ")} mm.`,
+        `Fit Finder ready: ${selectedWidths
+          .map((width) => `${formatSlotWidth(width)} mm`)
+          .join(", ")}.`,
       );
     } catch {
       setStatus(
@@ -360,7 +362,7 @@ function BaseFitLab({
                 className={`fit-coupon ${includedCoupons[index] ? "" : "excluded"}`}
                 key={width}
               >
-                <span>{formatSlotWidth(width)}</span>
+                <span>{formatSlotWidth(width)} mm</span>
                 <i aria-hidden="true" />
                 <label className="coupon-inclusion">
                   <input

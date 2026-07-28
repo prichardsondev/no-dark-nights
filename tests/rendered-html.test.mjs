@@ -100,7 +100,10 @@ test("server-renders the No Dark Nights home and studio", async () => {
     studioHtml,
     /<button(?=[^>]*disabled)[^>]*>\s*Download[\s\S]*3[\s\S]*-Size Fit Finder/i,
   );
-  assert.match(studioHtml, /16\.0[\s\S]*16\.5[\s\S]*17\.0/i);
+  assert.match(
+    studioHtml,
+    /16(?:<!-- -->)? mm[\s\S]*16\.5(?:<!-- -->)? mm[\s\S]*17(?:<!-- -->)? mm/i,
+  );
   assert.match(studioHtml, /same rounded slot, 5 mm entry lips/i);
   assert.match(
     studioHtml,
