@@ -134,10 +134,10 @@ test("major pages have route-specific metadata and repository links", async () =
   assert.match(learnHtml, /Before Step 1/i);
   assert.match(learnHtml, /Get ready/i);
   assert.match(learnHtml, /Access to Codex through the ChatGPT desktop app/i);
-  assert.match(learnHtml, /Young makers: work with a trusted adult\./i);
+  assert.match(learnHtml, /For young makers and families/i);
   assert.match(
     learnHtml,
-    /If you are under 13, an adult must conduct the ChatGPT\/Codex interactions\.[\s\S]*Ages 13–17 need parent or guardian permission\.[\s\S]*Adults should manage accounts, contact information, publishing, purchases, printer use, and electrical safety\./i,
+    /OpenAI requires an adult to conduct ChatGPT\/Codex interactions for children under 13 and parent or guardian permission for ages 13–17\.[\s\S]*Families and educators decide how they want to guide the rest of the project\.[\s\S]*The site never needs a child(?:&apos;|&#x27;|')s personal contact information\./i,
   );
   assert.doesNotMatch(
     learnHtml,

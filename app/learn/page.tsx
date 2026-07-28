@@ -23,14 +23,13 @@ export default function LearnPage() {
           className="learner-safety-notice"
           aria-labelledby="young-maker-guidance"
         >
-          <h2 id="young-maker-guidance">
-            Young makers: work with a trusted adult.
-          </h2>
+          <h2 id="young-maker-guidance">For young makers and families</h2>
           <p>
-            If you are under 13, an adult must conduct the ChatGPT/Codex
-            interactions. Ages 13–17 need parent or guardian permission. Adults
-            should manage accounts, contact information, publishing, purchases,
-            printer use, and electrical safety.
+            OpenAI requires an adult to conduct ChatGPT/Codex interactions for
+            children under 13 and parent or guardian permission for ages 13–17.
+            Families and educators decide how they want to guide the rest of the
+            project. The site never needs a child&apos;s personal contact
+            information.
           </p>
         </section>
         <ol className="learn-guide" aria-label="How each lesson works">
