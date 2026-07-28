@@ -1286,7 +1286,8 @@ export function LithophaneStudio() {
             </div>
             <p className="slicer-note">
               Before printing, open the STL in your slicer and confirm the
-              adapter dimensions for your exact night-light base.
+              adapter dimensions for your exact night-light base.{" "}
+              <Link href="/resources">View printing resources →</Link>
             </p>
           </div>
         </section>

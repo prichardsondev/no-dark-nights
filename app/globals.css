@@ -865,6 +865,11 @@ input[type="range"]:disabled {
   line-height: 1.4;
 }
 
+.slicer-note a {
+  color: #b9c5d2;
+  font-weight: 750;
+}
+
 @media (max-width: 1080px) {
   .topbar {
     grid-template-columns: 1fr auto;

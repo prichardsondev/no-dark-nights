@@ -233,6 +233,10 @@ test("Studio explains the physical tools and Resources lists safe examples", asy
   assert.match(studioHtml, /slicer software/i);
   assert.match(studioHtml, /compatible 3D printer/i);
   assert.match(studioHtml, /href="\/resources"/i);
+  assert.match(
+    studioHtml,
+    /Before printing[\s\S]*href="\/resources"[^>]*>View printing resources/i,
+  );
 
   assert.match(resourcesHtml, /What we use/i);
   assert.match(resourcesHtml, /amazon\.com\/dp\/B06VTGDD33/i);
