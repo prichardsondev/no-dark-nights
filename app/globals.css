@@ -1409,6 +1409,30 @@ input[type="range"]:disabled {
   font-size: 12px;
 }
 
+.maker-profile .contact-details {
+  max-width: 680px;
+  margin-top: 14px;
+}
+
+.maker-profile .contact-details p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.maker-profile .contact-details p + p {
+  margin-top: 6px;
+}
+
+.maker-profile .contact-details strong {
+  color: var(--ink);
+}
+
+.maker-profile .contact-details code {
+  color: var(--ink);
+  font-size: 11px;
+}
+
 .lights-section {
   margin-bottom: 42px;
 }
@@ -2369,6 +2393,16 @@ input[type="range"]:disabled {
 .what-we-use-heading {
   max-width: 760px;
   margin-bottom: 26px;
+}
+
+.what-we-use-heading .affiliate-disclosure {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--amber);
+  background: #f3efe5;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.55;
 }
 
 .what-we-use-grid {

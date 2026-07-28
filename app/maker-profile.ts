@@ -34,6 +34,15 @@ export function isValidContactHref(contactHref: string) {
   }
 }
 
+export function getMailtoAddress(contactHref: string) {
+  if (!contactHref.toLowerCase().startsWith("mailto:")) {
+    return null;
+  }
+
+  const address = contactHref.slice("mailto:".length).split("?")[0]?.trim();
+  return address || null;
+}
+
 export const lightListings = [
   {
     id: "favorite-photo",

@@ -75,6 +75,10 @@ export default function ResourcesPage() {
               and material combination we know. Equivalent compatible products
               can work.
             </p>
+            <p className="affiliate-disclosure">
+              <strong>No affiliate links.</strong> No Dark Nights does not earn
+              money or receive commission from any link on this page.
+            </p>
           </div>
           <div className="what-we-use-grid">
             {whatWeUse.map((item) => (
@@ -93,9 +97,8 @@ export default function ResourcesPage() {
             ))}
           </div>
           <p className="disclosure-note">
-            No Dark Nights does not use affiliate links and receives no
-            commission. Prices and availability change. Measure for
-            compatibility and follow each manufacturer&apos;s instructions.
+            Prices and availability change. Measure for compatibility and
+            follow each manufacturer&apos;s instructions.
           </p>
         </section>
         <section className="checklist-section">

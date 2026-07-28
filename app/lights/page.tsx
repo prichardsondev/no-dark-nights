@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageIntro, SiteShell } from "../SiteChrome";
 import {
+  getMailtoAddress,
   isValidContactHref,
   lightListings,
   makerProfile,
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
 
 export default function LightsPage() {
   const hasContactMethod = isValidContactHref(makerProfile.contactHref);
+  const contactEmail = getMailtoAddress(makerProfile.contactHref);
 
   return (
     <SiteShell>
@@ -34,8 +36,8 @@ export default function LightsPage() {
             {hasContactMethod ? (
               <a
                 href={makerProfile.contactHref}
-                rel="noreferrer"
-                target="_blank"
+                rel={contactEmail ? undefined : "noreferrer"}
+                target={contactEmail ? undefined : "_blank"}
               >
                 {makerProfile.contactLabel} ↗
               </a>
@@ -43,6 +45,19 @@ export default function LightsPage() {
               <p className="contact-not-set">
                 An adult-controlled contact method has not been configured yet.
               </p>
+            )}
+            {contactEmail && (
+              <div className="contact-details">
+                <p>
+                  This opens an email addressed to{" "}
+                  <strong>{contactEmail}</strong>.
+                </p>
+                <p>
+                  Making your own site? Ask Codex to replace{" "}
+                  <code>contactHref</code> in <code>app/maker-profile.ts</code>{" "}
+                  with an adult-managed contact.
+                </p>
+              </div>
             )}
           </div>
         </section>

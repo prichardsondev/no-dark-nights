@@ -233,8 +233,8 @@ test("Studio explains the physical tools and Resources lists safe examples", asy
   assert.match(resourcesHtml, /products\/pla-basic-filament/i);
   assert.match(resourcesHtml, /LED bulbs only/i);
   assert.match(resourcesHtml, /16\.5 mm style/i);
-  assert.match(resourcesHtml, /does not use affiliate links/i);
-  assert.match(resourcesHtml, /receives no commission/i);
+  assert.match(resourcesHtml, /No affiliate links/i);
+  assert.match(resourcesHtml, /does not earn money or receive commission/i);
   assert.equal(
     [
       ...resourcesHtml.matchAll(
@@ -295,6 +295,10 @@ test("homepage presents three clear paths and Lights belongs to this maker", asy
 
   if (profileModule.isValidContactHref(profileModule.makerProfile.contactHref)) {
     assert.match(lightsHtml, /Contact the maker[\s\S]{0,30}↗/i);
+    assert.match(lightsHtml, /This opens an email addressed to/i);
+    assert.match(lightsHtml, /paul@oddlytrue\.ai/i);
+    assert.match(lightsHtml, /contactHref/i);
+    assert.match(lightsHtml, /app\/maker-profile\.ts/i);
   } else {
     assert.match(
       lightsHtml,
@@ -304,7 +308,9 @@ test("homepage presents three clear paths and Lights belongs to this maker", asy
 });
 
 test("maker contact links accept safe email or web destinations", async () => {
-  const { isValidContactHref } = await import("../app/maker-profile.ts");
+  const { getMailtoAddress, isValidContactHref } = await import(
+    "../app/maker-profile.ts"
+  );
 
   assert.equal(isValidContactHref("mailto:adult@example.org"), true);
   assert.equal(isValidContactHref("https://example.org/contact"), true);
@@ -312,6 +318,11 @@ test("maker contact links accept safe email or web destinations", async () => {
   assert.equal(isValidContactHref("mailto:not-an-address"), false);
   assert.equal(isValidContactHref("javascript:alert(1)"), false);
   assert.equal(isValidContactHref("http://example.org/contact"), false);
+  assert.equal(
+    getMailtoAddress("mailto:adult@example.org?subject=Light"),
+    "adult@example.org",
+  );
+  assert.equal(getMailtoAddress("https://example.org/contact"), null);
 });
 
 test("keeps STL generation local and removes starter UI", async () => {
