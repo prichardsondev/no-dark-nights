@@ -91,6 +91,13 @@ test("server-renders the No Dark Nights home and studio", async () => {
   assert.match(studioHtml, /Choose a photo/i);
   assert.match(studioHtml, /Optional short message/i);
   assert.match(studioHtml, /aria-label="Bottom text"/i);
+  assert.match(studioHtml, /aria-label="Bottom text size"/i);
+  assert.match(studioHtml, /Text size/i);
+  assert.match(studioHtml, /8(?:<!-- -->)? mm/i);
+  assert.match(
+    studioHtml,
+    /Larger letters usually print more clearly[\s\S]*Long messages shrink/i,
+  );
   assert.match(studioHtml, /placeholder="Shine bright"/i);
   assert.match(
     studioHtml,

@@ -26,7 +26,10 @@ import {
   estimateTriangleCount,
 } from "./lithophane-geometry";
 import {
+  DEFAULT_LABEL_SIZE,
+  MAX_LABEL_SIZE,
   MAX_LABEL_LENGTH,
+  MIN_LABEL_SIZE,
   createLabelGeometry,
   normalizeLabelText,
 } from "./lithophane-label";
@@ -665,6 +668,7 @@ function ModelPreview({
   crop,
   settings,
   labelText,
+  labelSize,
   lit,
   cameraView,
 }: {
@@ -672,6 +676,7 @@ function ModelPreview({
   crop: CropSettings;
   settings: LithophaneSettings;
   labelText: string;
+  labelSize: number;
   lit: boolean;
   cameraView: "front" | "angle" | "side";
 }) {
@@ -832,7 +837,7 @@ function ModelPreview({
     const modelGroup = new THREE.Group();
     modelGroup.position.copy(center).multiplyScalar(-1);
     modelGroup.add(mesh);
-    const labelGeometry = createLabelGeometry(labelText, settings);
+    const labelGeometry = createLabelGeometry(labelText, settings, labelSize);
     const labelMaterial = labelGeometry
       ? new THREE.MeshPhysicalMaterial({
           color: lit ? 0x3a1607 : 0xf4e2b9,
@@ -929,7 +934,7 @@ function ModelPreview({
       renderer.dispose();
       renderer.domElement.remove();
     };
-  }, [cameraView, crop, image, labelText, lit, settings]);
+  }, [cameraView, crop, image, labelSize, labelText, lit, settings]);
 
   if (previewUnavailable) {
     return <PreviewUnavailable imageUrl={image.previewUrl} />;
@@ -951,6 +956,7 @@ export function LithophaneStudio() {
     "angle",
   );
   const [labelText, setLabelText] = useState("");
+  const [labelSize, setLabelSize] = useState(DEFAULT_LABEL_SIZE);
   const [isDragging, setIsDragging] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
@@ -1117,7 +1123,11 @@ export function LithophaneStudio() {
         modelSettings,
       );
       const mesh = new THREE.Mesh(geometry);
-      const labelGeometry = createLabelGeometry(labelText, modelSettings);
+      const labelGeometry = createLabelGeometry(
+        labelText,
+        modelSettings,
+        labelSize,
+      );
       const exportGroup = new THREE.Group();
       exportGroup.add(mesh);
       if (labelGeometry) {
@@ -1148,6 +1158,7 @@ export function LithophaneStudio() {
     setCrop(DEFAULT_CROP);
     setPreset("reference");
     setLabelText("");
+    setLabelSize(DEFAULT_LABEL_SIZE);
     setNotice(null);
   };
 
@@ -1483,6 +1494,26 @@ export function LithophaneStudio() {
                 website. Leave blank for no text.
               </span>
             </label>
+            <label className="setting-field">
+              <span className="setting-label">
+                <span>Text size</span>
+                <span className="setting-value">{labelSize} mm</span>
+              </span>
+              <input
+                aria-label="Bottom text size"
+                type="range"
+                min={MIN_LABEL_SIZE}
+                max={MAX_LABEL_SIZE}
+                step={0.5}
+                value={labelSize}
+                disabled={!normalizeLabelText(labelText)}
+                onChange={(event) => setLabelSize(Number(event.target.value))}
+              />
+              <span className="setting-help">
+                Larger letters usually print more clearly. Long messages shrink
+                automatically to stay safely inside the adapter.
+              </span>
+            </label>
           </section>
         </aside>
 
@@ -1523,6 +1554,7 @@ export function LithophaneStudio() {
                     crop={crop}
                     settings={modelSettings}
                     labelText={labelText}
+                    labelSize={labelSize}
                     lit={view === "lit"}
                     cameraView={cameraView}
                   />

@@ -10,6 +10,9 @@ import type { LithophaneSettings } from "./lithophane-geometry.ts";
 
 export const MAX_LABEL_LENGTH = 28;
 export const LABEL_RAISE = 0.65;
+export const DEFAULT_LABEL_SIZE = 8;
+export const MIN_LABEL_SIZE = 5;
+export const MAX_LABEL_SIZE = 10;
 
 const labelFont = new FontLoader().parse(fontData);
 
@@ -25,6 +28,7 @@ export function normalizeLabelText(text: string, font: Font = labelFont) {
 export function createLabelGeometry(
   text: string,
   settings: LithophaneSettings,
+  requestedFontSize = DEFAULT_LABEL_SIZE,
 ) {
   const label = normalizeLabelText(text);
   if (!label) return null;
@@ -38,8 +42,16 @@ export function createLabelGeometry(
   const naturalWidth =
     advances.reduce((sum, advance) => sum + advance, 0) +
     letterSpacing * Math.max(0, advances.length - 1);
-  const maximumWidth = Math.min(60, settings.width * 0.65);
-  const fontSize = Math.min(7, maximumWidth / Math.max(0.1, naturalWidth));
+  const maximumWidth = Math.min(72, settings.width * 0.78);
+  const safeFontSize = THREE.MathUtils.clamp(
+    requestedFontSize,
+    MIN_LABEL_SIZE,
+    MAX_LABEL_SIZE,
+  );
+  const fontSize = Math.min(
+    safeFontSize,
+    maximumWidth / Math.max(0.1, naturalWidth),
+  );
   const labelWidth = naturalWidth * fontSize;
   const depth = settings.adapterThickness + LABEL_RAISE;
   const slotCapY = settings.slotDepth + settings.slotWidth / 2;

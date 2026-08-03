@@ -7,8 +7,11 @@ import {
   createLithophaneGeometry,
 } from "../app/lithophane-geometry.ts";
 import {
+  DEFAULT_LABEL_SIZE,
   LABEL_RAISE,
+  MAX_LABEL_SIZE,
   MAX_LABEL_LENGTH,
+  MIN_LABEL_SIZE,
   createLabelGeometry,
   normalizeLabelText,
 } from "../app/lithophane-label.ts";
@@ -88,6 +91,39 @@ test("custom text is fitted and raised on the bottom adapter", () => {
     ) < 1e-5,
   );
   geometry.dispose();
+});
+
+test("bottom text size is adjustable and remains inside the adapter", () => {
+  const settings = { ...REFERENCE_SETTINGS, width: 80 };
+  assert.equal(DEFAULT_LABEL_SIZE, 8);
+
+  const small = createLabelGeometry("tint", settings, MIN_LABEL_SIZE);
+  const large = createLabelGeometry("tint", settings, MAX_LABEL_SIZE);
+  assert.ok(small);
+  assert.ok(large);
+  small.computeBoundingBox();
+  large.computeBoundingBox();
+  assert.ok(small.boundingBox);
+  assert.ok(large.boundingBox);
+  assert.ok(
+    large.boundingBox.max.y - large.boundingBox.min.y >
+      small.boundingBox.max.y - small.boundingBox.min.y,
+  );
+
+  const long = createLabelGeometry(
+    "A longer kind message here",
+    settings,
+    MAX_LABEL_SIZE,
+  );
+  assert.ok(long);
+  long.computeBoundingBox();
+  assert.ok(long.boundingBox);
+  assert.ok(long.boundingBox.min.x >= -settings.width / 2);
+  assert.ok(long.boundingBox.max.x <= settings.width / 2);
+
+  small.dispose();
+  large.dispose();
+  long.dispose();
 });
 
 test("generated night light is build-plate oriented and manifold", () => {
