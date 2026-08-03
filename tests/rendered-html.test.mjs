@@ -101,7 +101,15 @@ test("server-renders the No Dark Nights home and studio", async () => {
   assert.match(studioHtml, /placeholder="Shine bright"/i);
   assert.match(
     studioHtml,
-    /Do not include a[\s\S]*full name, school, address, email, phone number, username, or[\s\S]*website/i,
+    /public school or organization name[\s\S]*team name[\s\S]*public website/i,
+  );
+  assert.match(
+    studioHtml,
+    /An adult should approve school[\s\S]*organization[\s\S]*team[\s\S]*website text/i,
+  );
+  assert.match(
+    studioHtml,
+    /Do not include a child’s[\s\S]*full name[\s\S]*class or schedule[\s\S]*personal email[\s\S]*phone number[\s\S]*username[\s\S]*home address[\s\S]*private details/i,
   );
   assert.match(
     studioHtml,

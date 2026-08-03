@@ -1489,9 +1489,12 @@ export function LithophaneStudio() {
                 onChange={(event) => setLabelText(event.target.value)}
               />
               <span className="setting-help">
-                Use a nickname, kind word, or short message. Do not include a
-                full name, school, address, email, phone number, username, or
-                website. Leave blank for no text.
+                Use a nickname, kind word, public school or organization name,
+                team name, or public website. An adult should approve school,
+                organization, team, or website text. Do not include a child’s
+                full name, class or schedule, personal email, phone number,
+                username, home address, or other private details. Leave blank
+                for no text.
               </span>
             </label>
             <label className="setting-field">
