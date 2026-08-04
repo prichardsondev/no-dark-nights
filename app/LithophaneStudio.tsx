@@ -19,7 +19,6 @@ import {
   DEFAULT_CROP,
   DEFAULT_SETTINGS,
   LithophaneSettings,
-  REFERENCE_SETTINGS,
   SourceImage,
   calculateUncroppedWidth,
   createLithophaneGeometry,
@@ -45,18 +44,16 @@ import {
   type FitFinderSpacing,
 } from "./base-fit-geometry";
 import { detectWebGLSupport } from "./webgl-support";
+import {
+  COMPACT_SIZE_PRESET,
+  STANDARD_SIZE_PRESET,
+  applyDefaultFit,
+  applySizePreset,
+} from "./lithophane-presets";
 
 type UploadedImage = {
   previewUrl: string;
   source: SourceImage;
-};
-
-const STANDARD_SETTINGS: LithophaneSettings = {
-  ...REFERENCE_SETTINGS,
-  width: 120,
-  resolution: 0.5,
-  slotWidth: 17,
-  adapterThickness: 1.8,
 };
 
 type PresetName = "reference" | "standard" | "compact" | "custom";
@@ -1405,7 +1402,7 @@ export function LithophaneStudio() {
                 type="button"
                 className={`preset ${preset === "reference" ? "active" : ""}`}
                 onClick={() => {
-                  setSettings(REFERENCE_SETTINGS);
+                  setSettings((current) => applyDefaultFit(current));
                   setCrop(DEFAULT_CROP);
                   setPreset("reference");
                 }}
@@ -1417,7 +1414,9 @@ export function LithophaneStudio() {
                 type="button"
                 className={`preset ${preset === "standard" ? "active" : ""}`}
                 onClick={() => {
-                  setSettings(STANDARD_SETTINGS);
+                  setSettings((current) =>
+                    applySizePreset(current, STANDARD_SIZE_PRESET),
+                  );
                   setCrop((current) => ({ ...current, enabled: true }));
                   setPreset("standard");
                 }}
@@ -1429,10 +1428,9 @@ export function LithophaneStudio() {
                 type="button"
                 className={`preset ${preset === "compact" ? "active" : ""}`}
                 onClick={() => {
-                  setSettings({
-                    ...STANDARD_SETTINGS,
-                    width: 80,
-                  });
+                  setSettings((current) =>
+                    applySizePreset(current, COMPACT_SIZE_PRESET),
+                  );
                   setCrop((current) => ({ ...current, enabled: true }));
                   setPreset("compact");
                 }}
