@@ -7,16 +7,29 @@ export default function Home() {
     <SiteShell>
       <main>
         <section className="home-opening site-width">
-          <div className="opening-copy">
-            <span className="site-eyebrow">
-              A night-light studio and hands-on learning project
-            </span>
-            <h1>Make a light. Learn how the whole thing works.</h1>
-            <p>
-              No Dark Nights turns a photo into a printable lithophane. Use the
-              Studio immediately, see lights from this maker, or use an AI agent
-              to build your own personalized lithophane website.
-            </p>
+          <div className="opening-lead">
+            <div className="opening-copy">
+              <span className="site-eyebrow">
+                A night-light studio and hands-on learning project
+              </span>
+              <h1>Make a light. Learn how the whole thing works.</h1>
+              <p>
+                No Dark Nights turns a photo into a printable lithophane. Use
+                the Studio immediately, see lights from this maker, or use an AI
+                agent to build your own personalized lithophane website.
+              </p>
+            </div>
+            <figure className="opening-photo">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/moose-lithophane-night-light.webp"
+                alt="An illuminated moose lithophane night light"
+                width="1086"
+                height="1452"
+                fetchPriority="high"
+              />
+              <figcaption>A finished light</figcaption>
+            </figure>
           </div>
           <div className="opening-actions" aria-label="Start here">
             <Link className="start-card primary" href="/studio">
