@@ -18,6 +18,21 @@ export default function Home() {
                 the Studio immediately, see lights from this maker, or use an AI
                 agent to build your own personalized lithophane website.
               </p>
+              <a
+                className="process-video-link"
+                href="https://youtu.be/lXu6jsWt9qw"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span aria-hidden="true">▶</span>
+                <span>
+                  <strong>Watch the process</strong>
+                  <small>
+                    See how to build your own version or just make an STL on
+                    YouTube.
+                  </small>
+                </span>
+              </a>
             </div>
             <figure className="opening-photo">
               {/* eslint-disable-next-line @next/next/no-img-element */}

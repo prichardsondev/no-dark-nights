@@ -31,6 +31,9 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# Sites deployment identity belongs to one local owner, never to every clone
+/.openai/hosting.json
+
 # vercel
 .vercel
 
