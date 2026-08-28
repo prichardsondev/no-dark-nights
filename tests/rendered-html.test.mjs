@@ -708,7 +708,7 @@ test("keeps local data and deployment identity out of shared source", async () =
   assert.match(worker, /Permissions-Policy/);
   assert.doesNotMatch(worker, /\bDB:\s*D1Database/);
   assert.match(gitignore, /^\/\.openai\/hosting\.json$/m);
-  assert.deepEqual(await readdir(previewRoot), []);
+  await assert.rejects(readdir(previewRoot));
   await assert.rejects(access(new URL("../db/index.ts", import.meta.url)));
   await assert.rejects(
     access(new URL("../app/chatgpt-auth.ts", import.meta.url)),
