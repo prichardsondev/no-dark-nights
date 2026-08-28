@@ -179,6 +179,20 @@ or maker directory.
 Before publishing, replace or remove every sample listing and have a trusted
 adult review all maker information, contact links, photographs, and captions.
 
+## Publishing protection for project copies
+
+The repository does not include a Sites project ID. A project ID tells Sites
+which hosted website a deployment belongs to, so it must stay in the site
+owner's local `.openai/hosting.json` file and out of Git and GitHub.
+
+A learner's copy must never reuse the original No Dark Nights Sites project or
+copy a project ID from Git history, a lesson, or another maker. When publishing
+is approved, a trusted adult creates or confirms a separate private Sites
+project owned by that learner, family, school, or organization. Before saving
+or deploying a version, Codex must show the resolved site name, address, owner,
+and access level. If the target is `nodarknights.com` or ownership is uncertain,
+stop without changing the hosted site.
+
 ## Privacy and safety
 
 - Source photos are processed locally in the browser.

@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import { access, readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
-const templateRoot = new URL("../", import.meta.url);
 const previewRoot = new URL("../app/_sites-preview/", import.meta.url);
 
 async function render(pathname = "/") {
@@ -274,6 +273,9 @@ test("major pages have route-specific metadata and repository links", async () =
   assert.match(learnHtml, /If Sites is unavailable/i);
   assert.match(learnHtml, /If I use Bedrock-only authentication/i);
   assert.match(learnHtml, /Do not keep retrying Sites/i);
+  assert.match(learnHtml, /must stay ignored by Git/i);
+  assert.match(learnHtml, /Never copy a Sites project ID/i);
+  assert.match(learnHtml, /ownership is uncertain/i);
   assert.match(learnHtml, /instructor can separately review and publish/i);
   assert.match(learnHtml, /Publishing is optional/i);
   assert.match(learnHtml, /Keep the photograph on my computer/i);
@@ -673,8 +675,8 @@ test("maker contact links accept safe email or web destinations", async () => {
   else process.env.MAKER_CONTACT_LABEL = previousLabel;
 });
 
-test("keeps STL generation local and removes starter UI", async () => {
-  const [studio, geometry, homePage, studioPage, packageJson, worker] =
+test("keeps local data and deployment identity out of shared source", async () => {
+  const [studio, geometry, homePage, studioPage, packageJson, worker, gitignore] =
     await Promise.all([
       readFile(new URL("../app/LithophaneStudio.tsx", import.meta.url), "utf8"),
       readFile(
@@ -685,6 +687,7 @@ test("keeps STL generation local and removes starter UI", async () => {
       readFile(new URL("../app/studio/page.tsx", import.meta.url), "utf8"),
       readFile(new URL("../package.json", import.meta.url), "utf8"),
       readFile(new URL("../worker/index.ts", import.meta.url), "utf8"),
+      readFile(new URL("../.gitignore", import.meta.url), "utf8"),
     ]);
 
   assert.match(studio, /createImageBitmap/);
@@ -704,6 +707,7 @@ test("keeps STL generation local and removes starter UI", async () => {
   assert.match(worker, /Content-Security-Policy/);
   assert.match(worker, /Permissions-Policy/);
   assert.doesNotMatch(worker, /\bDB:\s*D1Database/);
+  assert.match(gitignore, /^\/\.openai\/hosting\.json$/m);
   assert.deepEqual(await readdir(previewRoot), []);
   await assert.rejects(access(new URL("../db/index.ts", import.meta.url)));
   await assert.rejects(
@@ -712,7 +716,6 @@ test("keeps STL generation local and removes starter UI", async () => {
   await access(
     new URL("../public/no-dark-nights-social-v2.png", import.meta.url),
   );
-  await access(new URL(".openai/hosting.json", templateRoot));
 });
 
 test("keeps every gallery image inside an equal frame", async () => {

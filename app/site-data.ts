@@ -365,11 +365,13 @@ I am a beginner. First explain that Sites turns the tested project into a hosted
 Please:
 1. Confirm the GitHub commit from the previous steps and rerun the required release checks.
 2. Stop and ask a trusted adult or teacher to approve publishing and review the intended audience.
-3. Preserve the existing Sites project identity if this project already has one. Never create a duplicate deployment project silently.
-4. Prepare a private, owner-only review version. Before deploying, show me the resolved access level and ask for approval.
-5. Do not make the site public, connect or change a real domain, add analytics, or expose private photographs or contact details.
-6. After deployment, open the homepage, Lights, Studio, Learn, Gallery, Resources, Code, and About pages and verify the main desktop and phone layouts and links.
-7. Give me the private link and a short adult review checklist.
+3. Check whether the local \`.openai/hosting.json\` file exists. It is owner-only deployment information, must stay ignored by Git, and must never be committed. Never copy a Sites project ID from the original repository, Git history, lesson materials, or another maker.
+4. If no local Sites project exists, stop and ask the trusted adult before creating a separate private project owned by this learner, family, school, or organization. Never create one silently.
+5. Before saving or deploying a version, show me the resolved site name, address, owner, and access level. If it is the original \`nodarknights.com\` site or ownership is uncertain, stop without saving or deploying anything.
+6. Prepare only a private, owner-only review version and ask for approval of the resolved access level.
+7. Do not make the site public, connect or change a real domain, add analytics, or expose private photographs or contact details.
+8. After deployment, open the homepage, Lights, Studio, Learn, Gallery, Resources, Code, and About pages and verify the main desktop and phone layouts and links.
+9. Give me the private link and a short adult review checklist.
 
 If I use Bedrock-only authentication, recognize that it supports local Codex work but not OpenAI-hosted Sites. Do not keep retrying Sites and do not ask me for AWS credentials. Preserve the completed local website and approved GitHub repository. If an instructor has eligible ChatGPT and Sites access, prepare a clear handoff so the instructor can separately review and publish an approved preview.
 

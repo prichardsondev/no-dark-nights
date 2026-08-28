@@ -59,7 +59,10 @@ and publish a private Sites version before discussing a real-domain change.
 
 ## Release rules
 
-- Keep `.openai/hosting.json` and its `project_id` unchanged.
+- Treat `.openai/hosting.json` as local owner-only deployment state. Keep it
+  ignored by Git, never commit a Sites `project_id`, and never copy a project
+  identity from the original repository or another maker. If the file exists,
+  do not change its `project_id` without the site owner's explicit approval.
 - Do not commit `.env` files, credentials, build output, local downloads, or
   unapproved photographs.
 - Gallery photographs have separate rights and are not covered by the MIT
