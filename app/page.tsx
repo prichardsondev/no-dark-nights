@@ -141,7 +141,7 @@ export default function Home() {
               <span className="site-eyebrow">Finished lights</span>
               <h2>Made by people, for people.</h2>
             </div>
-            <Link href="/gallery">See all eight</Link>
+            <Link href="/gallery">See the full gallery</Link>
           </div>
           <div className="home-gallery site-width">
             {galleryItems.slice(0, 4).map((item) => (

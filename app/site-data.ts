@@ -61,6 +61,49 @@ export const galleryItems = [
   },
 ];
 
+export const originalGalleryItems = [
+  {
+    src: "/gallery/original-church-light.webp",
+    title: "Church at Night",
+    alt: "An original No Dark Nights lithophane showing a lit church",
+  },
+  {
+    src: "/gallery/original-wolf-light.webp",
+    title: "Wolf Portrait",
+    alt: "An original No Dark Nights lithophane showing a wolf",
+  },
+  {
+    src: "/gallery/original-dog-light.webp",
+    title: "Dog Portrait",
+    alt: "An original No Dark Nights lithophane made from a dog photograph",
+  },
+  {
+    src: "/gallery/original-bulldog-light.webp",
+    title: "Illustrated Bulldog",
+    alt: "An original No Dark Nights lithophane showing an illustrated bulldog",
+  },
+  {
+    src: "/gallery/original-eagle-light.webp",
+    title: "Eagle and Flag",
+    alt: "An original No Dark Nights lithophane showing an eagle and flag",
+  },
+  {
+    src: "/gallery/original-angel-light.webp",
+    title: "Angel",
+    alt: "An original No Dark Nights lithophane showing an angel",
+  },
+  {
+    src: "/gallery/original-portrait-light.webp",
+    title: "Portrait Light",
+    alt: "An original No Dark Nights lithophane made from a portrait",
+  },
+  {
+    src: "/gallery/original-starry-night-light.webp",
+    title: "Starry Night",
+    alt: "An original No Dark Nights lithophane inspired by Starry Night",
+  },
+];
+
 export const learningSteps = [
   {
     number: "01",

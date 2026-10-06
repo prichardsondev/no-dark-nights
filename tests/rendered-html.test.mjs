@@ -498,6 +498,21 @@ test("Safety, gallery, and publishing guidance protect children and private phot
   );
   assert.match(galleryHtml, /recognizable locations/i);
   assert.match(galleryHtml, /no full names or identifying filenames/i);
+  assert.match(galleryHtml, /From the original site/i);
+  assert.match(galleryHtml, /Where No Dark Nights began/i);
+  assert.match(
+    galleryHtml,
+    /\/gallery\/original-no-dark-nights-trees\.webp/i,
+  );
+  assert.equal(
+    [
+      ...galleryHtml.matchAll(
+        /src="\/gallery\/original-(?:church|wolf|dog|bulldog|eagle|angel|portrait|starry-night)-light\.webp"/gi,
+      ),
+    ].length,
+    8,
+  );
+  assert.doesNotMatch(galleryHtml, /jaime@nodarknights\.com/i);
 });
 
 test("homepage presents three clear paths and Lights belongs to this maker", async () => {

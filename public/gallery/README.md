@@ -18,3 +18,7 @@ Before publication, a trusted adult must:
   recognizable locations;
 - remove full names and identifying filenames; and
 - confirm that the public caption contains no private information.
+
+The files prefixed with `original-` restore artwork and finished-light examples
+that the site owner previously published on the original No Dark Nights site.
+Obsolete pricing and contact details from that site are deliberately excluded.
