@@ -18,100 +18,62 @@ const PRIVATE_IMAGE_RULES = `Private-image rules:
 - Automated tests must use a neutral image provided by the project.
 - Studio processing is local. Giving a photograph to an AI agent is a separate action, so do not ask me to provide the photograph to you.`;
 
-export const galleryItems = [
-  {
-    src: "/gallery/our-moment.jpg",
-    title: "Our Moment",
-    alt: "A warm glowing lithophane night light showing a couple",
-  },
-  {
-    src: "/gallery/fawn-light.jpg",
-    title: "Fawning Intelligence",
-    alt: "A glowing lithophane night light showing a young deer",
-  },
-  {
-    src: "/gallery/timeless-vows.jpg",
-    title: "Timeless Vows",
-    alt: "A lithophane night light made from a vintage wedding photograph",
-  },
-  {
-    src: "/gallery/owl-light.jpg",
-    title: "What a Hoot",
-    alt: "A glowing lithophane night light showing an owl",
-  },
-  {
-    src: "/gallery/truck-light.jpg",
-    title: "That’s a Nightlight",
-    alt: "A lithophane night light showing a pickup truck",
-  },
-  {
-    src: "/gallery/winter-wonderland.jpg",
-    title: "Winter Wonderland",
-    alt: "A warm lithophane night light showing a snowy cabin",
-  },
-  {
-    src: "/gallery/amber-light.jpg",
-    title: "Amber Light",
-    alt: "An amber illuminated lithophane night light showing a puppy",
-  },
-  {
-    src: "/gallery/soft-white-light.jpg",
-    title: "Soft White Light",
-    alt: "A soft white illuminated lithophane night light showing a puppy",
-  },
+const galleryItem = (src: string, title: string) => ({
+  src,
+  title,
+  alt: `A finished No Dark Nights lithophane night light titled ${title}`,
+});
+
+export const s3GalleryItems = [
+  galleryItem("/gallery/our-moment.webp", "Our Moment"),
+  galleryItem("/gallery/little-bit-country.webp", "Little Bit Country"),
+  galleryItem("/gallery/fawning-intelligence.webp", "Fawning Intelligence"),
+  galleryItem("/gallery/flower-power.webp", "Flower Power"),
+  galleryItem("/gallery/amber-light.webp", "Amber Light"),
+  galleryItem("/gallery/soft-white-light.webp", "Soft White Light"),
+  galleryItem("/gallery/liquid-elegance.webp", "Liquid Elegance"),
+  galleryItem("/gallery/giving-thanks.webp", "Giving Thanks"),
+  galleryItem("/gallery/perfect-angel.webp", "Perfect Angel"),
+  galleryItem("/gallery/adorable-couple.webp", "Adorable Couple"),
+  galleryItem("/gallery/baby-boy.webp", "Baby Boy"),
+  galleryItem("/gallery/freedom-rings.webp", "Freedom Rings"),
+  galleryItem("/gallery/northern-lights.webp", "Northern Lights"),
+  galleryItem("/gallery/winter-wonderland.webp", "Winter Wonderland"),
+  galleryItem("/gallery/lone-wolf.webp", "Lone Wolf"),
+  galleryItem("/gallery/sexy-rexy.webp", "Sexy Rexy"),
+  galleryItem("/gallery/martian-christmas.webp", "Martian Christmas"),
+  galleryItem("/gallery/crazy-cattle-dog.webp", "Crazy Cattle Dog"),
+  galleryItem("/gallery/thats-a-nightlight.webp", "That’s a Nightlight"),
+  galleryItem("/gallery/timeless-vows.webp", "Timeless Vows"),
+  galleryItem("/gallery/muscle-and-moxie.webp", "Muscle and Moxie"),
+  galleryItem("/gallery/foil-up.webp", "Foil Up"),
+  galleryItem("/gallery/what-a-hoot.webp", "What a Hoot"),
+  galleryItem("/gallery/teddyflage.webp", "Teddyflage"),
+  galleryItem("/gallery/i-hate-frydays.webp", "I hate Frydays"),
 ];
 
-export const originalGalleryItems = [
-  {
-    src: "/gallery/original-church-light.webp",
-    title: "Church at Night",
-    alt: "An original No Dark Nights lithophane showing a lit church",
-  },
-  {
-    src: "/gallery/original-wolf-light.webp",
-    title: "Wolf Portrait",
-    alt: "An original No Dark Nights lithophane showing a wolf",
-  },
-  {
-    src: "/gallery/original-dog-light.webp",
-    title: "Dog Portrait",
-    alt: "An original No Dark Nights lithophane made from a dog photograph",
-  },
-  {
-    src: "/gallery/original-bulldog-light.webp",
-    title: "Illustrated Bulldog",
-    alt: "An original No Dark Nights lithophane showing an illustrated bulldog",
-  },
-  {
-    src: "/gallery/original-eagle-light.webp",
-    title: "Eagle and Flag",
-    alt: "An original No Dark Nights lithophane showing an eagle and flag",
-  },
-  {
-    src: "/gallery/original-angel-light.webp",
-    title: "Angel",
-    alt: "An original No Dark Nights lithophane showing an angel",
-  },
-  {
-    src: "/gallery/original-portrait-light.webp",
-    title: "Portrait Light",
-    alt: "An original No Dark Nights lithophane made from a portrait",
-  },
-  {
-    src: "/gallery/original-starry-night-light.webp",
-    title: "Starry Night",
-    alt: "An original No Dark Nights lithophane inspired by Starry Night",
-  },
+const featuredGalleryTitles = [
+  "Our Moment",
+  "Fawning Intelligence",
+  "Timeless Vows",
+  "What a Hoot",
+  "That’s a Nightlight",
+  "Little Bit Country",
+  "Amber Light",
+  "Soft White Light",
 ];
+
+export const galleryItems = featuredGalleryTitles.map(
+  (title) => s3GalleryItems.find((item) => item.title === title)!,
+);
 
 export const allGalleryItems = [
-  ...galleryItems,
+  ...s3GalleryItems,
   {
     src: "/moose-lithophane-night-light.webp",
     title: "Mountain Moose",
     alt: "An illuminated lithophane night light showing a moose in a mountain landscape",
   },
-  ...originalGalleryItems,
 ];
 
 export const learningSteps = [

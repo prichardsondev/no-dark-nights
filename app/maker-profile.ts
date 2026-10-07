@@ -56,7 +56,7 @@ export function getMailtoAddress(contactHref: string) {
 export const lightListings = [
   {
     id: "favorite-photo",
-    image: "/gallery/our-moment.jpg",
+    image: "/gallery/our-moment.webp",
     alt: "Example glowing lithophane night light made from a photograph",
     title: "A favorite photograph",
     description:
@@ -64,14 +64,14 @@ export const lightListings = [
   },
   {
     id: "pet-portrait",
-    image: "/gallery/amber-light.jpg",
+    image: "/gallery/amber-light.webp",
     alt: "Example amber lithophane night light showing a puppy",
     title: "A pet portrait",
     description: "Turn a clear pet photograph into a softly glowing keepsake.",
   },
   {
     id: "illustrated-light",
-    image: "/gallery/owl-light.jpg",
+    image: "/gallery/what-a-hoot.webp",
     alt: "Example glowing lithophane night light showing an owl illustration",
     title: "An illustration",
     description:

@@ -19,6 +19,7 @@ Before publication, a trusted adult must:
 - remove full names and identifying filenames; and
 - confirm that the public caption contains no private information.
 
-The files prefixed with `original-` restore artwork and finished-light examples
-that the site owner previously published on the original No Dark Nights site.
-Obsolete pricing and contact details from that site are deliberately excluded.
+The descriptive WebP files restore the 25 unique finished-light images from the
+site owner's original S3 gallery. They were converted locally to WebP so the
+published copies contain no EXIF metadata. One duplicate `Giving Thanks` object
+from the bucket is intentionally displayed only once.

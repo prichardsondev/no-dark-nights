@@ -499,11 +499,15 @@ test("Safety, gallery, and publishing guidance protect children and private phot
   );
   assert.match(galleryHtml, /recognizable locations/i);
   assert.match(galleryHtml, /no full names or identifying filenames/i);
-  assert.equal(galleryData.originalGalleryItems.length, 8);
-  assert.equal(galleryData.allGalleryItems.length, 17);
+  assert.equal(galleryData.s3GalleryItems.length, 25);
+  assert.equal(galleryData.allGalleryItems.length, 26);
+  assert.ok(
+    galleryData.s3GalleryItems.every((item) => item.src.endsWith(".webp")),
+  );
   assert.match(galleryHtml, /Finished night-light gallery/i);
+  assert.match(galleryHtml, /Liquid Elegance/i);
   assert.match(galleryHtml, /Mountain Moose/i);
-  assert.match(galleryHtml, /1<!-- --> of <!-- -->17/i);
+  assert.match(galleryHtml, /1<!-- --> of <!-- -->26/i);
   assert.doesNotMatch(galleryHtml, /From the original site/i);
   assert.doesNotMatch(galleryHtml, /Where No Dark Nights began/i);
   assert.doesNotMatch(galleryHtml, /old pricing and contact details/i);
