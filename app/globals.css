@@ -2255,7 +2255,6 @@ input[type="range"]:disabled {
   line-height: 1.65;
 }
 
-.gallery-safety,
 .adult-purchase-notice {
   margin-bottom: 28px;
   padding: 18px 20px;
@@ -2263,12 +2262,10 @@ input[type="range"]:disabled {
   background: #f1efe8;
 }
 
-.gallery-safety strong,
 .adult-purchase-notice strong {
   font-size: 13px;
 }
 
-.gallery-safety p,
 .adult-purchase-notice p {
   margin: 7px 0 0;
   color: var(--muted);

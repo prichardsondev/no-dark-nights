@@ -490,15 +490,7 @@ test("Safety, gallery, and publishing guidance protect children and private phot
     /github\.com\/prichardsondev\/no-dark-nights\/security\/advisories\/new/i,
   );
 
-  assert.match(galleryHtml, /Before adding a gallery photo/i);
-  assert.match(galleryHtml, /Get adult permission/i);
-  assert.match(galleryHtml, /remove EXIF and location metadata/i);
-  assert.match(
-    galleryHtml,
-    /addresses, school names, uniforms, license plates/i,
-  );
-  assert.match(galleryHtml, /recognizable locations/i);
-  assert.match(galleryHtml, /no full names or identifying filenames/i);
+  assert.doesNotMatch(galleryHtml, /Before adding a gallery photo/i);
   assert.equal(galleryData.s3GalleryItems.length, 25);
   assert.equal(galleryData.allGalleryItems.length, 26);
   assert.ok(
