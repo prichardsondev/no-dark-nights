@@ -56,24 +56,17 @@ test("server-renders the No Dark Nights home and studio", async () => {
 
   assert.match(
     homeHtml,
-    /<title>No Dark Nights \| Make, learn, and share the light<\/title>/i,
+    /<title>No Dark Nights \| Lithophane night lights by Jaime<\/title>/i,
   );
+  assert.match(homeHtml, /Handmade by Jaime/i);
+  assert.match(homeHtml, /A favorite photo, made to glow/i);
+  assert.match(homeHtml, /Lights Jaime has made/i);
+  assert.match(homeHtml, /brand\/no-dark-nights-logo\.jpg/i);
+  assert.match(homeHtml, /Learn to make one/i);
   assert.match(homeHtml, /Make an STL/i);
-  assert.match(homeHtml, /Learn &amp; Build/i);
-  assert.match(homeHtml, /See the Lights/i);
   assert.doesNotMatch(homeHtml, /Buy a Light/i);
-  assert.match(homeHtml, /No coding or AI agent is required/i);
-  assert.match(homeHtml, /The photo stays on your computer/i);
-  assert.match(homeHtml, /printable lithophane night-light STL/i);
-  assert.match(homeHtml, /your own version of the website/i);
-  assert.match(
-    homeHtml,
-    /personalized, tested, and published lithophane website/i,
-  );
-  assert.match(homeHtml, /publish your own version/i);
-  assert.match(homeHtml, /A real project with two ways in/i);
-  assert.match(homeHtml, /AI agent literacy/i);
-  assert.match(homeHtml, /Privacy, consent, and responsible publishing/i);
+  assert.doesNotMatch(homeHtml, /Shield only|Payment options|\$\d/i);
+  assert.match(homeHtml, /No storefront and no posted prices/i);
   assert.match(homeHtml, /Make one\. Give one\. Teach one\./i);
   assert.match(homeHtml, /no-dark-nights-social-v2\.png/i);
 
@@ -506,7 +499,7 @@ test("Safety, gallery, and publishing guidance protect children and private phot
   assert.doesNotMatch(galleryHtml, /jaime@nodarknights\.com/i);
 });
 
-test("homepage presents three clear paths and Lights belongs to this maker", async () => {
+test("homepage showcases Jaime's lights and links to the learning project", async () => {
   const [homeResponse, lightsResponse, makerData, profileModule] =
     await Promise.all([
       render("/"),
@@ -522,13 +515,12 @@ test("homepage presents three clear paths and Lights belongs to this maker", asy
     lightsResponse.text(),
   ]);
 
-  assert.match(homeHtml, /href="\/studio"[^>]*>[\s\S]*?Make an STL/i);
-  assert.match(homeHtml, /href="\/learn"[^>]*>[\s\S]*?Learn &amp; Build/i);
-  assert.match(homeHtml, /href="\/lights"[^>]*>[\s\S]*?See the Lights/i);
-  assert.match(
-    homeHtml,
-    /Studio[\s\S]*Learn[\s\S]*Lights[\s\S]*Gallery[\s\S]*Resources[\s\S]*Code/i,
-  );
+  assert.match(homeHtml, /href="\/studio"[^>]*>Make an STL/i);
+  assert.match(homeHtml, /href="\/learn"[^>]*>Explore the learning project/i);
+  assert.match(homeHtml, /href="\/gallery"[^>]*>Full gallery/i);
+  assert.match(homeHtml, /Our Moment/i);
+  assert.match(homeHtml, /Liquid Elegance/i);
+  assert.match(homeHtml, /Mountain Moose/i);
 
   assert.match(lightsHtml, /Lights I can make/i);
   assert.match(
@@ -555,7 +547,8 @@ test("homepage presents three clear paths and Lights belongs to this maker", asy
   assert.match(makerData, /contactHref/);
   assert.match(makerData, /contactHref:\s*""/);
   assert.match(makerData, /MAKER_CONTACT_HREF/);
-  assert.match(makerData, /contactLabel:\s*"Contact the maker"/);
+  assert.match(makerData, /makerName:\s*"Jaime"/);
+  assert.match(makerData, /contactLabel:\s*"Email Jaime"/);
   assert.doesNotMatch(makerData, /nodarknights\.com/i);
   assert.doesNotMatch(makerData, /paul@oddlytrue\.ai/i);
   assert.doesNotMatch(makerData, /Example listing|offerLabel:\s*"Gift"/i);
@@ -705,7 +698,7 @@ test("keeps local data and deployment identity out of shared source", async () =
   assert.match(studio, /Photo ready/);
   assert.match(geometry, /computeVertexNormals/);
   assert.match(geometry, /geometry\.setIndex/);
-  assert.match(homePage, /<SiteShell>/);
+  assert.match(homePage, /className="showcase-home"/);
   assert.match(studioPage, /<LithophaneStudio \/>/);
   assert.match(packageJson, /"three"/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
@@ -738,7 +731,7 @@ test("keeps every gallery image inside a responsive carousel", async () => {
     ],
   );
 
-  assert.match(homePage, /className="gallery-image-frame"/);
+  assert.match(homePage, /className="showcase-image-frame"/);
   assert.match(carousel, /className="gallery-carousel-track"/);
   assert.match(carousel, /Previous light/);
   assert.match(carousel, /Next light/);
@@ -748,6 +741,10 @@ test("keeps every gallery image inside a responsive carousel", async () => {
   assert.match(
     styles,
     /\.gallery-image-frame\s*\{[^}]*aspect-ratio:\s*4\s*\/\s*5/s,
+  );
+  assert.match(
+    styles,
+    /\.showcase-image-frame img\s*\{[^}]*width:\s*100%[^}]*height:\s*100%[^}]*object-fit:\s*contain/s,
   );
   assert.match(
     styles,

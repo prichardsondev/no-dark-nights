@@ -13,11 +13,11 @@
 
 export const makerProfile = {
   studioName: "No Dark Nights",
-  makerName: "The No Dark Nights maker",
+  makerName: "Jaime",
   introduction:
     "I make custom lithophane night lights from meaningful photographs and illustrations. Many are made as gifts simply to put a smile on someone’s face.",
   contactHref: "",
-  contactLabel: "Contact the maker",
+  contactLabel: "Email Jaime",
 };
 
 export function getMakerProfile() {

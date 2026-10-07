@@ -1,168 +1,158 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { SiteShell } from "./SiteChrome";
-import { galleryItems } from "./site-data";
+import { getMakerProfile, isValidContactHref } from "./maker-profile";
+import { allGalleryItems } from "./site-data";
+
+export const metadata: Metadata = {
+  title: "No Dark Nights | Lithophane night lights by Jaime",
+  description:
+    "See custom lithophane night lights made by Jaime, get in touch about a light, or learn how to make your own.",
+};
 
 export default function Home() {
+  const profile = getMakerProfile();
+  const hasContactMethod = isValidContactHref(profile.contactHref);
+
   return (
-    <SiteShell>
+    <div className="showcase-home">
+      <header className="showcase-header">
+        <Link className="showcase-wordmark" href="/">
+          No Dark Nights
+        </Link>
+        <nav aria-label="Showcase navigation">
+          <a href="#lights">Jaime&apos;s lights</a>
+          <Link href="/gallery">Full gallery</Link>
+          <Link href="/learn">Learn to make one</Link>
+        </nav>
+      </header>
+
       <main>
-        <section className="home-opening site-width">
-          <div className="opening-lead">
-            <div className="opening-copy">
-              <span className="site-eyebrow">
-                A night-light studio and hands-on learning project
-              </span>
-              <h1>Make a light. Learn how the whole thing works.</h1>
-              <p>
-                No Dark Nights turns a photo into a printable lithophane. Use
-                the Studio immediately, see lights from this maker, or use an AI
-                agent to build your own personalized lithophane website.
-              </p>
-              <a
-                className="process-video-link"
-                href="https://youtu.be/lXu6jsWt9qw"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <span aria-hidden="true">▶</span>
-                <span>
-                  <strong>Watch the process</strong>
-                  <small>
-                    See how to build your own version or just make an STL on
-                    YouTube.
-                  </small>
-                </span>
+        <section className="showcase-hero site-width">
+          <div className="showcase-logo-wrap">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/no-dark-nights-logo.jpg"
+              alt="No Dark Nights Night Lights logo"
+              width="1024"
+              height="727"
+              fetchPriority="high"
+            />
+          </div>
+          <div className="showcase-hero-copy">
+            <span className="showcase-kicker">Handmade by Jaime</span>
+            <h1>A favorite photo, made to glow.</h1>
+            <p>
+              Custom lithophane night lights made from photographs and
+              illustrations that mean something to the people receiving them.
+              Each one is printed and finished one at a time.
+            </p>
+            <div className="showcase-actions">
+              <a className="showcase-primary-action" href="#lights">
+                See Jaime&apos;s lights
               </a>
+              {hasContactMethod && (
+                <a className="showcase-secondary-action" href={profile.contactHref}>
+                  {profile.contactLabel}
+                </a>
+              )}
             </div>
-            <figure className="opening-photo">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/moose-lithophane-night-light.webp"
-                alt="An illuminated moose lithophane night light"
-                width="1086"
-                height="1452"
-                fetchPriority="high"
-              />
-              <figcaption>A finished light</figcaption>
-            </figure>
-          </div>
-          <div className="opening-actions" aria-label="Start here">
-            <Link className="start-card primary" href="/studio">
-              <span>01</span>
-              <strong>Make an STL</strong>
-              <p>
-                Turn a photograph into a printable lithophane night-light STL.
-                The photo stays on your computer. No coding or AI agent is
-                required.
-              </p>
-              <i>Open the Studio</i>
-            </Link>
-            <Link className="start-card" href="/learn">
-              <span>02</span>
-              <strong>Learn &amp; Build</strong>
-              <p>
-                Follow the guided path to use Codex to build, personalize, test,
-                and publish your own version of the website—with an adult
-                involved when required.
-              </p>
-              <i>Start Learning</i>
-            </Link>
-            <Link className="start-card" href="/lights">
-              <span>03</span>
-              <strong>See the Lights</strong>
-              <p>
-                See examples made by this site&apos;s maker. Adults may contact
-                the adult managing this site about receiving or purchasing a
-                light.
-              </p>
-              <i>View Lights</i>
-            </Link>
-          </div>
-        </section>
-
-        <section className="education-brief site-width">
-          <div className="education-intro">
-            <span className="site-eyebrow">Use it or build it</span>
-            <h2>A real project with two ways in.</h2>
-            <p>
-              Anyone can use the Studio to make an STL. Learners can go further
-              and use an AI agent to turn No Dark Nights into their own
-              personalized, tested, and published lithophane website.
+            <p className="showcase-note">
+              No storefront and no posted prices—just a direct conversation
+              about the light you have in mind.
             </p>
           </div>
-          <div className="participation-levels">
-            <article>
-              <span>For everyone</span>
-              <h3>Use the Studio</h3>
-              <p>
-                No coding, agent, account, or programming experience needed.
-              </p>
-              <Link href="/studio">Make an STL →</Link>
-            </article>
-            <article>
-              <span>For learners</span>
-              <h3>Build your own</h3>
-              <p>Follow eight agent-guided steps from source code to print.</p>
-              <Link href="/learn">See the learning path →</Link>
-            </article>
-          </div>
-          <ul className="learning-topics" aria-label="What the project teaches">
-            <li>AI agent literacy</li>
-            <li>Web development</li>
-            <li>Git and GitHub</li>
-            <li>Image and 3D-model processing</li>
-            <li>3D printing</li>
-            <li>Design and iteration</li>
-            <li>Entrepreneurship and community giving</li>
-            <li>Privacy, consent, and responsible publishing</li>
-          </ul>
         </section>
 
-        <section className="compact-story site-width">
-          <div>
-            <span className="site-eyebrow">The point</span>
-            <h2>Make one. Give one. Teach one.</h2>
-          </div>
-          <div>
-            <p>
-              Each deployed website belongs to its maker. The owner can offer
-              lights directly, give them away, and share the complete process:
-              the Studio, code, prompts, tests, and lessons.
-            </p>
-            <Link className="text-link" href="/about">
-              Why we built it
-            </Link>
-          </div>
-        </section>
-
-        <section className="gallery-preview">
-          <div className="section-bar site-width">
+        <section className="showcase-lights" id="lights">
+          <div className="showcase-section-heading site-width">
             <div>
-              <span className="site-eyebrow">Finished lights</span>
-              <h2>Made by people, for people.</h2>
+              <span>Made in the No Dark Nights studio</span>
+              <h2>Lights Jaime has made.</h2>
             </div>
-            <Link href="/gallery">See the full gallery</Link>
+            <p>
+              Portraits, pets, celebrations, artwork, and the wonderfully odd
+              ideas that become even better with a little light behind them.
+            </p>
           </div>
-          <div className="home-gallery site-width">
-            {galleryItems.slice(0, 4).map((item) => (
+          <div className="showcase-grid site-width">
+            {allGalleryItems.map((item, index) => (
               <figure key={item.src}>
-                <div className="gallery-image-frame">
+                <div className="showcase-image-frame">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={item.src} alt={item.alt} />
+                  <img
+                    src={item.src}
+                    alt={item.alt}
+                    loading={index < 4 ? "eager" : "lazy"}
+                  />
                 </div>
-                <figcaption>{item.title}</figcaption>
+                <figcaption>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  {item.title}
+                </figcaption>
               </figure>
             ))}
           </div>
         </section>
 
-        <section className="home-invitation">
+        <section className="showcase-contact site-width">
+          <div>
+            <span>Have an idea for a light?</span>
+            <h2>Start with the photo that makes you smile.</h2>
+          </div>
+          <div>
+            <p>
+              Jaime can talk through the image, the look, and what would make
+              it feel personal. Availability and arrangements are handled
+              directly—not through an online checkout.
+            </p>
+            {hasContactMethod ? (
+              <a href={profile.contactHref}>{profile.contactLabel}</a>
+            ) : (
+              <p className="showcase-contact-unavailable">
+                Contact is added by the adult who manages this site.
+              </p>
+            )}
+          </div>
+        </section>
+
+        <section className="showcase-learning">
           <div className="site-width">
-            <p>Have a photo ready?</p>
-            <Link href="/studio">Make the light</Link>
+            <div>
+              <span>Want to build one yourself?</span>
+              <h2>The learning project lives right next door.</h2>
+              <p>
+                Follow the process, make a printable STL, or use the lessons to
+                build your own version of No Dark Nights.
+              </p>
+            </div>
+            <div className="showcase-learning-links">
+              <Link href="/learn">Explore the learning project</Link>
+              <Link href="/studio">Make an STL</Link>
+              <a
+                href="https://youtu.be/lXu6jsWt9qw"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Watch the process
+              </a>
+            </div>
           </div>
         </section>
       </main>
-    </SiteShell>
+
+      <footer className="showcase-footer">
+        <div className="site-width">
+          <div>
+            <strong>No Dark Nights</strong>
+            <p>Make one. Give one. Teach one.</p>
+          </div>
+          <div>
+            <Link href="/about">Our story</Link>
+            <Link href="/safety">Safety &amp; privacy</Link>
+            <Link href="/gallery">Gallery</Link>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }
