@@ -2865,6 +2865,7 @@ input[type="range"]:disabled {
 }
 
 .gallery-carousel {
+  scroll-margin-top: 220px;
   outline: none;
 }
 
@@ -2894,14 +2895,16 @@ input[type="range"]:disabled {
 .gallery-carousel-image {
   position: relative;
   display: grid;
-  height: min(66vh, 680px);
-  min-height: 420px;
+  height: clamp(220px, calc(100svh - 360px), 560px);
+  min-height: 0;
   place-items: center;
   overflow: hidden;
   background: #131c26;
 }
 
 .gallery-carousel-image img {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
@@ -4059,8 +4062,8 @@ input[type="range"]:disabled {
   }
 
   .gallery-carousel-image {
-    height: min(58vh, 520px);
-    min-height: 330px;
+    height: clamp(240px, calc(100svh - 330px), 480px);
+    min-height: 0;
   }
 
   .gallery-carousel-controls {

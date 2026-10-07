@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type GalleryItem = {
   src: string;
@@ -10,17 +10,30 @@ type GalleryItem = {
 
 export function GalleryCarousel({ items }: { items: GalleryItem[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const carouselRef = useRef<HTMLElement>(null);
+
+  const keepCurrentLightInView = () => {
+    requestAnimationFrame(() => {
+      carouselRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  };
 
   const showPrevious = () => {
     setActiveIndex((current) => (current - 1 + items.length) % items.length);
+    keepCurrentLightInView();
   };
 
   const showNext = () => {
     setActiveIndex((current) => (current + 1) % items.length);
+    keepCurrentLightInView();
   };
 
   return (
     <section
+      ref={carouselRef}
       className="gallery-carousel"
       aria-label="Finished night-light gallery"
       tabIndex={0}
@@ -80,7 +93,10 @@ export function GalleryCarousel({ items }: { items: GalleryItem[] }) {
             className={index === activeIndex ? "is-active" : undefined}
             aria-label={`Show ${item.title}`}
             aria-pressed={index === activeIndex}
-            onClick={() => setActiveIndex(index)}
+            onClick={() => {
+              setActiveIndex(index);
+              keepCurrentLightInView();
+            }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={item.src} alt="" loading="lazy" />

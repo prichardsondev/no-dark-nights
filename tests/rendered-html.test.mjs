@@ -752,13 +752,22 @@ test("keeps every gallery image inside a responsive carousel", async () => {
   assert.match(carousel, /Next light/);
   assert.match(carousel, /ArrowLeft/);
   assert.match(carousel, /ArrowRight/);
+  assert.match(carousel, /scrollIntoView/);
   assert.match(
     styles,
     /\.gallery-image-frame\s*\{[^}]*aspect-ratio:\s*4\s*\/\s*5/s,
   );
   assert.match(
     styles,
-    /\.gallery-carousel-image img\s*\{[^}]*object-fit:\s*contain/s,
+    /\.gallery-carousel-image img\s*\{[^}]*position:\s*absolute[^}]*inset:\s*0[^}]*width:\s*100%[^}]*height:\s*100%[^}]*object-fit:\s*contain/s,
+  );
+  assert.match(
+    styles,
+    /\.gallery-carousel-image\s*\{[^}]*height:\s*clamp\([^}]*100svh[^}]*\)[^}]*min-height:\s*0/s,
+  );
+  assert.match(
+    styles,
+    /\.gallery-carousel\s*\{[^}]*scroll-margin-top:\s*220px/s,
   );
   assert.doesNotMatch(
     `${siteChrome}${studio}`,
