@@ -12,6 +12,19 @@ export function GalleryCarousel({ items }: { items: GalleryItem[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef<HTMLElement>(null);
 
+  if (items.length === 0) {
+    return (
+      <section className="gallery-empty" aria-label="Gallery setup">
+        <h2>This learning copy has no personal gallery photos.</h2>
+        <p>
+          A site owner may add reviewed, permitted images to their own
+          deployment. Personal maker photographs are not bundled with the
+          downloadable project.
+        </p>
+      </section>
+    );
+  }
+
   const keepCurrentLightInView = () => {
     requestAnimationFrame(() => {
       carouselRef.current?.scrollIntoView({

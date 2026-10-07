@@ -2,13 +2,10 @@ export const REPOSITORY_URL =
   "https://github.com/prichardsondev/no-dark-nights";
 
 export const navigation = [
-  { href: "/studio", label: "Studio", primary: true },
+  { href: "/studio", label: "Make one", primary: true },
   { href: "/learn", label: "Learn", primary: true },
   { href: "/lights", label: "Lights", primary: true },
-  { href: "/gallery", label: "Gallery", primary: false },
-  { href: "/resources", label: "Resources", primary: false },
-  { href: "/grants", label: "Grant Kit", primary: false },
-  { href: "/code", label: "Code", primary: false },
+  { href: "/resources", label: "Print safely", primary: false },
 ];
 
 const PRIVATE_IMAGE_RULES = `Private-image rules:
@@ -18,63 +15,17 @@ const PRIVATE_IMAGE_RULES = `Private-image rules:
 - Automated tests must use a neutral image provided by the project.
 - Studio processing is local. Giving a photograph to an AI agent is a separate action, so do not ask me to provide the photograph to you.`;
 
-const galleryItem = (src: string, title: string) => ({
-  src,
-  title,
-  alt: `A finished No Dark Nights lithophane night light titled ${title}`,
-});
+export type GalleryItem = {
+  src: string;
+  title: string;
+  alt: string;
+};
 
-export const s3GalleryItems = [
-  galleryItem("/gallery/our-moment.webp", "Our Moment"),
-  galleryItem("/gallery/little-bit-country.webp", "Little Bit Country"),
-  galleryItem("/gallery/fawning-intelligence.webp", "Fawning Intelligence"),
-  galleryItem("/gallery/flower-power.webp", "Flower Power"),
-  galleryItem("/gallery/amber-light.webp", "Amber Light"),
-  galleryItem("/gallery/soft-white-light.webp", "Soft White Light"),
-  galleryItem("/gallery/liquid-elegance.webp", "Liquid Elegance"),
-  galleryItem("/gallery/giving-thanks.webp", "Giving Thanks"),
-  galleryItem("/gallery/perfect-angel.webp", "Perfect Angel"),
-  galleryItem("/gallery/adorable-couple.webp", "Adorable Couple"),
-  galleryItem("/gallery/baby-boy.webp", "Baby Boy"),
-  galleryItem("/gallery/freedom-rings.webp", "Freedom Rings"),
-  galleryItem("/gallery/northern-lights.webp", "Northern Lights"),
-  galleryItem("/gallery/winter-wonderland.webp", "Winter Wonderland"),
-  galleryItem("/gallery/lone-wolf.webp", "Lone Wolf"),
-  galleryItem("/gallery/sexy-rexy.webp", "Sexy Rexy"),
-  galleryItem("/gallery/martian-christmas.webp", "Martian Christmas"),
-  galleryItem("/gallery/crazy-cattle-dog.webp", "Crazy Cattle Dog"),
-  galleryItem("/gallery/thats-a-nightlight.webp", "That’s a Nightlight"),
-  galleryItem("/gallery/timeless-vows.webp", "Timeless Vows"),
-  galleryItem("/gallery/muscle-and-moxie.webp", "Muscle and Moxie"),
-  galleryItem("/gallery/foil-up.webp", "Foil Up"),
-  galleryItem("/gallery/what-a-hoot.webp", "What a Hoot"),
-  galleryItem("/gallery/teddyflage.webp", "Teddyflage"),
-  galleryItem("/gallery/i-hate-frydays.webp", "I hate Frydays"),
-];
-
-const featuredGalleryTitles = [
-  "Our Moment",
-  "Fawning Intelligence",
-  "Timeless Vows",
-  "What a Hoot",
-  "That’s a Nightlight",
-  "Little Bit Country",
-  "Amber Light",
-  "Soft White Light",
-];
-
-export const galleryItems = featuredGalleryTitles.map(
-  (title) => s3GalleryItems.find((item) => item.title === title)!,
-);
-
-export const allGalleryItems = [
-  ...s3GalleryItems,
-  {
-    src: "/moose-lithophane-night-light.webp",
-    title: "Mountain Moose",
-    alt: "An illuminated lithophane night light showing a moose in a mountain landscape",
-  },
-];
+// Personal maker photographs belong to each deployed site, not to the
+// downloadable learning repository.
+export const s3GalleryItems: GalleryItem[] = [];
+export const galleryItems: GalleryItem[] = [];
+export const allGalleryItems: GalleryItem[] = [];
 
 export const learningSteps = [
   {

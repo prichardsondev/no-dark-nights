@@ -79,6 +79,15 @@ export default function LightsPage() {
                 </div>
               </article>
             ))}
+            {lightListings.length === 0 && (
+              <div className="lights-empty">
+                <h3>No maker lights are bundled with this learning copy.</h3>
+                <p>
+                  A site owner can add their own reviewed listings and images
+                  to a separate deployment after receiving permission.
+                </p>
+              </div>
+            )}
           </div>
         </section>
 

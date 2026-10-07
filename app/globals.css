@@ -13,6 +13,659 @@
   --sage: #89a898;
 }
 
+/* Calm learning doorway and progressively disclosed curriculum */
+
+.gallery-empty,
+.lights-empty {
+  padding: 32px;
+  border: 1px solid #c9c2b5;
+  background: #fffdf7;
+}
+
+.gallery-empty h2,
+.lights-empty h3 {
+  margin: 0 0 12px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: 400;
+}
+
+.gallery-empty p,
+.lights-empty p {
+  max-width: 700px;
+  margin: 0;
+  color: #5d6266;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.learning-hub {
+  min-height: 100vh;
+  padding-bottom: 96px;
+  background: #f1eee6;
+}
+
+.learning-hub-intro {
+  max-width: 900px;
+  padding-top: clamp(64px, 9vw, 116px);
+  padding-bottom: 48px;
+}
+
+.learning-hub-intro > span,
+.learning-quick-start > div > span,
+.learning-reference-links > div > span,
+.educator-path-card span,
+.learning-project-next span {
+  display: block;
+  margin-bottom: 14px;
+  color: #956526;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.learning-hub-intro h1 {
+  max-width: 780px;
+  margin: 0;
+  color: #17191b;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(48px, 7vw, 80px);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+}
+
+.learning-hub-intro p {
+  max-width: 660px;
+  margin: 26px 0 0;
+  color: #5d6266;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.learning-path-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  padding: 1px;
+  background: #26292b;
+}
+
+.learning-path-grid > a {
+  display: flex;
+  min-height: 360px;
+  flex-direction: column;
+  padding: clamp(28px, 4vw, 48px);
+  background: #1b1d1f;
+  color: #f8f4eb;
+  text-decoration: none;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.learning-path-grid > a:hover,
+.learning-path-grid > a:focus-visible {
+  background: #24272a;
+}
+
+.learning-path-number {
+  margin-bottom: 66px;
+  color: #d7a252;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 13px;
+}
+
+.learning-path-grid small {
+  color: #b8b2a7;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.learning-path-grid h2 {
+  margin: 10px 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.learning-path-grid p {
+  margin: 20px 0 28px;
+  color: #cbc6bc;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.learning-path-grid strong {
+  margin-top: auto;
+  color: #f1b65d;
+  font-size: 14px;
+}
+
+.learning-quick-start,
+.learning-reference-links {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.75fr) minmax(0, 1.25fr);
+  gap: clamp(40px, 7vw, 96px);
+  padding-top: 88px;
+}
+
+.learning-quick-start h2,
+.learning-reference-links h2,
+.educator-path-card h2,
+.learning-project-next h2 {
+  margin: 0;
+  color: #17191b;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+}
+
+.learning-quick-start ol {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid #bdb7aa;
+  list-style: none;
+}
+
+.learning-quick-start li {
+  padding: 22px 0;
+  border-bottom: 1px solid #d2ccc0;
+}
+
+.learning-quick-start li::before {
+  display: inline-block;
+  width: 36px;
+  color: #956526;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12px;
+  content: counter(list-item, decimal-leading-zero);
+}
+
+.learning-quick-start li strong {
+  font-size: 16px;
+}
+
+.learning-quick-start li p {
+  margin: 7px 0 0 36px;
+  color: #686c70;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.learning-reference-links {
+  align-items: start;
+  padding-bottom: 20px;
+}
+
+.learning-reference-links nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.learning-reference-links nav a,
+.educator-final-links a {
+  padding: 18px 20px;
+  border: 1px solid #c9c2b5;
+  color: #25282a;
+  font-size: 14px;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.learning-reference-links nav a:hover,
+.educator-final-links a:hover {
+  border-color: #956526;
+  color: #714811;
+}
+
+.learning-project-page,
+.educator-guide-page {
+  padding-bottom: 96px;
+}
+
+.learning-project-notice {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr auto;
+  gap: 24px;
+  align-items: center;
+  margin-bottom: 18px;
+  padding: 24px 26px;
+  border-left: 4px solid #d7a252;
+  background: #ede8dd;
+}
+
+.learning-project-notice > span {
+  grid-column: 1 / -1;
+  color: #956526;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.learning-project-notice strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
+}
+
+.learning-project-notice p {
+  margin: 0;
+  color: #5d6266;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.learning-project-notice a,
+.learning-setup-panel a,
+.learning-inline-link,
+.educator-managed-setup a,
+.educator-age-note a {
+  color: #754b15;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.learning-setup-panel,
+.learning-after-panel,
+.educator-managed-setup {
+  margin: 18px 0;
+  border: 1px solid #c9c2b5;
+  background: #fffdf7;
+}
+
+.learning-setup-panel summary,
+.learning-after-panel summary,
+.educator-managed-setup summary {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 20px;
+  align-items: center;
+  padding: 22px 26px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.learning-setup-panel summary::-webkit-details-marker,
+.learning-after-panel summary::-webkit-details-marker,
+.educator-managed-setup summary::-webkit-details-marker,
+.learning-step-list summary::-webkit-details-marker {
+  display: none;
+}
+
+.learning-setup-panel summary span,
+.learning-after-panel summary span,
+.educator-managed-setup summary span {
+  color: #956526;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12px;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.learning-setup-panel summary strong,
+.learning-after-panel summary strong,
+.educator-managed-setup summary strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.learning-setup-panel > div,
+.educator-managed-setup > div {
+  max-width: 780px;
+  padding: 0 26px 26px 196px;
+  color: #555b60;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.learning-step-index {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin: 40px 0 24px;
+  padding: 1px;
+  background: #c9c2b5;
+}
+
+.learning-step-index a {
+  display: flex;
+  min-height: 82px;
+  gap: 12px;
+  align-items: center;
+  padding: 16px;
+  background: #f8f5ed;
+  color: #25282a;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-decoration: none;
+}
+
+.learning-step-index a:hover {
+  background: #fffdf7;
+}
+
+.learning-step-index span {
+  color: #956526;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+}
+
+.learning-step-list {
+  border-top: 1px solid #2a2d2f;
+}
+
+.learning-step-list > details {
+  scroll-margin-top: 20px;
+  border-bottom: 1px solid #bdb7aa;
+}
+
+.learning-step-list > details[open] {
+  padding-bottom: 32px;
+  background: #fffdf7;
+}
+
+.learning-step-list summary {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 22px;
+  padding: 26px 22px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.learning-step-list summary > span {
+  padding-top: 4px;
+  color: #956526;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 13px;
+}
+
+.learning-step-list summary small {
+  color: #77736c;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.learning-step-list summary h2 {
+  margin: 5px 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+}
+
+.learning-step-list summary p {
+  max-width: 760px;
+  margin: 8px 0 0;
+  color: #666b6e;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.learning-step-content {
+  padding: 0 22px 0 108px;
+}
+
+.learning-step-content > dl {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0 0 24px;
+  background: #d4cec2;
+}
+
+.learning-step-content > dl > div {
+  padding: 20px;
+  background: #f4f0e8;
+}
+
+.learning-step-content dt {
+  margin-bottom: 8px;
+  color: #956526;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.learning-step-content dd {
+  margin: 0;
+  color: #555b60;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.learning-prompt-panel {
+  margin-top: 24px;
+}
+
+.learning-prompt-panel > span {
+  display: block;
+  margin-bottom: 10px;
+  color: #956526;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.learning-step-content > footer {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 20px;
+  background: #35383a;
+}
+
+.learning-step-content > footer p {
+  display: flex;
+  min-height: 112px;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 20px;
+  background: #202224;
+  color: #f7f2e8;
+}
+
+.learning-step-content > footer span {
+  color: #d7a252;
+  font-size: 11px;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.learning-step-content > footer strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.learning-after-panel {
+  margin-top: 36px;
+}
+
+.learning-after-panel > .optional-prompt-grid {
+  padding: 0 26px 26px;
+}
+
+.learning-after-copy {
+  margin: 0;
+  padding: 0 26px 20px;
+  color: #5d6266;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.learning-project-next,
+.educator-path-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: end;
+  margin-top: 56px;
+  padding: 34px;
+  background: #e7dfd0;
+}
+
+.learning-project-next p,
+.educator-path-card p {
+  max-width: 720px;
+  margin: 14px 0 0;
+  color: #5d6266;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.learning-project-next > a,
+.educator-path-card > a {
+  padding: 15px 18px;
+  background: #202224;
+  color: white;
+  font-size: 13px;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.educator-path-card {
+  margin-top: 0;
+}
+
+.educator-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin: 30px 0;
+  padding: 1px;
+  background: #c9c2b5;
+}
+
+.educator-guide-grid article {
+  padding: 30px;
+  background: #fffdf7;
+}
+
+.educator-guide-grid article > span {
+  color: #956526;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12px;
+}
+
+.educator-guide-grid h2,
+.educator-age-note h2 {
+  margin: 24px 0 14px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 26px;
+  font-weight: 400;
+}
+
+.educator-guide-grid ul,
+.educator-managed-setup ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #5d6266;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.educator-age-note {
+  max-width: 850px;
+  margin: 46px 0;
+}
+
+.educator-age-note p {
+  color: #5d6266;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.educator-final-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 860px) {
+  .learning-path-grid,
+  .educator-guide-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .learning-path-grid > a {
+    min-height: 280px;
+  }
+
+  .learning-path-number {
+    margin-bottom: 40px;
+  }
+
+  .learning-quick-start,
+  .learning-reference-links,
+  .learning-project-notice,
+  .learning-project-next,
+  .educator-path-card {
+    grid-template-columns: 1fr;
+  }
+
+  .learning-step-index {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .learning-step-content > dl {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .learning-hub-intro {
+    padding-top: 48px;
+  }
+
+  .learning-hub-intro h1 {
+    font-size: 48px;
+  }
+
+  .learning-reference-links nav,
+  .learning-step-index,
+  .learning-step-content > footer {
+    grid-template-columns: 1fr;
+  }
+
+  .learning-setup-panel summary,
+  .learning-after-panel summary,
+  .educator-managed-setup summary {
+    grid-template-columns: 1fr;
+  }
+
+  .learning-setup-panel > div,
+  .educator-managed-setup > div {
+    padding: 0 20px 24px;
+  }
+
+  .learning-step-list summary {
+    grid-template-columns: 38px 1fr;
+    gap: 10px;
+    padding: 22px 10px;
+  }
+
+  .learning-step-content {
+    padding: 0 10px;
+  }
+}
+
 * {
   box-sizing: border-box;
 }

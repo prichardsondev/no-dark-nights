@@ -13,11 +13,11 @@
 
 export const makerProfile = {
   studioName: "No Dark Nights",
-  makerName: "Jaime",
+  makerName: "The No Dark Nights maker",
   introduction:
     "I make custom lithophane night lights from meaningful photographs and illustrations. Many are made as gifts simply to put a smile on someone’s face.",
   contactHref: "",
-  contactLabel: "Email Jaime",
+  contactLabel: "Contact the maker",
 };
 
 export function getMakerProfile() {
@@ -53,28 +53,10 @@ export function getMailtoAddress(contactHref: string) {
   return address || null;
 }
 
-export const lightListings = [
-  {
-    id: "favorite-photo",
-    image: "/gallery/our-moment.webp",
-    alt: "Example glowing lithophane night light made from a photograph",
-    title: "A favorite photograph",
-    description:
-      "A custom light shaped around one meaningful portrait or family moment.",
-  },
-  {
-    id: "pet-portrait",
-    image: "/gallery/amber-light.webp",
-    alt: "Example amber lithophane night light showing a puppy",
-    title: "A pet portrait",
-    description: "Turn a clear pet photograph into a softly glowing keepsake.",
-  },
-  {
-    id: "illustrated-light",
-    image: "/gallery/what-a-hoot.webp",
-    alt: "Example glowing lithophane night light showing an owl illustration",
-    title: "An illustration",
-    description:
-      "Artwork with a strong subject and good contrast can become a playful light.",
-  },
-];
+export const lightListings: Array<{
+  id: string;
+  image: string;
+  alt: string;
+  title: string;
+  description: string;
+}> = [];

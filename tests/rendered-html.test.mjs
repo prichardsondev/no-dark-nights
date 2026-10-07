@@ -56,19 +56,14 @@ test("server-renders the No Dark Nights home and studio", async () => {
 
   assert.match(
     homeHtml,
-    /<title>No Dark Nights \| Custom lithophane night-lights<\/title>/i,
+    /<title>No Dark Nights \| Learning Project<\/title>/i,
   );
-  assert.match(homeHtml, /Custom lithophane night-lights/i);
-  assert.match(homeHtml, /A favorite photo, made to glow/i);
-  assert.match(homeHtml, /Night-lights we(?:&#x27;|')ve made/i);
-  assert.match(homeHtml, /brand\/no-dark-nights-trees-refreshed\.png/i);
-  assert.match(homeHtml, /Learn to make one/i);
-  assert.match(homeHtml, /Make an STL/i);
-  assert.doesNotMatch(homeHtml, /Buy a Light/i);
-  assert.doesNotMatch(homeHtml, /Shield only|Payment options|\$\d/i);
-  assert.match(homeHtml, /No storefront and no posted prices/i);
+  assert.match(homeHtml, /No Dark Nights learning project/i);
   assert.match(homeHtml, /Make one\. Give one\. Teach one\./i);
-  assert.match(homeHtml, /no-dark-nights-social-v2\.png/i);
+  assert.match(homeHtml, /Make a night-light/i);
+  assert.match(homeHtml, /Follow the project/i);
+  assert.match(homeHtml, /Understand the code/i);
+  assert.doesNotMatch(homeHtml, /gallery\/[a-z0-9-]+\.(?:jpg|webp)|brand\//i);
 
   assert.match(studioHtml, /Turn a favorite photo into a little light/i);
   assert.match(
@@ -149,6 +144,8 @@ test("major pages have route-specific metadata and repository links", async () =
     ["/studio", "Night-light Studio"],
     ["/lights", "Lights"],
     ["/learn", "Learn"],
+    ["/learn/project", "Build the Project"],
+    ["/learn/educators", "Educator Guide"],
     ["/gallery", "Gallery"],
     ["/resources", "Printing Resources"],
     ["/grants", "Grant Kit"],
@@ -168,16 +165,28 @@ test("major pages have route-specific metadata and repository links", async () =
     assert.match(html, /<meta name="description" content="[^"]+"/i);
   }
 
-  const [codeResponse, learnResponse, promptsResponse] = await Promise.all([
+  const [
+    codeResponse,
+    learnResponse,
+    projectResponse,
+    educatorResponse,
+    promptsResponse,
+  ] = await Promise.all([
     render("/code"),
     render("/learn"),
+    render("/learn/project"),
+    render("/learn/educators"),
     render("/prompts"),
   ]);
   assert.match(
     await codeResponse.text(),
     /https:\/\/github\.com\/prichardsondev\/no-dark-nights/i,
   );
-  const learnHtml = await learnResponse.text();
+  const learnHtml = [
+    await learnResponse.text(),
+    await projectResponse.text(),
+    await educatorResponse.text(),
+  ].join("\n");
   assert.match(learnHtml, /Read the step/i);
   assert.match(learnHtml, /href="\/grants"[^>]*>Use the Grant Kit<\/a>/i);
   assert.match(learnHtml, /Give this prompt to Codex/i);
@@ -206,10 +215,10 @@ test("major pages have route-specific metadata and repository links", async () =
   assert.match(learnHtml, /https:\/\/chatgpt\.com\/download\//i);
   assert.match(
     learnHtml,
-    /href="#school-lab-setup"[^>]*>Educator or school lab\? View managed setup options\./i,
+    /href="\/learn\/educators"[^>]*>Open the educator guide/i,
   );
   const setupHtml = learnHtml.match(
-    /<section class="setup-section"[\s\S]*?<\/section>/i,
+    /<details class="learning-setup-panel"[\s\S]*?<\/details>/i,
   )?.[0];
   assert.ok(setupHtml, "Learn page should render the beginner setup section");
   assert.doesNotMatch(
@@ -316,7 +325,7 @@ test("major pages have route-specific metadata and repository links", async () =
   );
   assert.equal(
     `${redirectLocation.pathname}${redirectLocation.hash}`,
-    "/learn#step-1",
+    "/learn/project#step-1",
   );
 });
 
@@ -386,8 +395,8 @@ test("Grant Kit renders a reusable, measurable, print-ready program brief", asyn
 
   const grantLinks = html.match(/href="\/grants"/g) ?? [];
   assert.ok(
-    grantLinks.length >= 2,
-    "Grant Kit should appear in the main navigation and footer",
+    grantLinks.length >= 1,
+    "Grant Kit should remain available from the footer",
   );
 });
 
@@ -484,22 +493,17 @@ test("Safety, gallery, and publishing guidance protect children and private phot
   );
 
   assert.doesNotMatch(galleryHtml, /Before adding a gallery photo/i);
-  assert.equal(galleryData.s3GalleryItems.length, 25);
-  assert.equal(galleryData.allGalleryItems.length, 26);
-  assert.ok(
-    galleryData.s3GalleryItems.every((item) => item.src.endsWith(".webp")),
-  );
-  assert.match(galleryHtml, /Finished night-light gallery/i);
-  assert.match(galleryHtml, /Liquid Elegance/i);
-  assert.match(galleryHtml, /Mountain Moose/i);
-  assert.match(galleryHtml, /1<!-- --> of <!-- -->26/i);
+  assert.equal(galleryData.s3GalleryItems.length, 0);
+  assert.equal(galleryData.allGalleryItems.length, 0);
+  assert.match(galleryHtml, /This learning copy has no personal gallery photos/i);
+  assert.match(galleryHtml, /not bundled with the downloadable project/i);
   assert.doesNotMatch(galleryHtml, /From the original site/i);
   assert.doesNotMatch(galleryHtml, /Where No Dark Nights began/i);
   assert.doesNotMatch(galleryHtml, /old pricing and contact details/i);
   assert.doesNotMatch(galleryHtml, /jaime@nodarknights\.com/i);
 });
 
-test("homepage showcases the night-lights and links to the learning project", async () => {
+test("learning copy omits maker photos and keeps owner-ready pages", async () => {
   const [homeResponse, lightsResponse, makerData, profileModule] =
     await Promise.all([
       render("/"),
@@ -515,14 +519,13 @@ test("homepage showcases the night-lights and links to the learning project", as
     lightsResponse.text(),
   ]);
 
-  assert.match(homeHtml, /href="\/studio"[^>]*>Make an STL/i);
-  assert.match(homeHtml, /href="\/learn"[^>]*>Explore the learning project/i);
-  assert.match(homeHtml, /href="\/gallery"[^>]*>Full gallery/i);
-  assert.match(homeHtml, /Our Moment/i);
-  assert.match(homeHtml, /Liquid Elegance/i);
-  assert.match(homeHtml, /Mountain Moose/i);
+  assert.match(homeHtml, /href="\/studio"/i);
+  assert.match(homeHtml, /href="\/learn"/i);
+  assert.match(homeHtml, /href="\/code"/i);
+  assert.doesNotMatch(homeHtml, /<img/i);
 
   assert.match(lightsHtml, /Lights I can make/i);
+  assert.match(lightsHtml, /No maker lights are bundled with this learning copy/i);
   assert.match(
     lightsHtml,
     /Contact the maker to ask about creating one from your photograph or artwork/i,
@@ -547,8 +550,9 @@ test("homepage showcases the night-lights and links to the learning project", as
   assert.match(makerData, /contactHref/);
   assert.match(makerData, /contactHref:\s*""/);
   assert.match(makerData, /MAKER_CONTACT_HREF/);
-  assert.match(makerData, /makerName:\s*"Jaime"/);
-  assert.match(makerData, /contactLabel:\s*"Email Jaime"/);
+  assert.match(makerData, /makerName:\s*"The No Dark Nights maker"/);
+  assert.match(makerData, /contactLabel:\s*"Contact the maker"/);
+  assert.match(makerData, /lightListings:[\s\S]*= \[\]/i);
   assert.doesNotMatch(makerData, /nodarknights\.com/i);
   assert.doesNotMatch(makerData, /paul@oddlytrue\.ai/i);
   assert.doesNotMatch(makerData, /Example listing|offerLabel:\s*"Gift"/i);
@@ -698,7 +702,7 @@ test("keeps local data and deployment identity out of shared source", async () =
   assert.match(studio, /Photo ready/);
   assert.match(geometry, /computeVertexNormals/);
   assert.match(geometry, /geometry\.setIndex/);
-  assert.match(homePage, /className="showcase-home"/);
+  assert.match(homePage, /className="learning-hub"/);
   assert.match(studioPage, /<LithophaneStudio \/>/);
   assert.match(packageJson, /"three"/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
@@ -712,12 +716,15 @@ test("keeps local data and deployment identity out of shared source", async () =
   await assert.rejects(
     access(new URL("../app/chatgpt-auth.ts", import.meta.url)),
   );
-  await access(
+  await assert.rejects(access(
     new URL("../public/no-dark-nights-social-v2.png", import.meta.url),
-  );
+  ));
+  await assert.rejects(access(
+    new URL("../public/brand/no-dark-nights-trees-refreshed.png", import.meta.url),
+  ));
 });
 
-test("keeps every gallery image inside a responsive carousel", async () => {
+test("keeps the owner-ready gallery responsive", async () => {
   const [homePage, carousel, siteChrome, studio, styles] = await Promise.all(
     [
       readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
@@ -731,7 +738,9 @@ test("keeps every gallery image inside a responsive carousel", async () => {
     ],
   );
 
-  assert.match(homePage, /className="showcase-image-frame"/);
+  assert.match(homePage, /className="learning-path-grid site-width"/);
+  assert.match(carousel, /items\.length === 0/);
+  assert.match(carousel, /no personal gallery photos/i);
   assert.match(carousel, /className="gallery-carousel-track"/);
   assert.match(carousel, /Previous light/);
   assert.match(carousel, /Next light/);
@@ -741,10 +750,6 @@ test("keeps every gallery image inside a responsive carousel", async () => {
   assert.match(
     styles,
     /\.gallery-image-frame\s*\{[^}]*aspect-ratio:\s*4\s*\/\s*5/s,
-  );
-  assert.match(
-    styles,
-    /\.showcase-image-frame img\s*\{[^}]*width:\s*100%[^}]*height:\s*100%[^}]*object-fit:\s*contain/s,
   );
   assert.match(
     styles,

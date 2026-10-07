@@ -15,8 +15,8 @@ export default function GalleryPage() {
       <main className="content-page site-width">
         <PageIntro
           eyebrow="Gallery"
-          title="Finished night lights."
-          description="A collection of No Dark Nights lithophane night lights I’ve made from photographs and illustrations."
+          title="A gallery belongs to its maker."
+          description="The downloadable learning project does not include another maker’s personal photographs."
         />
         <GalleryCarousel items={allGalleryItems} />
       </main>

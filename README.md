@@ -127,7 +127,7 @@ no-dark-nights/
 ├── app/maker-profile.ts maker name, contact link, and light listings
 ├── tests/               geometry, resilience, and page checks
 ├── examples/            rules for shareable examples
-├── public/gallery/      displayed images with separate rights
+├── public/gallery/      instructions; personal photos stay deployment-only
 ├── AGENTS.md            guidance for Codex and contributors
 ├── CONTRIBUTING.md      how to propose a change
 ├── SECURITY.md          privacy and security reporting
@@ -149,9 +149,11 @@ npm test         # build and run all automated checks
 - `/` — project home
 - `/lights` — lights and adult-controlled contact for this site’s maker
 - `/studio` — local image-to-STL studio
-- `/learn` — setup guidance and an eight-stage learning path with a Codex prompt for every step
+- `/learn` — a simple doorway for making, building, or teaching
+- `/learn/project` — the shared eight-stage path with one Codex prompt per step
+- `/learn/educators` — account, permission, and supervision guidance for groups
 - `/prompts` — redirects old links to the first Learn step
-- `/gallery` — finished lights
+- `/gallery` — an empty owner-ready gallery in the learning copy
 - `/resources` — printer, material, light, and slicer guidance
 - `/grants` — reusable program brief, outcomes, budget framework, and print-ready grant kit
 - `/safety` — child-safety, photograph, contact, hosting, and reporting guidance
@@ -164,7 +166,7 @@ Edit [`app/maker-profile.ts`](app/maker-profile.ts) to change:
 
 - the studio and maker names;
 - the short maker introduction;
-- listing images, titles, and descriptions.
+- approved listing titles, descriptions, and deployment-only image paths.
 
 Contact is disabled in repository clones. An adult maker may optionally set
 adult-managed contact, and a school, library, or makerspace may optionally set
@@ -172,7 +174,9 @@ organization-managed contact, using the `MAKER_CONTACT_HREF` and
 `MAKER_CONTACT_LABEL` hosting environment values. Young-maker projects do not
 request or publish the young maker’s or parent’s contact information.
 
-Replace the bundled listings before presenting them as current work. Each
+The learning repository contains no personal maker photos or showcase landing
+assets. Keep those approved files in the site owner's separate deployment
+source instead of adding another maker's photographs to a learner clone. Each
 deployed website represents its own maker; the Lights page is not a marketplace
 or maker directory.
 
@@ -218,7 +222,7 @@ Bundled font notices are listed in
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 Personal and gallery photographs are **not** covered by the MIT License. They
-remain copyrighted by their respective owners and are displayed only with
-permission. See [public/gallery/README.md](public/gallery/README.md).
+remain copyrighted by their respective owners and are not bundled with this
+learning repository. See [public/gallery/README.md](public/gallery/README.md).
 
 Make one. Give one. Teach one.

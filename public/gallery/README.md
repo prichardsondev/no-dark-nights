@@ -1,25 +1,11 @@
-# Gallery image rights
+# Gallery assets
 
-The image files in this folder are displayed by No Dark Nights with permission.
+This learning repository intentionally contains no personal maker photographs.
 
-They are **not** licensed under the repository's MIT License and are not
-provided for reuse, training data, redistribution, merchandise, or derivative
-works. Copyright remains with each image's respective owner.
+Each site owner keeps approved gallery images in their own deployment source.
+Gallery photographs have separate rights and are not covered by this
+repository's MIT software license.
 
-Contributors must not add a personal photograph unless the owner explicitly
-approved public display. A gallery contribution should include that permission
-in the maintainer's private records; do not commit private consent records or
-personal contact information to this repository.
-
-Before publication, a trusted adult must:
-
-- remove EXIF and location metadata;
-- inspect the image for addresses, school names, uniforms, license plates, and
-  recognizable locations;
-- remove full names and identifying filenames; and
-- confirm that the public caption contains no private information.
-
-The descriptive WebP files restore the 25 unique finished-light images from the
-site owner's original S3 gallery. They were converted locally to WebP so the
-published copies contain no EXIF metadata. One duplicate `Giving Thanks` object
-from the bucket is intentionally displayed only once.
+Before publishing any photograph, an adult must confirm permission, remove
+EXIF and location metadata, and check for names, addresses, schools, uniforms,
+license plates, and recognizable locations.
