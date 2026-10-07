@@ -104,6 +104,16 @@ export const originalGalleryItems = [
   },
 ];
 
+export const allGalleryItems = [
+  ...galleryItems,
+  {
+    src: "/moose-lithophane-night-light.webp",
+    title: "Mountain Moose",
+    alt: "An illuminated lithophane night light showing a moose in a mountain landscape",
+  },
+  ...originalGalleryItems,
+];
+
 export const learningSteps = [
   {
     number: "01",

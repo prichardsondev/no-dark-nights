@@ -455,9 +455,10 @@ test("Studio explains the physical tools and Resources lists safe examples", asy
 });
 
 test("Safety, gallery, and publishing guidance protect children and private photos", async () => {
-  const [safetyResponse, galleryResponse] = await Promise.all([
+  const [safetyResponse, galleryResponse, galleryData] = await Promise.all([
     render("/safety"),
     render("/gallery"),
+    import("../app/site-data.ts"),
   ]);
   const [safetyHtml, galleryHtml] = await Promise.all([
     safetyResponse.text(),
@@ -498,20 +499,14 @@ test("Safety, gallery, and publishing guidance protect children and private phot
   );
   assert.match(galleryHtml, /recognizable locations/i);
   assert.match(galleryHtml, /no full names or identifying filenames/i);
-  assert.match(galleryHtml, /From the original site/i);
-  assert.match(galleryHtml, /Where No Dark Nights began/i);
-  assert.match(
-    galleryHtml,
-    /\/gallery\/original-no-dark-nights-trees\.webp/i,
-  );
-  assert.equal(
-    [
-      ...galleryHtml.matchAll(
-        /src="\/gallery\/original-(?:church|wolf|dog|bulldog|eagle|angel|portrait|starry-night)-light\.webp"/gi,
-      ),
-    ].length,
-    8,
-  );
+  assert.equal(galleryData.originalGalleryItems.length, 8);
+  assert.equal(galleryData.allGalleryItems.length, 17);
+  assert.match(galleryHtml, /Finished night-light gallery/i);
+  assert.match(galleryHtml, /Mountain Moose/i);
+  assert.match(galleryHtml, /1<!-- --> of <!-- -->17/i);
+  assert.doesNotMatch(galleryHtml, /From the original site/i);
+  assert.doesNotMatch(galleryHtml, /Where No Dark Nights began/i);
+  assert.doesNotMatch(galleryHtml, /old pricing and contact details/i);
   assert.doesNotMatch(galleryHtml, /jaime@nodarknights\.com/i);
 });
 
@@ -733,11 +728,14 @@ test("keeps local data and deployment identity out of shared source", async () =
   );
 });
 
-test("keeps every gallery image inside an equal frame", async () => {
-  const [homePage, galleryPage, siteChrome, studio, styles] = await Promise.all(
+test("keeps every gallery image inside a responsive carousel", async () => {
+  const [homePage, carousel, siteChrome, studio, styles] = await Promise.all(
     [
       readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
-      readFile(new URL("../app/gallery/page.tsx", import.meta.url), "utf8"),
+      readFile(
+        new URL("../app/gallery/GalleryCarousel.tsx", import.meta.url),
+        "utf8",
+      ),
       readFile(new URL("../app/SiteChrome.tsx", import.meta.url), "utf8"),
       readFile(new URL("../app/LithophaneStudio.tsx", import.meta.url), "utf8"),
       readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
@@ -745,14 +743,18 @@ test("keeps every gallery image inside an equal frame", async () => {
   );
 
   assert.match(homePage, /className="gallery-image-frame"/);
-  assert.match(galleryPage, /className="gallery-image-frame"/);
+  assert.match(carousel, /className="gallery-carousel-track"/);
+  assert.match(carousel, /Previous light/);
+  assert.match(carousel, /Next light/);
+  assert.match(carousel, /ArrowLeft/);
+  assert.match(carousel, /ArrowRight/);
   assert.match(
     styles,
     /\.gallery-image-frame\s*\{[^}]*aspect-ratio:\s*4\s*\/\s*5/s,
   );
   assert.match(
     styles,
-    /\.gallery-image-frame img\s*\{[^}]*object-fit:\s*contain/s,
+    /\.gallery-carousel-image img\s*\{[^}]*object-fit:\s*contain/s,
   );
   assert.doesNotMatch(
     `${siteChrome}${studio}`,
