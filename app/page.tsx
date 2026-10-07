@@ -4,9 +4,9 @@ import { getMakerProfile, isValidContactHref } from "./maker-profile";
 import { allGalleryItems } from "./site-data";
 
 export const metadata: Metadata = {
-  title: "No Dark Nights | Lithophane night lights by Jaime",
+  title: "No Dark Nights | Custom lithophane night-lights",
   description:
-    "See custom lithophane night lights made by Jaime, get in touch about a light, or learn how to make your own.",
+    "See custom lithophane night-lights we've made, get in touch about a light, or learn how to make your own.",
 };
 
 export default function Home() {
@@ -20,7 +20,7 @@ export default function Home() {
           No Dark Nights
         </Link>
         <nav aria-label="Showcase navigation">
-          <a href="#lights">Jaime&apos;s lights</a>
+          <a href="#lights">Our night-lights</a>
           <Link href="/gallery">Full gallery</Link>
           <Link href="/learn">Learn to make one</Link>
         </nav>
@@ -31,15 +31,15 @@ export default function Home() {
           <div className="showcase-logo-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/brand/no-dark-nights-logo.jpg"
-              alt="No Dark Nights Night Lights logo"
-              width="1024"
-              height="727"
+              src="/brand/no-dark-nights-trees-refreshed.png"
+              alt="No Dark Nights tree artwork under a moonlit sky"
+              width="1448"
+              height="1086"
               fetchPriority="high"
             />
           </div>
           <div className="showcase-hero-copy">
-            <span className="showcase-kicker">Handmade by Jaime</span>
+            <span className="showcase-kicker">Custom lithophane night-lights</span>
             <h1>A favorite photo, made to glow.</h1>
             <p>
               Custom lithophane night lights made from photographs and
@@ -48,7 +48,7 @@ export default function Home() {
             </p>
             <div className="showcase-actions">
               <a className="showcase-primary-action" href="#lights">
-                See Jaime&apos;s lights
+                See the night-lights
               </a>
               {hasContactMethod && (
                 <a className="showcase-secondary-action" href={profile.contactHref}>
@@ -67,7 +67,7 @@ export default function Home() {
           <div className="showcase-section-heading site-width">
             <div>
               <span>Made in the No Dark Nights studio</span>
-              <h2>Lights Jaime has made.</h2>
+              <h2>Night-lights we&apos;ve made.</h2>
             </div>
             <p>
               Portraits, pets, celebrations, artwork, and the wonderfully odd
@@ -101,8 +101,8 @@ export default function Home() {
           </div>
           <div>
             <p>
-              Jaime can talk through the image, the look, and what would make
-              it feel personal. Availability and arrangements are handled
+              We can talk through the image, the look, and what would make it
+              feel personal. Availability and arrangements are handled
               directly—not through an online checkout.
             </p>
             {hasContactMethod ? (

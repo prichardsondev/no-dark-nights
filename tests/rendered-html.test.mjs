@@ -56,12 +56,12 @@ test("server-renders the No Dark Nights home and studio", async () => {
 
   assert.match(
     homeHtml,
-    /<title>No Dark Nights \| Lithophane night lights by Jaime<\/title>/i,
+    /<title>No Dark Nights \| Custom lithophane night-lights<\/title>/i,
   );
-  assert.match(homeHtml, /Handmade by Jaime/i);
+  assert.match(homeHtml, /Custom lithophane night-lights/i);
   assert.match(homeHtml, /A favorite photo, made to glow/i);
-  assert.match(homeHtml, /Lights Jaime has made/i);
-  assert.match(homeHtml, /brand\/no-dark-nights-logo\.jpg/i);
+  assert.match(homeHtml, /Night-lights we(?:&#x27;|')ve made/i);
+  assert.match(homeHtml, /brand\/no-dark-nights-trees-refreshed\.png/i);
   assert.match(homeHtml, /Learn to make one/i);
   assert.match(homeHtml, /Make an STL/i);
   assert.doesNotMatch(homeHtml, /Buy a Light/i);
@@ -499,7 +499,7 @@ test("Safety, gallery, and publishing guidance protect children and private phot
   assert.doesNotMatch(galleryHtml, /jaime@nodarknights\.com/i);
 });
 
-test("homepage showcases Jaime's lights and links to the learning project", async () => {
+test("homepage showcases the night-lights and links to the learning project", async () => {
   const [homeResponse, lightsResponse, makerData, profileModule] =
     await Promise.all([
       render("/"),

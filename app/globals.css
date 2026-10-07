@@ -3665,7 +3665,7 @@ input[type="range"]:disabled {
   text-decoration: none;
 }
 
-/* Jaime's light-first showcase homepage */
+/* Light-first showcase homepage */
 
 .showcase-home {
   min-height: 100vh;
@@ -3723,6 +3723,7 @@ input[type="range"]:disabled {
   padding: clamp(16px, 2.5vw, 28px);
   background: #202224;
   box-shadow: 18px 18px 0 #d9a151;
+  overflow: hidden;
 }
 
 .showcase-logo-wrap img {
